@@ -158,28 +158,58 @@ function createTaskList(){
 function createSearch(){
     const searchElement = document.createElement("div");
     searchElement.id = "search";
+
     const searchBar = document.createElement("input");
     searchBar.id = "search_input";
-    const searchButton = document.createElement("input");
-    searchButton.id = "search_submit";
-    searchButton.type = "button";
-    searchButton.value = "Искать";
+
     searchBar.onchange = (e) => {
         searchQuery = e.target.value;
         searchBar.value = searchQuery;
     }
-    searchButton.onclick = () => {
-
-    }
+    
     searchElement.appendChild(searchBar);
-    searchElement.appendChild(searchButton);
     return searchElement;
 }
 
-let index = document.getElementById("main index");
+function createHeader(){
+    const headerContainer = document.createElement("header");
 
-let searchBar = createSearch();
-let taskList = createTaskList();
+    const headerLogo = document.createElement("div");
+    headerLogo.innerHTML = "КФ Крутой Фриланс";
 
-index.appendChild(searchBar);
-index.appendChild(taskList);
+    const headerLogoContainer = document.createElement("a");
+    headerLogoContainer.href = "index.html";
+    headerLogoContainer.className = "hlogo_container";
+    headerLogoContainer.appendChild(headerLogo);
+    headerContainer.appendChild(headerLogoContainer);
+
+    const headerMenuContainer = document.createElement("div");
+    headerMenuContainer.className = "hmenu";
+    headerContainer.appendChild(headerMenuContainer);
+
+    const headerMenuElem1 = document.createElement("a");
+    headerMenuElem1.href = "index.html";
+    headerMenuElem1.innerHTML = "Главная";
+    headerMenuContainer.appendChild(headerMenuElem1);
+    const headerMenuElem2 = document.createElement("a");
+    headerMenuElem2.href = "burse.html";
+    headerMenuElem2.innerHTML = "Биржа";
+    headerMenuContainer.appendChild(headerMenuElem2);
+
+    return headerContainer;
+}
+
+const index = document.getElementById("index");
+const burse = document.getElementById("burse");
+const pages = [index, burse]
+
+const searchBar = createSearch();
+const taskList = createTaskList();
+const header = createHeader();
+
+for (let i = 0; i < pages.length; i++){
+    pages[i] ? pages[i].appendChild(header) : null;
+}
+
+index ? index.appendChild(searchBar) : null;
+burse ? burse.appendChild(taskList) : null;
