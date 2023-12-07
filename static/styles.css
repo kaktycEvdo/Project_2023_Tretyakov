@@ -12,6 +12,7 @@ body{
     min-height: calc(99vh - 172px);
     font-family: 'Open Sans', sans-serif;
     background-color: var(--background-color);
+    padding: 0 7vw;
 }
 input{
     font-family: 'Open Sans', sans-serif;
@@ -68,4 +69,74 @@ header{
 
 .main_content{
     min-height: 668px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.iblock1{
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.iblock2{
+    height: 358px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+.iblock2 > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 250px;
+    width: 180px;
+    background-color: var(--sub-background-color);
+    padding: 50px;
+    border-radius: 20px;
+}
+.iblock2 > div img{
+    width: 90px;
+    object-fit: cover;
+    height: 90px;
+    border-radius: 90px;
+}
+.iblock3{
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tasklist{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+}
+.task{
+    height: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--sub-background-color);
+    padding: 5% 7%;
+    text-decoration: none;
+    color: black;
+}
+.task > div{
+    background-color: var(--background-color);
+    width: 100%;
+    text-align: center;
+}
+#burse .task_text{
+    min-height: 70%;
+}
+#burse .task_id, #burse .task_deadline{
+    display: none;
 }

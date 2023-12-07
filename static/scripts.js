@@ -69,7 +69,7 @@ class User{
 
 /* dummy arrays instead of database for now */
 
-tasks = [
+const tasks = [
     /* datetime, str, int, str|array(str) */
     new Task(new Date('2024-01-01T12:00:00'), 'dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text', 18000, ['tag', 'tag2', 'tag5']),
     new Task(new Date('2024-01-02T12:00:00'), 'dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text', 17000, ['tag1', 'tag', 'tag4']),
@@ -85,7 +85,7 @@ tasks = [
     new Task(new Date('2024-01-12T12:00:00'), 'dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text', 7000, ['tag6', 'tag', 'tag3']),
 ]
 
-users = [
+const users = [
     /* str, str, str|null, int, str, Cards|null, datetime, PersonalData, bool, bool */
     new User('имя', 'фамилия', 'отчество', 9623963223, 'email@mail.ru', null, new Date('2023-12-01T12:33:00'), new PersonalData('login', 'pswrd_encryptlater'), false, false),
     new User('имя', 'фамилия', null, 9223463223, 'email1111@mail.ru', null, new Date('2023-12-01T14:33:00'), new PersonalData('admin', 'pswrd_encryptlater'), true, true),
@@ -100,7 +100,7 @@ users = [
 
 
 
-/* script.js contents */
+/* scripts.js contents */
 
 
 
@@ -114,42 +114,57 @@ users = [
 
 
 let searchQuery = "";
+let current_page;
+
+function createTask(task){
+    /* info in task */
+    const text = task.text;
+    const preferred_deadline = task.preferred_deadline;
+    const reward = task.reward;
+    const tags = task.tags;
+    let datestr = (preferred_deadline.getDate() < 10 ? "0"+preferred_deadline.getDate() : preferred_deadline.getDate()) + "." +
+    ((preferred_deadline.getMonth()+1) < 10 ? "0"+(preferred_deadline.getMonth()+1) : (preferred_deadline.getMonth()+1)) + "." +
+    preferred_deadline.getFullYear();
+
+    /* visualization of info */
+    let taskElement = null;
+    if(current_page === "burse") {
+        taskElement = document.createElement("a");
+        taskElement.href="task.html?id="+(index+1);
+    }
+    else if(current_page==="task") taskElement = document.createElement("div");
+    taskElement.className = "task"
+
+    const taskElement_text = document.createElement("div");
+    taskElement_text.className = "task_text";
+    taskElement_text.innerHTML = text;
+
+    const taskElement_preferredDeadline = document.createElement("div");
+    taskElement_preferredDeadline.className = "task_deadline";
+    taskElement_preferredDeadline.innerHTML = datestr;
+    
+    const taskElement_reward = document.createElement("div");
+    taskElement_reward.className = "task_reward";
+    taskElement_reward.innerHTML = reward + "₽";
+
+    const taskElement_tags = document.createElement("div");
+    taskElement_tags.className = "task_tags";
+    taskElement_tags.innerHTML = tags;
+
+    taskElement.appendChild(taskElement_text);
+    taskElement.appendChild(taskElement_tags);
+    taskElement.appendChild(taskElement_preferredDeadline);
+    taskElement.appendChild(taskElement_reward);
+
+    return(taskElement);
+}
 
 function createTaskList(){
     const list_container = document.createElement("div");
+    list_container.className = "tasklist"
 
-    tasks.forEach((task, index) => {
-        if (task.text.match(searchQuery)){
-            /* info in task */
-            const text = task.text;
-            const preferred_deadline = task.preferred_deadline;
-            const reward = task.reward;
-            const tags = task.tags;
-            const id = 'task'+index;
-
-            /* visualization of info */
-            const taskElement = document.createElement("div");
-            taskElement.className = "task"
-
-            const taskElement_text = document.createElement("div");
-            taskElement_text.innerHTML = text;
-            const taskElement_preferredDeadline = document.createElement("div");
-            taskElement_preferredDeadline.innerHTML = preferred_deadline;
-            const taskElement_reward = document.createElement("div");
-            taskElement_reward.innerHTML = reward;
-            const taskElement_tags = document.createElement("div");
-            taskElement_tags.innerHTML = tags;
-            const taskElement_id = document.createElement("div");
-            taskElement_id.innerHTML = id;
-
-            taskElement.appendChild(taskElement_text);
-            taskElement.appendChild(taskElement_preferredDeadline);
-            taskElement.appendChild(taskElement_reward);
-            taskElement.appendChild(taskElement_tags);
-            taskElement.appendChild(taskElement_id);
-
-            list_container.appendChild(taskElement);
-        }
+    tasks.forEach((task) => {
+        list_container.appendChild(createTask(task));
     })
 
     return list_container;
@@ -199,17 +214,26 @@ function createHeader(){
     return headerContainer;
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+const taskID = urlParams.get('id');
+
 const index = document.getElementById("index");
 const burse = document.getElementById("burse");
-const pages = [index, burse]
+const task_page = document.getElementById("task");
+const pages = [index, burse, task_page];
 
 const searchBar = createSearch();
 const taskList = createTaskList();
+const task = taskID ? createTask(tasks[taskID]) : null;
+
 const header = createHeader();
 
 for (let i = 0; i < pages.length; i++){
     pages[i] ? pages[i].appendChild(header) : null;
+    if(pages[i]) current_page=pages[i].id;
 }
 
 index ? index.appendChild(searchBar) : null;
+burse ? burse.appendChild(searchBar) : null;
 burse ? burse.appendChild(taskList) : null;
+task_page ? task_page.appendChild(task) : null;
