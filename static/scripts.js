@@ -64,7 +64,29 @@ class User{
         this.isAdmin = isAdmin;
     }
 
-
+    getName(){
+        return this.name;
+    }
+    getFullName(){
+        return [this.name, this.surname, this.patronymic];
+    }
+    getEmail(){
+        return this.email;
+    }
+    getPhone(){
+        return this.phone;
+    }
+    getCardNumber(){
+        return this.Cards.getNumber();
+    }
+    setDetails(name, surname, patronymic, phone, email){
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.phone = phone;
+        this.email = email;
+        return 0;
+    }
 }
 
 /* dummy arrays instead of database for now */
@@ -114,9 +136,16 @@ const users = [
 
 
 let searchQuery = "";
-let current_page;
+// просто берёт название страницы из текущего url
+const current_page = window.location.href.split("/")[window.location.href.split("/").length-1].split(".")[0];
 
-function createTask(task){
+const urlParams = new URLSearchParams(window.location.search);
+const taskID = urlParams.get('id');
+const profileID = urlParams.get('pid');
+
+const mainElement = document.getElementById("main");
+
+function createTask(task, index){
     /* info in task */
     const text = task.text;
     const preferred_deadline = task.preferred_deadline;
@@ -127,13 +156,36 @@ function createTask(task){
     preferred_deadline.getFullYear();
 
     /* visualization of info */
-    let taskElement = null;
+    let taskElement = document.createElement("div");
     if(current_page === "burse") {
         taskElement = document.createElement("a");
-        taskElement.href="task.html?id="+(index+1);
+        taskElement.href="task.html?id="+(index);
+        taskElement.className = "task";
     }
-    else if(current_page==="task") taskElement = document.createElement("div");
-    taskElement.className = "task"
+    else if(current_page==="task") {
+        taskElement = document.createElement("div");
+        taskElement.className = "task_details";
+
+        const taskHeader = document.createElement("div");
+        const taskHeaderBuyerDetails = document.createElement("div");
+        const taskHeaderBuyerIcon = document.createElement("img");
+        const taskHeaderBuyerName = document.createElement("div");
+
+        const fullname = users[0].getFullName();
+
+        taskHeader.className = "task_details_header";
+        taskHeaderBuyerDetails.className = "task_buyer_details";
+        
+        taskHeaderBuyerName.innerHTML = fullname[1] + " " + fullname[0][0] + "." + fullname[2][0] + ".";
+        taskHeaderBuyerIcon.src = "static/e93161a711d78c374f9a863188be1edc.jpg";
+
+        taskHeaderBuyerDetails.appendChild(taskHeaderBuyerIcon);
+        taskHeaderBuyerDetails.appendChild(taskHeaderBuyerName);
+
+        taskHeader.appendChild(taskHeaderBuyerDetails);
+        taskElement.appendChild(taskHeader);
+    };
+    
 
     const taskElement_text = document.createElement("div");
     taskElement_text.className = "task_text";
@@ -163,8 +215,8 @@ function createTaskList(){
     const list_container = document.createElement("div");
     list_container.className = "tasklist"
 
-    tasks.forEach((task) => {
-        list_container.appendChild(createTask(task));
+    tasks.forEach((task, index) => {
+        list_container.appendChild(createTask(task, index));
     })
 
     return list_container;
@@ -187,53 +239,62 @@ function createSearch(){
 }
 
 function createHeader(){
-    const headerContainer = document.createElement("header");
-
-    const headerLogo = document.createElement("div");
-    headerLogo.innerHTML = "КФ Крутой Фриланс";
-
-    const headerLogoContainer = document.createElement("a");
-    headerLogoContainer.href = "index.html";
-    headerLogoContainer.className = "hlogo_container";
-    headerLogoContainer.appendChild(headerLogo);
-    headerContainer.appendChild(headerLogoContainer);
-
-    const headerMenuContainer = document.createElement("div");
-    headerMenuContainer.className = "hmenu";
-    headerContainer.appendChild(headerMenuContainer);
-
-    const headerMenuElem1 = document.createElement("a");
-    headerMenuElem1.href = "index.html";
-    headerMenuElem1.innerHTML = "Главная";
-    headerMenuContainer.appendChild(headerMenuElem1);
-    const headerMenuElem2 = document.createElement("a");
-    headerMenuElem2.href = "burse.html";
-    headerMenuElem2.innerHTML = "Биржа";
-    headerMenuContainer.appendChild(headerMenuElem2);
+    const headerContainer = document.createElement("header")
+    headerContainer.innerHTML = `<a href='index.html' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
+    <div class='hmenu'>
+        <a href='index.html'>Главная</a>
+        <a href='burse.html'>Биржа</a>
+    </div>
+    <a href='profile.html?pid=me'><div class='lk_logo'><img src='static/e93161a711d78c374f9a863188be1edc.jpg'></div></a>`
 
     return headerContainer;
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const taskID = urlParams.get('id');
+function createProfileDetails(profile){
+    const pDetailsContainer = document.createElement("div")
+    pDetailsContainer.innerHTML = `
+    <div class='profile_brief'>
+        <div class='profile_name_img'>
+            <img src='static/e93161a711d78c374f9a863188be1edc.jpg'/>
+            <div>`+ profile.getName() +`</div>
+        </div>
+        <div>
+            <a href='#'>Исполнитель</a>
+            <a href='#'>Заказчик</a>
+        </div>
+    </div>
+    <div class='profile_details'>
+        
+    </div>`
 
-const index = document.getElementById("index");
-const burse = document.getElementById("burse");
-const task_page = document.getElementById("task");
-const pages = [index, burse, task_page];
+    return pDetailsContainer;
+}
 
 const searchBar = createSearch();
 const taskList = createTaskList();
 const task = taskID ? createTask(tasks[taskID]) : null;
+const pDetails = profileID ? createProfileDetails(users[profileID === "me" ? 1 : profileID]) : null;
 
 const header = createHeader();
 
-for (let i = 0; i < pages.length; i++){
-    pages[i] ? pages[i].appendChild(header) : null;
-    if(pages[i]) current_page=pages[i].id;
-}
+mainElement.append(header);
 
-index ? index.appendChild(searchBar) : null;
-burse ? burse.appendChild(searchBar) : null;
-burse ? burse.appendChild(taskList) : null;
-task_page ? task_page.appendChild(task) : null;
+switch (current_page){
+    case "index": {
+        mainElement.appendChild(searchBar);
+        break;
+    }
+    case "burse": {
+        mainElement.appendChild(searchBar);
+        mainElement.appendChild(taskList);
+        break;
+    }
+    case "task": {
+        mainElement.appendChild(task);
+        break;
+    }
+    case "profile": {
+        mainElement.appendChild(pDetails);
+        break;
+    }
+}
