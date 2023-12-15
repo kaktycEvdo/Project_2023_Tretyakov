@@ -51,7 +51,7 @@ class PersonalData{
 }
 
 class User{
-    constructor(name, surname, patronymic, phone, email, Cards, last_online, PersonalData, verified, isAdmin){
+    constructor(name, surname, patronymic, phone, email, Cards, last_online, PersonalData, verified, isAdmin, aboutSelf, characteristics){
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
@@ -62,6 +62,8 @@ class User{
         this.PersonalData = PersonalData;
         this.verified = verified;
         this.isAdmin = isAdmin;
+        this.aboutSelf = aboutSelf;
+        this.characteristics = characteristics;
     }
 
     getName(){
@@ -79,12 +81,25 @@ class User{
     getCardNumber(){
         return this.Cards.getNumber();
     }
-    setDetails(name, surname, patronymic, phone, email){
+    getAboutSelf(){
+        return this.aboutSelf;
+    }
+    getCharacteristics(){
+        return this.characteristics;
+    }
+    setAboutSelf(aboutSelf){
+        this.aboutSelf = aboutSelf;
+    }
+    setCharacteristics(characteristics){
+        this.characteristics = characteristics;
+    }
+    setDetails(name, surname, patronymic, phone, email, aboutSelf){
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
         this.phone = phone;
         this.email = email;
+        this.aboutSelf = aboutSelf;
         return 0;
     }
 }
@@ -109,8 +124,8 @@ const tasks = [
 
 const users = [
     /* str, str, str|null, int, str, Cards|null, datetime, PersonalData, bool, bool */
-    new User('имя', 'фамилия', 'отчество', 9623963223, 'email@mail.ru', null, new Date('2023-12-01T12:33:00'), new PersonalData('login', 'pswrd_encryptlater'), false, false),
-    new User('имя', 'фамилия', null, 9223463223, 'email1111@mail.ru', null, new Date('2023-12-01T14:33:00'), new PersonalData('admin', 'pswrd_encryptlater'), true, true),
+    new User('имя', 'фамилия', 'отчество', 9623963223, 'email@mail.ru', null, new Date('2023-12-01T12:33:00'), new PersonalData('login', 'pswrd_encryptlater'), false, false, "about"),
+    new User('имя', 'фамилия', null, 9223463223, 'email1111@mail.ru', null, new Date('2023-12-01T14:33:00'), new PersonalData('admin', 'pswrd_encryptlater'), true, true, "admin", ["a", "a", "a", "a", "a"]),
 ]
 
 
@@ -168,7 +183,9 @@ function createTask(task, index){
 
         const taskHeader = document.createElement("div");
         const taskHeaderBuyerDetails = document.createElement("div");
+        const taskHeaderBuyerIconContainer = document.createElement("a");
         const taskHeaderBuyerIcon = document.createElement("img");
+        taskHeaderBuyerIconContainer.href = "profile.html?pid=0";
         const taskHeaderBuyerName = document.createElement("div");
 
         const fullname = users[0].getFullName();
@@ -179,7 +196,8 @@ function createTask(task, index){
         taskHeaderBuyerName.innerHTML = fullname[1] + " " + fullname[0][0] + "." + fullname[2][0] + ".";
         taskHeaderBuyerIcon.src = "static/e93161a711d78c374f9a863188be1edc.jpg";
 
-        taskHeaderBuyerDetails.appendChild(taskHeaderBuyerIcon);
+        taskHeaderBuyerIconContainer.appendChild(taskHeaderBuyerIcon);
+        taskHeaderBuyerDetails.appendChild(taskHeaderBuyerIconContainer);
         taskHeaderBuyerDetails.appendChild(taskHeaderBuyerName);
 
         taskHeader.appendChild(taskHeaderBuyerDetails);
@@ -197,7 +215,7 @@ function createTask(task, index){
     
     const taskElement_reward = document.createElement("div");
     taskElement_reward.className = "task_reward";
-    taskElement_reward.innerHTML = reward + "₽";
+    taskElement_reward.innerHTML = "Цена: <i class='reward_text'>" + reward + "₽</i>";
 
     const taskElement_tags = document.createElement("div");
     taskElement_tags.className = "task_tags";
@@ -251,21 +269,63 @@ function createHeader(){
 }
 
 function createProfileDetails(profile){
-    const pDetailsContainer = document.createElement("div")
-    pDetailsContainer.innerHTML = `
-    <div class='profile_brief'>
-        <div class='profile_name_img'>
-            <img src='static/e93161a711d78c374f9a863188be1edc.jpg'/>
-            <div>`+ profile.getName() +`</div>
-        </div>
-        <div>
-            <a href='#'>Исполнитель</a>
-            <a href='#'>Заказчик</a>
-        </div>
-    </div>
-    <div class='profile_details'>
-        
-    </div>`
+    const pDetailsContainer = document.createElement("div");
+
+    // я хотел сделать через innerHtml, но тогда цикл ломал всю разметку и в итоге вот что я делаю
+
+    const profileBriefContainer = document.createElement("div");
+    profileBriefContainer.className = "profile_brief"
+    const profileBriefNameImg = document.createElement("div");
+    profileBriefNameImg.className = "profile_name_img";
+    const profileBriefName = document.createElement("div");
+    profileBriefName.innerHTML = profile.getFullName()[1] + " " + profile.getFullName()[0] + " " + profile.getFullName()[2];
+    const profileBriefImg = document.createElement("img");
+    profileBriefImg.src = "static/e93161a711d78c374f9a863188be1edc.jpg"
+    const profileBriefButtons = document.createElement("div");
+    profileBriefButtons.className = "profile_brief_buttons"
+    const profileBriefButton1 = document.createElement("button");
+    profileBriefButton1.innerHTML = "Исполнитель"
+    const profileBriefButton2 = document.createElement("button");
+    profileBriefButton2.innerHTML = "Заказчик"
+    
+    const profileDetailsContainer = document.createElement("div");
+    const profileDetailsAboutContainer = document.createElement("div");
+    profileDetailsAboutContainer.className = "profile_about";
+    const profileDetailsAboutLabel = document.createElement("div");
+    profileDetailsAboutLabel.innerHTML = "О себе:";
+    const profileDetailsAboutText = document.createElement("textarea");
+    profileDetailsAboutText.innerHTML = profile.getAboutSelf();
+    const profileDetailsCharasContainer = document.createElement("div");
+    profileDetailsCharasContainer.className = "profile_charas";
+    const profileDetailsCharasLabel = document.createElement("div");
+    profileDetailsCharasLabel.innerHTML = "Характеристики:";
+    const profileDetailsCharas = document.createElement("div");
+
+    profile.getCharacteristics() ? profile.getCharacteristics().forEach(characteristic => {
+        const profileDetailsChara = document.createElement("div");
+        profileDetailsChara.innerHTML = characteristic;
+        profileDetailsCharas.appendChild(profileDetailsChara);
+    }) : profileDetailsCharas.append("Нет характеристик");
+    
+    profileBriefNameImg.appendChild(profileBriefImg);
+    profileBriefNameImg.appendChild(profileBriefName);
+
+    profileBriefButtons.appendChild(profileBriefButton1);
+    profileBriefButtons.appendChild(profileBriefButton2);
+    
+    profileBriefContainer.appendChild(profileBriefNameImg);
+    profileBriefContainer.appendChild(profileBriefButtons);
+
+    profileDetailsAboutContainer.appendChild(profileDetailsAboutLabel);
+    profileDetailsAboutContainer.appendChild(profileDetailsAboutText);
+    profileDetailsCharasContainer.appendChild(profileDetailsCharasLabel);
+    profileDetailsCharasContainer.appendChild(profileDetailsCharas);
+
+    profileDetailsContainer.appendChild(profileDetailsAboutContainer);
+    profileDetailsContainer.appendChild(profileDetailsCharasContainer);
+
+    pDetailsContainer.appendChild(profileBriefContainer);
+    pDetailsContainer.appendChild(profileDetailsContainer);
 
     return pDetailsContainer;
 }

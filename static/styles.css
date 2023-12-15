@@ -180,6 +180,14 @@ header{
     object-fit: cover;
     border-radius: 90px;
 }
+.profile_name_img {
+    display: flex;
+    justify-content: center;
+    padding: 2px;
+    align-items: center;
+    gap: 20px;
+    font-size: x-large;
+}
 .profile_name_img img{
     width: 110px;
     height: 110px;
@@ -190,6 +198,31 @@ header{
     width: 80vw;
     display: flex;
     justify-content: space-between;
+}
+.profile_about textarea{
+    min-width: 80vw;
+    min-height: 20vh;
+    font-family: 'Open Sans', sans-serif;
+    font-size: larger;
+    border: rgba(0,0,0,0.2) 1px solid;
+    padding: 5px;
+}
+.profile_brief_buttons { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.profile_brief_buttons button{
+    padding: 10px;
+    background-color: var(--sub-background-color);
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.2);
+    width: 120px;
+}
+.profile_brief_buttons button:hover{
+    background-color: #9999D9;
+    cursor: pointer;
 }
 
 #burse .task_text{
