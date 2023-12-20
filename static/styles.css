@@ -60,6 +60,10 @@ header{
     object-fit: cover;
     border-radius: 90px;
 }
+i.reward_text{
+    color: darkgrey;
+    font-style: normal;
+}
 
 #search{
     height: 420px;
@@ -146,6 +150,12 @@ header{
     text-align: center;
 }
 
+.drop_menu_profile{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+}
+
 .task_details{
     min-height: 600px;
     display: flex;
@@ -180,6 +190,10 @@ header{
     object-fit: cover;
     border-radius: 90px;
 }
+.profile_container{
+    padding: 20px;
+    background-color: var(--sub-background-color);
+}
 .profile_name_img {
     display: flex;
     justify-content: center;
@@ -201,11 +215,16 @@ header{
 }
 .profile_about textarea{
     min-width: 80vw;
-    min-height: 20vh;
+    min-height: 50vh;
     font-family: 'Open Sans', sans-serif;
     font-size: larger;
     border: rgba(0,0,0,0.2) 1px solid;
     padding: 5px;
+    background-color: var(--background-color);
+    resize: vertical;
+}
+.profile_about textarea:disabled{
+    color: black;
 }
 .profile_brief_buttons { 
     display: flex;
@@ -215,7 +234,7 @@ header{
 }
 .profile_brief_buttons button{
     padding: 10px;
-    background-color: var(--sub-background-color);
+    background-color: var(--background-color);
     border-radius: 5px;
     border: 1px solid rgba(0,0,0,0.2);
     width: 120px;
@@ -224,10 +243,15 @@ header{
     background-color: #9999D9;
     cursor: pointer;
 }
-
-#burse .task_text{
-    min-height: 70%;
+.profile_charas div:nth-child(2){
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
-#burse .task_id, #burse .task_deadline{
-    display: none;
+.profile_charas div:nth-child(2) div{
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 10px;
+    background-color: var(--background-color);
 }

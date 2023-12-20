@@ -125,7 +125,7 @@ const tasks = [
 const users = [
     /* str, str, str|null, int, str, Cards|null, datetime, PersonalData, bool, bool */
     new User('имя', 'фамилия', 'отчество', 9623963223, 'email@mail.ru', null, new Date('2023-12-01T12:33:00'), new PersonalData('login', 'pswrd_encryptlater'), false, false, "about"),
-    new User('имя', 'фамилия', null, 9223463223, 'email1111@mail.ru', null, new Date('2023-12-01T14:33:00'), new PersonalData('admin', 'pswrd_encryptlater'), true, true, "admin", ["a", "a", "a", "a", "a"]),
+    new User('имя', 'фамилия', null, 9223463223, 'email1111@mail.ru', null, new Date('2023-12-01T14:33:00'), new PersonalData('admin', 'pswrd_encryptlater'), true, true, "admin", ["💖Хулиганом", "Атакованный", "Компьютер", "Еле", "Работает✨"]),
 ]
 
 
@@ -193,7 +193,7 @@ function createTask(task, index){
         taskHeader.className = "task_details_header";
         taskHeaderBuyerDetails.className = "task_buyer_details";
         
-        taskHeaderBuyerName.innerHTML = fullname[1] + " " + fullname[0][0] + "." + fullname[2][0] + ".";
+        taskHeaderBuyerName.innerHTML = fullname[1] + " " + fullname[0][0] + "." + (fullname[2][0] != null ? fullname[2][0] + "." : "");
         taskHeaderBuyerIcon.src = "static/e93161a711d78c374f9a863188be1edc.jpg";
 
         taskHeaderBuyerIconContainer.appendChild(taskHeaderBuyerIcon);
@@ -256,20 +256,69 @@ function createSearch(){
     return searchElement;
 }
 
+class DropMenu{
+    constructor(content, name){
+        this.opened = false;
+        this.content = content;
+        this.name = name;
+    }
+
+    close() {
+        this.opened = false;
+    }
+
+    open() {
+        this.opened = true;
+    }
+
+    getContent() {
+        if (this.opened){
+            const block = document.createElement("div");
+            block.className = "drop_menu_"+this.name;
+            block.appendChild(this.content);
+            return block;
+        }
+    }
+}
+
+const plinks_container = document.createElement("div");
+const plink1 = document.createElement("a");
+const plink2 = document.createElement("a");
+const plink3 = document.createElement("a");
+plinks_container.appendChild(plink1)
+plinks_container.appendChild(plink2)
+plinks_container.appendChild(plink3)
+const profileDropMenu = new DropMenu(plinks_container, "profile");
+
 function createHeader(){
     const headerContainer = document.createElement("header")
+    const profileDropMenuContent = profileDropMenu.getContent;
+    
+    function prikol1(){
+        profileDropMenu.open();
+        headerContainer.appendChild(profileDropMenuContent);
+    }
+    function prikol2(){
+        headerContainer.removeChild(profileDropMenuContent);
+        profileDropMenu.close();
+        
+    }
+
     headerContainer.innerHTML = `<a href='index.html' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
     <div class='hmenu'>
         <a href='index.html'>Главная</a>
         <a href='burse.html'>Биржа</a>
     </div>
-    <a href='profile.html?pid=me'><div class='lk_logo'><img src='static/e93161a711d78c374f9a863188be1edc.jpg'></div></a>`
+    <a href='#' onclick="`+ (profileDropMenu.opened ? prikol2() : prikol1) +`"><div class='lk_logo'><img src='static/e93161a711d78c374f9a863188be1edc.jpg'></div></a>`
+    
 
     return headerContainer;
 }
 
 function createProfileDetails(profile){
     const pDetailsContainer = document.createElement("div");
+    pDetailsContainer.className = "profile_container";
+    const fullname = profile.getFullName();
 
     // я хотел сделать через innerHtml, но тогда цикл ломал всю разметку и в итоге вот что я делаю
 
@@ -278,7 +327,8 @@ function createProfileDetails(profile){
     const profileBriefNameImg = document.createElement("div");
     profileBriefNameImg.className = "profile_name_img";
     const profileBriefName = document.createElement("div");
-    profileBriefName.innerHTML = profile.getFullName()[1] + " " + profile.getFullName()[0] + " " + profile.getFullName()[2];
+    
+    profileBriefName.innerHTML = fullname[1] + " " + fullname[0] + " " + (fullname[2] != null ? fullname[2] : "");
     const profileBriefImg = document.createElement("img");
     profileBriefImg.src = "static/e93161a711d78c374f9a863188be1edc.jpg"
     const profileBriefButtons = document.createElement("div");
@@ -295,6 +345,7 @@ function createProfileDetails(profile){
     profileDetailsAboutLabel.innerHTML = "О себе:";
     const profileDetailsAboutText = document.createElement("textarea");
     profileDetailsAboutText.innerHTML = profile.getAboutSelf();
+    profileDetailsAboutText.disabled = true;
     const profileDetailsCharasContainer = document.createElement("div");
     profileDetailsCharasContainer.className = "profile_charas";
     const profileDetailsCharasLabel = document.createElement("div");
