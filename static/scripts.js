@@ -263,6 +263,13 @@ class DropMenu{
         this.name = name;
     }
 
+    getContent() {
+        const block = document.createElement("div");
+        block.className = "drop_menu_"+this.name;
+        block.appendChild(this.content);
+        return block;
+    }
+
     close() {
         this.opened = false;
     }
@@ -270,48 +277,63 @@ class DropMenu{
     open() {
         this.opened = true;
     }
-
-    getContent() {
-        if (this.opened){
-            const block = document.createElement("div");
-            block.className = "drop_menu_"+this.name;
-            block.appendChild(this.content);
-            return block;
-        }
-    }
 }
 
+let profile_mode = "customer";
 const plinks_container = document.createElement("div");
 const plink1 = document.createElement("a");
 const plink2 = document.createElement("a");
 const plink3 = document.createElement("a");
-plinks_container.appendChild(plink1)
-plinks_container.appendChild(plink2)
-plinks_container.appendChild(plink3)
+plink1.href = "auth.html";
+plink2.href = "profile.html?pid=me";
+plink3.href = "logout.html";
+plink1.innerHTML = "Авторизация";
+plink2.innerHTML = "ЛК";
+plink3.innerHTML = "Выход";
+plinks_container.appendChild(plink1);
+plinks_container.appendChild(plink2);
+plinks_container.appendChild(plink3);
 const profileDropMenu = new DropMenu(plinks_container, "profile");
 
 function createHeader(){
     const headerContainer = document.createElement("header")
-    const profileDropMenuContent = profileDropMenu.getContent;
+    const profileDropMenuContent = profileDropMenu.getContent();
+
+    const pic = document.createElement("a");
+    pic.id = "profile_image_container";
+    pic.onclick = prikol;
+    pic.innerHTML = `<div class='lk_logo'><img src='static/e93161a711d78c374f9a863188be1edc.jpg'></div>`
+    pic.href = "#"
     
-    function prikol1(){
-        profileDropMenu.open();
-        headerContainer.appendChild(profileDropMenuContent);
-    }
-    function prikol2(){
-        headerContainer.removeChild(profileDropMenuContent);
-        profileDropMenu.close();
-        
+    function prikol(){
+        if (!profileDropMenu.opened){
+            profileDropMenu.open();
+            document.getElementsByClassName("lk_logo")[0].appendChild(profileDropMenuContent);
+        }
+        else if (profileDropMenu.opened){
+            document.getElementsByClassName("lk_logo")[0].removeChild(profileDropMenuContent);
+            profileDropMenu.close();
+        }
     }
 
-    headerContainer.innerHTML = `<a href='index.html' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
-    <div class='hmenu'>
-        <a href='index.html'>Главная</a>
-        <a href='burse.html'>Биржа</a>
-    </div>
-    <a href='#' onclick="`+ (profileDropMenu.opened ? prikol2() : prikol1) +`"><div class='lk_logo'><img src='static/e93161a711d78c374f9a863188be1edc.jpg'></div></a>`
-    
+    if(profile_mode === "customer"){
+        headerContainer.innerHTML = `<a href='index.html' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
+        <div class='hmenu'>
+            <a href='index.html'>Главная</a>
+            <a href='freelancers.html'>Исполнители</a>
+        </div>`
+        headerContainer.appendChild(pic);
+    }
+    else if(profile_mode === "worker"){
+        headerContainer.innerHTML = `<a href='index.html' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
+        <div class='hmenu'>
+            <a href='index.html'>Главная</a>
+            <a href='burse.html'>Биржа</a>
+        </div>`
+        headerContainer.appendChild(pic);
+    }
 
+    
     return headerContainer;
 }
 
@@ -335,8 +357,10 @@ function createProfileDetails(profile){
     profileBriefButtons.className = "profile_brief_buttons"
     const profileBriefButton1 = document.createElement("button");
     profileBriefButton1.innerHTML = "Исполнитель"
+    profileBriefButton1.onclick = () => {profile_mode = "worker"}
     const profileBriefButton2 = document.createElement("button");
     profileBriefButton2.innerHTML = "Заказчик"
+    profileBriefButton2.onclick = () => {profile_mode = "customer"}
     
     const profileDetailsContainer = document.createElement("div");
     const profileDetailsAboutContainer = document.createElement("div");
