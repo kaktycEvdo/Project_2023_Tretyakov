@@ -1,4 +1,5 @@
-export class Task{
+/* models.js contents */
+class Task{
     constructor(preferred_deadline, text, reward, tags){
         this.preferred_deadline = preferred_deadline;
         this.text = text;
@@ -24,11 +25,11 @@ export class Task{
     }
 }
 
-export class Cards{
+class Cards{
 
 }
 
-export class PersonalData{
+class PersonalData{
     constructor(login, password){
         this.login = login;
         this.password = password;
@@ -49,8 +50,8 @@ export class PersonalData{
     }
 }
 
-export class User{
-    constructor(name, surname, patronymic, phone, email, Cards, last_online, PersonalData, verified, isAdmin){
+class User{
+    constructor(name, surname, patronymic, phone, email, Cards, last_online, PersonalData, verified, isAdmin, aboutSelf, characteristics){
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
@@ -61,14 +62,51 @@ export class User{
         this.PersonalData = PersonalData;
         this.verified = verified;
         this.isAdmin = isAdmin;
+        this.aboutSelf = aboutSelf;
+        this.characteristics = characteristics;
     }
 
-
+    getName(){
+        return this.name;
+    }
+    getFullName(){
+        return [this.name, this.surname, this.patronymic];
+    }
+    getEmail(){
+        return this.email;
+    }
+    getPhone(){
+        return this.phone;
+    }
+    getCardNumber(){
+        return this.Cards.getNumber();
+    }
+    getAboutSelf(){
+        return this.aboutSelf;
+    }
+    getCharacteristics(){
+        return this.characteristics;
+    }
+    setAboutSelf(aboutSelf){
+        this.aboutSelf = aboutSelf;
+    }
+    setCharacteristics(characteristics){
+        this.characteristics = characteristics;
+    }
+    setDetails(name, surname, patronymic, phone, email, aboutSelf){
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.phone = phone;
+        this.email = email;
+        this.aboutSelf = aboutSelf;
+        return 0;
+    }
 }
 
 /* dummy arrays instead of database for now */
 
-export default tasks = [
+const tasks = [
     /* datetime, str, int, str|array(str) */
     new Task(new Date('2024-01-01T12:00:00'), 'dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text', 18000, ['tag', 'tag2', 'tag5']),
     new Task(new Date('2024-01-02T12:00:00'), 'dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text', 17000, ['tag1', 'tag', 'tag4']),
@@ -84,8 +122,8 @@ export default tasks = [
     new Task(new Date('2024-01-12T12:00:00'), 'dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text', 7000, ['tag6', 'tag', 'tag3']),
 ]
 
-export default users = [
+const users = [
     /* str, str, str|null, int, str, Cards|null, datetime, PersonalData, bool, bool */
-    new User('имя', 'фамилия', 'отчество', 9623963223, 'email@mail.ru', null, new Date('2023-12-01T12:33:00'), new PersonalData('login', 'pswrd_encryptlater'), false, false),
-    new User('имя', 'фамилия', null, 9223463223, 'email1111@mail.ru', null, new Date('2023-12-01T14:33:00'), new PersonalData('admin', 'pswrd_encryptlater'), true, true),
+    new User('имя', 'фамилия', 'отчество', 9623963223, 'email@mail.ru', null, new Date('2023-12-01T12:33:00'), new PersonalData('login', 'pswrd_encryptlater'), false, false, "about"),
+    new User('имя', 'фамилия', null, 9223463223, 'email1111@mail.ru', null, new Date('2023-12-01T14:33:00'), new PersonalData('admin', 'pswrd_encryptlater'), true, true, "admin", ["💖Хулиганом", "Атакованный", "Компьютер", "Еле", "Работает✨"]),
 ]
