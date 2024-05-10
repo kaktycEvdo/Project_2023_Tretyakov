@@ -26,19 +26,23 @@ const plinks_container = document.createElement("div");
 const plink1 = document.createElement("a");
 const plink2 = document.createElement("a");
 const plink3 = document.createElement("a");
+const plink4 = document.createElement("a");
 plink1.href =  "?page=auth";
 plink2.href =  "?page=profile";
 plink3.href =  "?page=logout";
+plink4.href =  "?page=chat";
 plink1.innerHTML = "Авторизация";
 plink2.innerHTML = "ЛК";
 plink3.innerHTML = "Выход";
+plink4.innerHTML = "Чат";
 plinks_container.appendChild(plink1);
 plinks_container.appendChild(plink2);
 plinks_container.appendChild(plink3);
+plinks_container.appendChild(plink4);
 const profileDropMenu = new DropMenu(plinks_container, "profile");
 
 function createHeader(){
-    const headerContainer = document.getElementsByTagName("header")[0];
+    const headerContainer = document.querySelector("header");
     const profileDropMenuContent = profileDropMenu.getContent();
 
     const pic = document.createElement("a");
@@ -57,7 +61,7 @@ function createHeader(){
         }
     }
 
-    if(localStorage.getItem("role") === "zak"){
+    if(localStorage.getItem("role") === "zak" || !localStorage.getItem("role")){
         headerContainer.innerHTML = `<a href='?page=index' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
         <div class='hmenu'>
             <a href='?page=index'>Главная</a>

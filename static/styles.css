@@ -2,9 +2,25 @@
     margin: 0;
     padding: 0;
 }
+@media (prefers-color-scheme: light) {
+    :root{
+        --background-color: #FFFFFF;
+        --sub-background-color: #D9D9D9;
+        --selected-color: #C2C2C2;
+        --text-color: #000000;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    :root{
+        --background-color: #282828;
+        --sub-background-color: #3E3E3E;
+        --selected-color: #2B2B2B;
+        --text-color: #FFFFFF;
+    }
+}
+
 :root{
-    --background-color: #FFFFFF;
-    --sub-background-color: #D9D9D9;
+    --accent-color: #00A154;
 }
 
 body{
@@ -12,10 +28,14 @@ body{
     min-height: calc(99vh - 172px);
     font-family: 'Open Sans', sans-serif;
     background-color: var(--background-color);
+    color: var(--text-color);
     padding: 0 7vw;
+    font-size: 1.2em;
 }
 input{
     font-family: 'Open Sans', sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
 }
 
 header{
@@ -32,7 +52,7 @@ header{
     border-bottom: black 1px solid;
 }
 .hlogo_container{
-    color: black;
+    color: var(--text-color);
     text-decoration: none;
     font-weight: 900;
     font-size: xx-large;
@@ -44,7 +64,7 @@ header{
     width: 20vw;
 }
 .hmenu > a{
-    color: black;
+    color: var(--text-color);
     text-decoration: none;
     font-weight: 900;
     font-size: larger;
@@ -61,7 +81,6 @@ header{
     border-radius: 90px;
 }
 i.reward_text{
-    color: darkgrey;
     font-style: normal;
 }
 
@@ -82,7 +101,7 @@ i.reward_text{
     width: 80vw;
 }
 
-.main_content{
+main#content{
     min-height: 668px;
     display: flex;
     flex-direction: column;
@@ -102,6 +121,7 @@ i.reward_text{
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     justify-content: center;
+    width: fit-content;
     gap: 50px;
 }
 .iblock2 > div{
@@ -113,7 +133,8 @@ i.reward_text{
     width: 180px;
     background-color: var(--sub-background-color);
     padding: 50px;
-    border-radius: 20px;
+    border-top: 5px solid var(--accent-color);
+    text-align: center;
 }
 .iblock2 > div img{
     width: 90px;
@@ -142,7 +163,7 @@ i.reward_text{
     background-color: var(--sub-background-color);
     padding: 5% 7%;
     text-decoration: none;
-    color: black;
+    color: var(--text-color);
 }
 .task > div{
     background-color: var(--background-color);
@@ -163,9 +184,10 @@ i.reward_text{
     padding: 10px;
     gap: 5px;
     transform: translate(13px, 6px);
+    text-align: center;
 }
 .drop_menu_profile > div > a{
-    color: initial;
+    color: var(--text-color);
     text-decoration: none;
 }
 
@@ -204,6 +226,8 @@ i.reward_text{
     border-radius: 90px;
 }
 .profile_container{
+    margin-top: 10px;
+    border-top: var(--accent-color) solid 4px;
     padding: 20px;
     background-color: var(--sub-background-color);
 }
@@ -237,7 +261,7 @@ i.reward_text{
     resize: vertical;
 }
 .profile_about textarea:disabled{
-    color: black;
+    color: var(--text-color);
 }
 .profile_brief_buttons { 
     display: flex;
@@ -245,15 +269,17 @@ i.reward_text{
     align-items: center;
     gap: 20px;
 }
-.profile_brief_buttons button{
+.profile_brief_buttons a{
     padding: 10px;
     background-color: var(--background-color);
-    border-radius: 5px;
-    border: 1px solid rgba(0,0,0,0.2);
+    border-top: 4px solid var(--accent-color);
     width: 120px;
+    color: var(--text-color);
+    text-decoration: none;
+    text-align: center;
 }
-.profile_brief_buttons button:hover{
-    background-color: #9999D9;
+.profile_brief_buttons a:hover{
+    background-color: var(--selected-color);
     cursor: pointer;
 }
 .profile_charas div:nth-child(2){
@@ -269,6 +295,8 @@ i.reward_text{
     background-color: var(--background-color);
 }
 form{
+    border-top: var(--accent-color) 5px solid;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -287,19 +315,47 @@ form > div{
     align-items: center;
     width: 70%;
 }
-form > div > input[type="text"], form > div > input[type="password"], form > div > input[type="email"]{
+form > div.form_fields > input[type="text"], form > div > input[type="password"], form > div > input[type="email"]{
     padding: 20px;
     border: 0;
     width: 100%;
 }
-form > input[type="submit"]{
+form > div.form_bottom input[type="submit"]{
+    color: var(--text-color);
     padding: 10px 20px;
-    border: 0;
     background-color: var(--background-color);
-    margin-left: 200px;
+    border: 0;
+    border-top: var(--accent-color) 3px solid;
     cursor: pointer;
 }
-form > div:nth-child(3){
+form .nextstep{
+    color: var(--text-color);
+    display: block;
+    padding: 10px 20px;
+    border-top: var(--accent-color) 3px solid;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+form > div.form_bottom a[href]{
+    color: var(--text-color);
+    text-decoration: none;
+}
+form > div.form_fields:nth-child(3){
     display: grid;
     grid-template-columns: 10% 90%;
+}
+form > div.form_fields.hidden:nth-child(3){
+    display: none;
+}
+form > div.form_bottom{
+    flex-direction: row;
+    justify-content: space-between;
+}
+.hidden{
+    display: none;
+}
+#error{
+    border: 3px solid red;
+    color: red;
+    font-size: 1em;
 }

@@ -1,17 +1,18 @@
 <?php 
+    $env = parse_ini_file('.env');
     $page = "index";
     if (!empty($_GET["page"])){
         $page = $_GET["page"];
     }
-    if (!empty($_GET["process"]) && !empty($_GET["arg"])){
-        $process = $_GET["page"];
-        $arg = $_GET["arg"];
-        switch ($process){
-            case "change_role":
-                $_SESSION["role"] = $arg;
-                break;
-        }
-    }
+    // if (!empty($_GET["process"]) && !empty($_GET["arg"])){
+    //     $process = $_GET["page"];
+    //     $arg = $_GET["arg"];
+    //     switch ($process){
+    //         case "change_role":
+    //             $_SESSION["role"] = $arg;
+    //             break;
+    //     }
+    // }
 ?>
 <html lang="en">
 <head>
@@ -33,5 +34,4 @@
         ?>
     </main>
 </body>
-
 </html>
