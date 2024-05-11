@@ -10,12 +10,12 @@ if (!empty($_POST["loginoremail"])){
     if ($res){
         $_SESSION['user'] = $res['login'];
         $pdo = null;
-        header("Location: ../app.php?page=index");
+        header("Location: ../?page=index");
         exit();
     }
 
     $pdo = null;
-    header("Location: ../app.php?page=auth", $response_code = 401);
+    header("Location: ../?page=auth", $response_code = 401);
 }
 
 $query = $pdo->prepare("INSERT INTO personal_data (login, password) VALUES (:login, :password)", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
@@ -41,10 +41,10 @@ if ($res){
 
     $_SESSION['user'] = $_POST['login'];
     $pdo = null;
-    header("Location: ../app.php?page=index");
+    header("Location: ../?page=index");
     exit();
 }
 
 
 $pdo = null;
-header("Location: ../app.php?page=reg", $response_code = 401);
+header("Location: ../?page=reg", $response_code = 401);
