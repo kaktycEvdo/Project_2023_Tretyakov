@@ -17,19 +17,22 @@ function createSearch(){
     return searchElement;
 }
 
-function getPage(link){
+function getPage(link, params = null){
     let loading = document.createElement('div');
     loading.className = 'loading';
     loading.innerHTML = 'loading...';
     document.getElementById("content").appendChild(loading);
-    fetch(link)
+    fetch(link, { redirect: 'follow'})
     .then(response => {
         // When the page is loaded convert it to text
+        if(response.status == 401){
+            getPage('pages/auth.php', [401, 'Нет авторизации'])
+        }
         return response.text()
     })
     .then(html => {
         document.getElementById("content").removeChild(loading);
-        
+
         // Initialize the DOM parser
         let parser = new DOMParser();
 
@@ -49,8 +52,13 @@ function getPage(link){
             document.getElementById("content").removeChild(document.querySelector('.page'));
         }
         document.getElementById("content").appendChild(div);
+        
+        if(params){
+            let error = document.getElementById('error');
+            error.innerHTML = params[1];
+        }
     })
-    .catch(function(err) {  
-        console.log('Failed to fetch page: ', err);  
+    .catch(err => {
+        loading.innerHTML =  'Возникла ошибка: ' + err;  
     });
 }

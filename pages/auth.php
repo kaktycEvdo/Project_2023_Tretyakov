@@ -8,4 +8,5 @@
         <a href="?page=reg">Регистрация</a>
         <input type="submit" value="Отправить"/>
     </div>
+    <div id="error"></div>
 </form>
