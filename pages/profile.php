@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    include_once '../php/connect_to_db.php';
+
+    $query = $pdo->prepare('SELECT name, surname, patronymic, chars, about FROM');
+?>
 <div class="profile_container">
     <div class="profile_brief">
         <div class="profile_name_img">
@@ -5,14 +11,14 @@
             <div>фамилия имя </div>
         </div>
         <div class="profile_brief_buttons">
-            <a href="?page=index" onclick='localStorage.role = "isp"'>Исполнитель</a>
-            <a href="?page=index" onclick='localStorage.role = "zak"'>Заказчик</a>
+            <a class="clickable" onclick='localStorage.role = "isp"; () => getPage("pages/auth.php"); createHeader();'>Исполнитель</a>
+            <a class="clickable" onclick='localStorage.role = "zak"; () => getPage("pages/auth.php"); createHeader();'>Заказчик</a>
         </div>
     </div>
     <div>
         <div class="profile_about">
             <div>О себе:</div>
-            <textarea disabled="">admin</textarea>
+            <textarea disabled=""><?php  ?></textarea>
         </div>
         <div class="profile_charas">
             <div>Характеристики:</div>

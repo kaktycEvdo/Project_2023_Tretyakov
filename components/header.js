@@ -27,10 +27,10 @@ const plink1 = document.createElement("a");
 const plink2 = document.createElement("a");
 const plink3 = document.createElement("a");
 const plink4 = document.createElement("a");
-plink1.href =  "?page=auth";
-plink2.href =  "?page=profile";
-plink3.href =  "?page=logout";
-plink4.href =  "?page=chat";
+plink1.onclick = () => getPage('pages/auth.php');
+plink2.onclick = () => getPage('pages/profile.php');
+plink3.onclick = () => getPage('pages/profile.php?action=logout');
+plink4.onclick = () => getPage('pages/chat.php');
 plink1.innerHTML = "Авторизация";
 plink2.innerHTML = "ЛК";
 plink3.innerHTML = "Выход";
@@ -62,18 +62,18 @@ function createHeader(){
     }
 
     if(localStorage.getItem("role") === "zak" || !localStorage.getItem("role")){
-        headerContainer.innerHTML = `<a href='?page=index' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
+        headerContainer.innerHTML = `<a onclick='getPage("pages/index.php")' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
         <div class='hmenu'>
-            <a href='?page=index'>Главная</a>
-            <a href='?page=freelancers'>Исполнители</a>
+            <a onclick='getPage("pages/index.php")'>Главная</a>
+            <a onclick='getPage("pages/freelancers.php")'>Исполнители</a>
         </div>`
         headerContainer.appendChild(pic);
     }
     else if(localStorage.getItem("role") === "isp"){
-        headerContainer.innerHTML = `<a href='?page=index' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
+        headerContainer.innerHTML = `<a onclick='getPage("pages/index.php")' class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
         <div class='hmenu'>
-            <a href='?page=index'>Главная</a>
-            <a href='?page=burse'>Биржа</a>
+            <a onclick='getPage("pages/index.php")'>Главная</a>
+            <a onclick='getPage("pages/burse.php")'>Биржа</a>
         </div>`
         headerContainer.appendChild(pic);
     }

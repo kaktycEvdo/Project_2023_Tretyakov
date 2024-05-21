@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once "connect_to_db.php";
 
 // login or email auth

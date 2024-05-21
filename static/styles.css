@@ -143,10 +143,22 @@ main#content{
     border-radius: 90px;
 }
 .iblock3{
-    height: auto;
+    height: 207px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    animation: appear-loading 0.1s normal ease-in;
+    width: 100vw;
+    height: calc(100vh - 172px);
+    background-color: rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px);
 }
 
 .tasklist{
@@ -273,7 +285,7 @@ main#content{
     padding: 10px;
     background-color: var(--background-color);
     border-top: 4px solid var(--accent-color);
-    width: 120px;
+    min-width: 120px;
     color: var(--text-color);
     text-decoration: none;
     text-align: center;
@@ -358,4 +370,13 @@ form > div.form_bottom{
     border: 3px solid red;
     color: red;
     font-size: 1em;
+}
+
+@keyframes appear-loading{
+    0%{
+        backdrop-filter: blur(0);
+    }
+    100%{
+        backdrop-filter: blur(5px);
+    }
 }

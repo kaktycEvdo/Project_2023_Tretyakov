@@ -1,9 +1,5 @@
 <?php 
     $env = parse_ini_file('.env');
-    $page = "index";
-    if (!empty($_GET["page"])){
-        $page = $_GET["page"];
-    }
     // if (!empty($_GET["process"]) && !empty($_GET["arg"])){
     //     $process = $_GET["page"];
     //     $arg = $_GET["arg"];
@@ -13,6 +9,7 @@
     //             break;
     //     }
     // }
+    session_start();
 ?>
 <html lang="en">
 <head>
@@ -29,9 +26,7 @@
 <body>
     <header></header>
     <main id="content">
-        <?php
-            include_once "pages/".$page.".php";
-        ?>
     </main>
+    <script>getPage('pages/index.php');</script>
 </body>
 </html>
