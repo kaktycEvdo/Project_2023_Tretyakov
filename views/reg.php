@@ -25,9 +25,8 @@
         <input id="patronymic" name="patronymic" type="text" placeholder="Отчество" maxlength="52" />
     </div>
     <div class="form_bottom f2">
-        <a href="?page=auth">Авторизация</a>
+        <a href="auth">Авторизация</a>
         <input type="submit" value="Отправить"/>
     </div>
     <div id="error" class="hidden"></div>
 </form>
-<script type="module" src="../static/input_validation.js"></script>

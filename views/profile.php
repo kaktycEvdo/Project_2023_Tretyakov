@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include_once '../php/connect_to_db.php';
+    require_once '../php/connect_to_db.php';
 
     var_dump($_SESSION['user']);
 
@@ -20,8 +20,8 @@
             <div><?php echo $res['surname'].$res['name'].$res['patronymic'] ?></div>
         </div>
         <div class="profile_brief_buttons">
-            <a class="clickable" onclick='localStorage.role = "isp"; () => getPage("pages/auth.php"); createHeader();'>Исполнитель</a>
-            <a class="clickable" onclick='localStorage.role = "zak"; () => getPage("pages/auth.php"); createHeader();'>Заказчик</a>
+            <a onclick='localStorage.role = "isp"; createHeader();'>Исполнитель</a>
+            <a onclick='localStorage.role = "zak"; createHeader();'>Заказчик</a>
         </div>
     </div>
     <div>

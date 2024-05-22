@@ -363,6 +363,7 @@ form > div.form_bottom{
     flex-direction: row;
     justify-content: space-between;
 }
+
 .hidden{
     display: none;
 }
@@ -370,6 +371,13 @@ form > div.form_bottom{
     border: 3px solid red;
     color: red;
     font-size: 1em;
+}
+#error:empty{
+    display: none;
+}
+
+a{
+    cursor: pointer;
 }
 
 @keyframes appear-loading{

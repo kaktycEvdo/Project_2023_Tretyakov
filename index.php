@@ -10,6 +10,10 @@
     //     }
     // }
     session_start();
+    $request = $_SERVER['REQUEST_URI'];
+    $viewDir = '/views/';
+
+    $html = new DOMDocument();
 ?>
 <html lang="en">
 <head>
@@ -22,33 +26,34 @@
     <script src="static/scripts.js"></script>
     <link rel="stylesheet" href="static/styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <script type="module" src="../static/input_validation.js"></script>
 </head>
 <body>
     <header></header>
     <main id="content">
+        <?php
+        @$profile_id = $_GET['profile_id']; // если не будет, то ладно, но если есть, то хоть файл заработает
+        @$error_code = $_GET['error_code']; // если не будет, то ладно, но если есть, то хоть файл заработает
+
+        switch (explode('?', $request)[0]) {
+            case '':
+            case '/':
+                include_once __DIR__ . $viewDir . 'index.php';
+                break;
+
+            case '/auth':
+                include_once __DIR__ . $viewDir . 'auth.php';
+                break;
+
+            case '/profile':
+                include_once __DIR__ . $viewDir . 'profile.php';
+                break;
+
+            default:
+                http_response_code(404);
+                include_once __DIR__ . $viewDir . '404.php';
+        }
+        ?>
     </main>
-    <script>
-        function findGetParameter(parameterName) {
-            var result = null,
-                tmp = [];
-            location.search
-                .substr(1)
-                .split("&")
-                .forEach(function (item) {
-                tmp = item.split("=");
-                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-                });
-            return result;
-        }
-        if(findGetParameter('page')){
-            switch(findGetParameter('page')){
-                case 'auth':
-                    getPage('pages/auth.php');
-            }
-        }
-        else{
-            getPage('pages/index.php');
-        }
-    </script>
 </body>
 </html>
