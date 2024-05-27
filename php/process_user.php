@@ -1,6 +1,12 @@
 <?php
 session_start();
-include_once "connect_to_db.php";
+$env = parse_ini_file('../.env');
+try{
+    $pdo = new PDO("mysql:host=".$env["HOST"].";dbname=".$env["DB_NAME"], $env["USER"], $env["PSWRD"]);
+}
+catch (PDOException $e) {
+    header("Location: ../", response_code:500);
+}
 
 // login or email auth
 if (!empty($_POST["loginoremail"])){

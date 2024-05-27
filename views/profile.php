@@ -1,15 +1,13 @@
 <?php
     session_start();
-    require_once '../php/connect_to_db.php';
-
-    var_dump($_SESSION['user']);
+    require_once 'php/connect_to_db.php';
 
     $query = $pdo->prepare('SELECT name, surname, patronymic FROM user WHERE personal_data_login = :login', [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
     $query->execute(['login' => $_SESSION['user']]);
     $res = $query->fetch(PDO::FETCH_ASSOC);
 
     if (!$res){
-        http_response_code(401);
+        header('Location: ../auth');
         exit();
     }
 ?>
@@ -17,7 +15,7 @@
     <div class="profile_brief">
         <div class="profile_name_img">
             <img src="static/e93161a711d78c374f9a863188be1edc.jpg">
-            <div><?php echo $res['surname'].$res['name'].$res['patronymic'] ?></div>
+            <div><?php echo $res['surname']." ".$res['name']." ".$res['patronymic'] ?></div>
         </div>
         <div class="profile_brief_buttons">
             <a onclick='localStorage.role = "isp"; createHeader();'>Исполнитель</a>
