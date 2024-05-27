@@ -1,4 +1,4 @@
-<form method="POST" action="../php/process_user.php">
+<form method="POST" action="../php/process_user.php?action=auth">
     <h2>Авторизация</h2>
     <div class="form_fields">
         <input required id="login" name="loginoremail" type="text" placeholder="Логин или электронная почта" />

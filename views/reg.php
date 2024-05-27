@@ -1,4 +1,4 @@
-<form method="POST" action="../php/process_user.php">
+<form method="POST" action="../php/process_user.php?action=reg">
     <h2>Регистрация</h2>
     <div class="form_fields f1">
         <h3>Заполните конфиденциальные данные</h3>
