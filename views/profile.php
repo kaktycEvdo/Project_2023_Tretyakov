@@ -1,25 +1,51 @@
-<?php
-    session_start();
-    require_once 'php/connect_to_db.php';
+<script>
+    function updateHeader(){
+        const headerContainer = document.querySelector("header");
 
-    $query = $pdo->prepare('SELECT name, surname, patronymic FROM user WHERE personal_data_login = :login', [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-    $query->execute(['login' => $_SESSION['user']]);
-    $res = $query->fetch(PDO::FETCH_ASSOC);
+        const pic = document.getElementById('profile_image_container');
 
-    if (!$res){
-        header('Location: ../auth');
-        exit();
+        if(localStorage.getItem("role") === "zak" || !localStorage.getItem("role")){
+            headerContainer.innerHTML = `<a href="/" class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
+            <div class='hmenu'>
+                <a href="/">Главная</a>
+                <a href="freelancers"'>Исполнители</a>
+            </div>`
+            headerContainer.appendChild(pic);
+        }
+        else if(localStorage.getItem("role") === "isp"){
+            headerContainer.innerHTML = `<a href="/" class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
+            <div class='hmenu'>
+                <a href="/"'>Главная</a>
+                <a href="burse">Биржа</a>
+            </div>`
+            headerContainer.appendChild(pic);
+        }
     }
-?>
+
+    let profile = {};
+
+    fetch('php/process_user.php?action=get<?php echo $profile ? '&profile='.$profile : '' ?>').
+    then(response => {
+        profile = response.json();
+        let map = {};
+
+        for (let i = 0; i < profile.length; i++) {
+            map[profile[i].id] = profile[i];
+        }
+        console.log(map);
+    }, error => {
+        console.log(error);
+    })
+</script>
 <div class="profile_container">
     <div class="profile_brief">
         <div class="profile_name_img">
             <img src="static/e93161a711d78c374f9a863188be1edc.jpg">
-            <div><?php echo $res['surname']." ".$res['name']." ".$res['patronymic'] ?></div>
+            <div></div>
         </div>
         <div class="profile_brief_buttons">
-            <a onclick='localStorage.role = "isp"; createHeader();'>Исполнитель</a>
-            <a onclick='localStorage.role = "zak"; createHeader();'>Заказчик</a>
+            <a onclick='localStorage.role = "isp"; updateHeader();'>Исполнитель</a>
+            <a onclick='localStorage.role = "zak"; updateHeader();'>Заказчик</a>
         </div>
     </div>
     <div>

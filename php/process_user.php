@@ -1,14 +1,87 @@
 <?php
 session_start();
-$env = parse_ini_file('../.env');
-try{
-    $pdo = new PDO("mysql:host=".$env["HOST"].";dbname=".$env["DB_NAME"], $env["USER"], $env["PSWRD"]);
-}
-catch (PDOException $e) {
-    header("Location: ../", response_code:500);
-}
+require_once 'connect_to_db.php';
 
 switch ($_GET['action']){
+    case 'get': {
+        $query = $pdo->prepare("SELECT login FROM user WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        // надо будет подумать подольше над get или post здесь
+        $_GET['login']
+        ? $query->execute(['login' => $_GET['login']])
+        : $query->execute(['login' => $_SESSION['user']]);
+        $res = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($res){
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($res);
+            $pdo = null;
+            break;
+        }
+
+        echo "error";
+        $pdo = null;
+        break;
+    }
+
+    case 'getAll': {
+        $query = $pdo->prepare("SELECT login FROM user", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query->execute();
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($res){
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($res);
+            $pdo = null;
+            break;
+        }
+
+        echo "error";
+        $pdo = null;
+        break;
+    }
+
+    case 'getByRole': {
+        if($_GET['role'] != 'purchaser' || $_GET['role'] != 'freelancer'){
+            echo "error";
+            $pdo = null;
+            break;
+        }
+        $query = $pdo->prepare("SELECT * FROM :table, user WHERE user.email = :table.user_email and user.personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        // надо будет подумать подольше над get или post здесь
+        $_GET['login']
+        ? $query->execute(['login' => $_GET['login'], 'table' => $_GET['role']])
+        : $query->execute(['login' => $_SESSION['user'], 'table' => $_GET['role']]);
+        $res = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($res){
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($res);
+            $pdo = null;
+            break;
+        }
+
+        echo "error";
+        $pdo = null;
+        break;
+    }
+
+    case 'getAllByRole': {
+        $query = $pdo->prepare("SELECT * FROM :table, user WHERE user.email = :table.user_email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query->execute();
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($res){
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($res);
+            $pdo = null;
+            break;
+        }
+
+        echo "error";
+        $pdo = null;
+        break;
+    }
+
     case 'auth': {
         $query = $pdo->prepare("SELECT login FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         $query->execute(['login' => $_POST['loginoremail'], 'password' => $_POST['password']]);

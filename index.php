@@ -12,6 +12,7 @@
     session_start();
     $request = $_SERVER['REQUEST_URI'];
     $viewDir = '/views/';
+    $scriptsDir = '/php/';
 
     $html = new DOMDocument();
 ?>
@@ -32,7 +33,7 @@
     <header></header>
     <main id="content">
         <?php
-        @$profile_id = $_GET['profile_id']; // если не будет, то ладно, но если есть, то хоть файл заработает
+        @$profile = $_GET['profile']; // если не будет, то ладно, но если есть, то хоть файл заработает
         @$error_code = $_GET['error_code']; // если не будет, то ладно, но если есть, то хоть файл заработает
 
         switch (explode('?', $request)[0]) {
@@ -45,8 +46,33 @@
                 include_once __DIR__ . $viewDir . 'auth.php';
                 break;
 
+            case '/account':
             case '/profile':
                 include_once __DIR__ . $viewDir . 'profile.php';
+                break;
+
+            case '/burse':
+                include_once __DIR__ . $viewDir . 'burse.php';
+                break;
+
+            case '/reg':
+                include_once __DIR__ . $viewDir . 'reg.php';
+                break;
+
+            case '/logout':
+                include_once __DIR__ . $viewDir . 'logout.php';
+                break;
+
+            case '/freelancers':
+                include_once __DIR__ . $viewDir . 'freelancers.php';
+                break;
+
+            case '/task':
+                include_once __DIR__ . $viewDir . 'task.php';
+                break;
+
+            case '/chat':
+                include_once __DIR__ . $viewDir . 'chat.php';
                 break;
 
             default:

@@ -59,7 +59,7 @@ if (fields1 && fields2){
         fields.classList.add("hidden");
     })
 }
-button.addEventListener('click', nextStep);
+if(button) button.addEventListener('click', nextStep);
 
 document.addEventListener("DOMContentLoaded", function () {
     let eventCallback = function (e) {
@@ -83,19 +83,23 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     let phone_inputs = document.querySelectorAll('[data-phone-pattern]');
-    for (let elem of phone_inputs) {
-        for (let ev of ['input', 'blur', 'focus']) {
-            elem.addEventListener(ev, eventCallback);
+    if(phone_inputs){
+        for (let elem of phone_inputs) {
+            for (let ev of ['input', 'blur', 'focus']) {
+                elem.addEventListener(ev, eventCallback);
+            }
         }
     }
 
     let passwordR = document.querySelector("#passwordR");
-    for (let ev of ['input', 'blur', 'focus']) {
-        passwordR.addEventListener(ev, (e) => {
-            let el = e.target;
-    
-            if(el.value !== document.querySelector('#password').value) showError("Пароли не совпадают.");
-            else hideError();
-        });
+    if(passwordR){
+        for (let ev of ['input', 'blur', 'focus']) {
+            passwordR.addEventListener(ev, (e) => {
+                let el = e.target;
+        
+                if(el.value !== document.querySelector('#password').value) showError("Пароли не совпадают.");
+                else hideError();
+            });
+        }
     }
 });
