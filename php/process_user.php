@@ -4,9 +4,9 @@ require_once 'connect_to_db.php';
 
 switch ($_GET['action']){
     case 'get': {
-        $query = $pdo->prepare("SELECT login FROM user WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query = $pdo->prepare("SELECT name, surname, patronymic, verified FROM user, freelancer, purchaser WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         // надо будет подумать подольше над get или post здесь
-        $_GET['login']
+        @$_GET['login']
         ? $query->execute(['login' => $_GET['login']])
         : $query->execute(['login' => $_SESSION['user']]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
@@ -46,7 +46,7 @@ switch ($_GET['action']){
             $pdo = null;
             break;
         }
-        $query = $pdo->prepare("SELECT * FROM :table, user WHERE user.email = :table.user_email and user.personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query = $pdo->prepare("SELECT *, user.name, user.surname, user.patronymic FROM :table, user WHERE user.email = :table.user_email and user.personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         // надо будет подумать подольше над get или post здесь
         $_GET['login']
         ? $query->execute(['login' => $_GET['login'], 'table' => $_GET['role']])
@@ -120,6 +120,14 @@ switch ($_GET['action']){
                 'surname' => $_POST['surname'], 'phone' => $_POST['phone'],
                 'login' => $_POST['login']]);
             }
+
+            $query = $pdo->prepare("INSERT INTO freelancer (user_email, characteristics, about)
+            VALUES (:email, '', '')", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query->execute(['email' => $_POST['email']]);
+
+            $query = $pdo->prepare("INSERT INTO purchaser (user_email, characteristics, about)
+            VALUES (:email, '', '')", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query->execute(['email' => $_POST['email']]);
         
             $_SESSION['user'] = $_POST['login'];
             $pdo = null;
