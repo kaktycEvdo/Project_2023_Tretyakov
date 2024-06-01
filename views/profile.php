@@ -1,24 +1,56 @@
 <script>
-    function updateHeader(){
+    var fabout = 'Загрузка...';
+    var pabout = 'Загрузка...';
+    var fchars = 'Загрузка...';
+    var pchars = 'Загрузка...';
+
+    function updateContent(){
         const headerContainer = document.querySelector("header");
+        const profile_about_field = document.querySelector('.profile_about > textarea');
+        const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
 
         const pic = document.getElementById('profile_image_container');
 
         if(localStorage.getItem("role") === "zak" || !localStorage.getItem("role")){
+            // header update
             headerContainer.innerHTML = `<a href="/" class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
             <div class='hmenu'>
                 <a href='/'>Главная</a>
                 <a href='freelancers'>Исполнители</a>
             </div>`
             headerContainer.appendChild(pic);
+            // about + chars update
+            profile_about_field.innerHTML = pabout;
+            if(pchars){
+                let str = '';
+                pchars.split(', ').forEach(element => {
+                    str+='<div class="char">'+element+'</div>'
+                });
+                chars_field.innerHTML = str;
+            }
+            else{
+                chars_field.innerHTML = "Нету";
+            }
         }
         else if(localStorage.getItem("role") === "isp"){
+            // header update
             headerContainer.innerHTML = `<a href="/" class='hlogo_container'><div>КФ Крутой Фриланс</div></a>
             <div class='hmenu'>
                 <a href='/'>Главная</a>
                 <a href='burse'>Биржа</a>
             </div>`
             headerContainer.appendChild(pic);
+            profile_about_field.innerHTML = fabout;
+            if(fchars){
+                let str = '';
+                fchars.split(', ').forEach(element => {
+                    str+='<div class="char">'+element+'</div>'
+                });
+                chars_field.innerHTML = str;
+            }
+            else{
+                chars_field.innerHTML = "Нету";
+            }
         }
     }
     fetch('php/process_user.php?action=get<?php echo @$_GET['profile_id'] ? '&profile='.$_GET['profile_id'] : '' ?>').
@@ -32,13 +64,42 @@
     }, error => {
         console.log(error);
     }).then(profile => {
+        fabout = profile['freelancer_about'];
+        pabout = profile['purchaser_about'];
+        fchars = profile['freelancer_chars'];
+        pchars = profile['purchaser_chars'];
+
         let name_field = document.getElementById('name');
-        name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + profile['patronymic'] + (profile['verified'] ? '<i class="verified-user"></i>' : '');
-        let profile_about_field = document.querySelector('.profile_about > textarea');
-        profile_about_field.value = profile['about'];
-        let chars_field = document.querySelector('.profile_charas > div:nth-child(2)')
-        for(let i = 0; i < profile['chars'].split(', ').length; i++){
-            
+        name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + profile['patronymic'] + (profile['verified'] ? '<i class="verified-user">+</i>' : '');
+        
+        const profile_about_field = document.querySelector('.profile_about > textarea');
+        const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
+
+        if(localStorage.role === 'isp'){
+            profile_about_field.innerHTML = fabout;
+            if(fchars){
+                let str = '';
+                fchars.split(', ').forEach(element => {
+                    str+='<div class="char">'+element+'</div>'
+                });
+                chars_field.innerHTML = str;
+            }
+            else{
+                chars_field.innerHTML = "Нету";
+            }
+        }
+        else{
+            profile_about_field.innerHTML = pabout;
+            if(pchars){
+                let str = '';
+                pchars.split(', ').forEach(element => {
+                    str+='<div class="char">'+element+'</div>'
+                });
+                chars_field.innerHTML = str;
+            }
+            else{
+                chars_field.innerHTML = "Нету";
+            }
         }
     })
 </script>
@@ -49,8 +110,8 @@
             <div id="name">Загрузка...</div>
         </div>
         <div class="profile_brief_buttons">
-            <a onclick='localStorage.role = "isp"; updateHeader();'>Исполнитель</a>
-            <a onclick='localStorage.role = "zak"; updateHeader();'>Заказчик</a>
+            <a onclick='localStorage.role = "isp"; updateContent();'>Исполнитель</a>
+            <a onclick='localStorage.role = "zak"; updateContent();'>Заказчик</a>
         </div>
     </div>
     <div>
@@ -61,11 +122,7 @@
         <div class="profile_charas">
             <div>Характеристики:</div>
             <div>
-                <div>💖Хулиганом</div>
-                <div>Атакованный</div>
-                <div>Компьютер</div>
-                <div>Еле</div>
-                <div>Работает✨</div>
+                <div>Загрузка...</div>
             </div>
         </div>
     </div>

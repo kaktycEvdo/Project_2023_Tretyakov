@@ -71,6 +71,10 @@
                 include_once __DIR__ . $viewDir . 'task.php';
                 break;
 
+            case '/new_task':
+                include_once __DIR__ . $viewDir . 'new_task.php';
+                break;
+
             case '/chat':
                 include_once __DIR__ . $viewDir . 'chat.php';
                 break;

@@ -380,6 +380,14 @@ a{
     cursor: pointer;
 }
 
+#right_menu{
+    position: absolute;
+    right: 0;
+    width: 20vw;
+    height: calc(100vh-172px);
+    top: 172px;
+}
+
 @keyframes appear-loading{
     0%{
         backdrop-filter: blur(0);

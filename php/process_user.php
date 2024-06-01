@@ -4,7 +4,9 @@ require_once 'connect_to_db.php';
 
 switch ($_GET['action']){
     case 'get': {
-        $query = $pdo->prepare("SELECT name, surname, patronymic, verified FROM user, freelancer, purchaser WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query = $pdo->prepare("SELECT name, surname, patronymic, verified,
+ freelancer.about as freelancer_about, purchaser.about as purchaser_about, freelancer.characteristics as freelancer_chars, purchaser.characteristics as purchaser_chars
+ FROM user, freelancer, purchaser WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         // надо будет подумать подольше над get или post здесь
         @$_GET['login']
         ? $query->execute(['login' => $_GET['login']])
@@ -24,7 +26,9 @@ switch ($_GET['action']){
     }
 
     case 'getAll': {
-        $query = $pdo->prepare("SELECT login FROM user", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query = $pdo->prepare("SELECT name, surname, patronymic, verified,
+ freelancer.about as freelancer_about, purchaser.about as purchaser_about, freelancer.characteristics as freelancer_chars, purchaser.characteristics as purchaser_chars
+ FROM user, freelancer, purchaser");
         $query->execute();
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -66,7 +70,7 @@ switch ($_GET['action']){
     }
 
     case 'getAllByRole': {
-        $query = $pdo->prepare("SELECT * FROM :table, user WHERE user.email = :table.user_email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query = $pdo->prepare("SELECT * FROM :table, user WHERE user.email = :table.user_email");
         $query->execute();
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
