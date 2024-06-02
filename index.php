@@ -1,5 +1,4 @@
 <?php 
-    $env = parse_ini_file('.env');
     // if (!empty($_GET["process"]) && !empty($_GET["arg"])){
     //     $process = $_GET["page"];
     //     $arg = $_GET["arg"];

@@ -1,7 +1,11 @@
 <?php
-    $env = parse_ini_file(__DIR__ . '/../' . '.env');
+
+putenv('DB_NAME=freelance');
+putenv('USER=root');
+putenv('PSWRD=');
+putenv('HOST=localhost');
 try{
-    $pdo = new PDO("mysql:host=".$env["HOST"].";dbname=".$env["DB_NAME"], $env["USER"], $env["PSWRD"]);
+    $pdo = new PDO("mysql:host=".getenv("HOST").";dbname=".getenv("DB_NAME"), getenv("USER"), getenv("PSWRD"));
 }
 catch (PDOException $e) {
     echo "Error: $e";

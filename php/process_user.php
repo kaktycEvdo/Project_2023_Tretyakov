@@ -87,12 +87,13 @@ switch ($_GET['action']){
     }
 
     case 'auth': {
-        $query = $pdo->prepare("SELECT login FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query = $pdo->prepare("SELECT login, email FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         $query->execute(['login' => $_POST['loginoremail'], 'password' => $_POST['password']]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($res){
             $_SESSION['user'] = $res['login'];
+            $_SESSION['email'] = $res['email'];
             $pdo = null;
             header("Location: ../");
             break;
@@ -134,6 +135,7 @@ switch ($_GET['action']){
             $query->execute(['email' => $_POST['email']]);
         
             $_SESSION['user'] = $_POST['login'];
+            $_SESSION['email'] = $_POST['email'];
             $pdo = null;
             header("Location: ../");
             break;
