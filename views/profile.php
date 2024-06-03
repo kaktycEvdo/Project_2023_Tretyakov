@@ -53,7 +53,7 @@
             }
         }
     }
-    fetch('php/process_user.php?action=get<?php echo @$_GET['profile_id'] ? '&profile='.$_GET['profile_id'] : '' ?>').
+    fetch('php/process_user.php?action=get<?php echo @$_GET['profile_id'] ? '&login='.$_GET['profile_id'] : '' ?>').
     then(response => {
         let profile = response.json();
         if(response.headers.get('content-type') !== 'application/json; charset=utf-8'){
@@ -74,6 +74,7 @@
         
         const profile_about_field = document.querySelector('.profile_about > textarea');
         const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
+        const loading = document.querySelector('#loading');
 
         if(localStorage.role === 'isp'){
             profile_about_field.innerHTML = fabout;
@@ -101,8 +102,10 @@
                 chars_field.innerHTML = "Нету";
             }
         }
+        loading.classList.add('hidden');
     })
 </script>
+<div class="loading" id="loading">Загрузка...</div>
 <div class="profile_container">
     <div class="profile_brief">
         <div class="profile_name_img">
@@ -110,8 +113,16 @@
             <div id="name">Загрузка...</div>
         </div>
         <div class="profile_brief_buttons">
-            <a onclick='localStorage.role = "isp"; updateContent();'>Исполнитель</a>
-            <a onclick='localStorage.role = "zak"; updateContent();'>Заказчик</a>
+            <?php
+                if (isset($_GET['profile_id']) && $_GET['profile_id']){
+                    echo `<a href='chat?profile_id="`.$_GET['profile_id'].`">Написать</a>`;
+                }
+                else{
+                    echo `<a onclick='localStorage.role = "isp"; updateContent();'>Исполнитель</a>
+                    <a onclick='localStorage.role = "zak"; updateContent();'>Заказчик</a>`;
+                }
+            ?>
+            
         </div>
     </div>
     <div>

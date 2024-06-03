@@ -243,6 +243,9 @@ main#content{
     padding: 20px;
     background-color: var(--sub-background-color);
 }
+.profile_container.profile_card{
+    width: 40%;
+}
 .profile_name_img {
     display: flex;
     justify-content: center;
@@ -263,7 +266,7 @@ main#content{
     justify-content: space-between;
 }
 .profile_about textarea{
-    min-width: 80vw;
+    min-width: 100%;
     min-height: 50vh;
     font-family: 'Open Sans', sans-serif;
     font-size: larger;
@@ -388,14 +391,173 @@ a{
     cursor: pointer;
 }
 
-#right_menu{
-    position: absolute;
-    right: 0;
-    width: 20vw;
-    height: calc(100vh-172px);
-    top: 172px;
+.tasks_container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 100%;
+    gap: 15px;
+    padding: 20px 20px 20px 10px;
 }
 
+.tasks_container > div{
+    min-height: 375px;
+    max-width: 296px;
+}
+
+.tasks_container > .first_element{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--accent-color);
+    border: rgba(0,0,0,0.2) 5px solid;
+    border-radius: 20px;
+}
+.tasks_container > .first_element a{
+    color: var(--text-color);
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tasks_container > .task_container{
+    border-top: 5px solid var(--accent-color);
+    background-color: var(--sub-background-color);
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.tasks_container > .task_container > div{
+    background-color: var(--background-color);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+}
+.tasks_container > .task_container > div:nth-child(2){
+    height: 221px;
+    max-width: 200px;
+    overflow: hidden;
+    line-break: anywhere;
+    line-clamp: 8;
+}
+.tasks_container > .task_container > div:nth-child(3){
+    height: 27px;
+    max-width: 200px;
+    overflow: hidden;
+    line-break: anywhere;
+    line-clamp: 1;
+}
+
+.popup_window{
+    animation: popup ease-out 0.2s;
+    position: fixed;
+    top: 178px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    background-color: var(--selected-color);
+}
+
+.popup_window.error{
+    border-top: 5px solid red;
+}
+.popup_window.success{
+    border-top: 5px solid var(--accent-color);
+}
+
+#logout_page{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+#logout_page .sure{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px;
+    gap: 30px;
+    background-color: var(--sub-background-color);
+}
+#logout_page .sure div{
+    display: flex;
+    gap: 40px;
+}
+#logout_page .sure div > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 2px;
+    width: 100px;
+    font-size: medium;
+    background-color: var(--sub-background-color);
+    color: var(--text-color);
+}
+#logout_page .sure div > *:first-child{
+    border-top: 2px solid var(--accent-color);
+}
+#logout_page .sure div > *:nth-child(2){
+    border-top: 2px solid red;
+}
+#logout_page .sure div > *:hover{
+    background-color: var(--selected-color);
+}
+
+.freelancers_container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 100%;
+    gap: 15px;
+    padding: 20px 20px 20px 10px;
+}
+.freelancers_container > a{
+    min-height: 375px;
+    max-width: 296px;
+}
+.freelancer_container{
+    margin-top: 10px;
+    border-top: var(--accent-color) solid 4px;
+    padding: 20px;
+    background-color: var(--sub-background-color);
+}
+.freelancer_container > div:first-child{
+    width: 80vw;
+    display: flex;
+    justify-content: space-between;
+}
+.freelancer_container > div:nth-child(2) textarea{
+    min-width: 100%;
+    min-height: 30vh;
+    font-family: 'Open Sans', sans-serif;
+    font-size: larger;
+    border: rgba(0,0,0,0.2) 1px solid;
+    padding: 5px;
+    background-color: var(--background-color);
+    resize: none;
+}
+.freelancer_container > div:nth-child(2) textarea:disabled{
+    color: var(--text-color);
+}
+
+@keyframes popup {
+    0%{
+        top: 0;
+    }
+    100%{
+        top: 178px;
+    }
+}
 @keyframes appear-loading{
     0%{
         backdrop-filter: blur(0);

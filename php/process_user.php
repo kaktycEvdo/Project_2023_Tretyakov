@@ -70,7 +70,17 @@ switch ($_GET['action']){
     }
 
     case 'getAllByRole': {
-        $query = $pdo->prepare("SELECT * FROM :table, user WHERE user.email = :table.user_email");
+        if($_GET['role'] == 'freelancer'){
+            $query = $pdo->prepare("SELECT name, surname, patronymic, verified,
+ freelancer.about as freelancer_about, freelancer.characteristics as freelancer_chars, personal_data.login as login
+ FROM user, freelancer, personal_data WHERE freelancer.user_email = email and user.personal_data_login = personal_data.login");
+        }
+        else{
+            $query = $pdo->prepare("SELECT name, surname, patronymic, verified,
+ purchaser.about as purchaser_about, purchaser.characteristics as purchaser_chars, purchaser.user_email as email
+ FROM user, purchaser");
+        }
+        
         $query->execute();
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -86,6 +96,10 @@ switch ($_GET['action']){
         break;
     }
 
+    case "update": {
+
+    }
+
     case 'auth': {
         $query = $pdo->prepare("SELECT login, email FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         $query->execute(['login' => $_POST['loginoremail'], 'password' => $_POST['password']]);
@@ -95,12 +109,10 @@ switch ($_GET['action']){
             $_SESSION['user'] = $res['login'];
             $_SESSION['email'] = $res['email'];
             $pdo = null;
-            header("Location: ../");
             break;
         }
 
         $pdo = null;
-        header("Location: ../auth", $response_code = 401);
         break;
     }
 
@@ -137,12 +149,10 @@ switch ($_GET['action']){
             $_SESSION['user'] = $_POST['login'];
             $_SESSION['email'] = $_POST['email'];
             $pdo = null;
-            header("Location: ../");
             break;
         }
 
         $pdo = null;
-        header("Location: ../reg", $response_code = 401);
         break;
     }
     
@@ -153,13 +163,12 @@ switch ($_GET['action']){
 
         if ($res){
             $_SESSION['user'] = null;
+            $_SESSION['email'] = null;
             $pdo = null;
-            header("Location: ../");
             break;
         }
 
         $pdo = null;
-        header("Location: ../auth", $response_code = 401);
         break;
     }
 }

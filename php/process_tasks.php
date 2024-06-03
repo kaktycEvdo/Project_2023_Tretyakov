@@ -41,9 +41,16 @@ switch ($_GET['action']){
     }
 
     case 'add': {
-        $query = $pdo->prepare('INSERT INTO task (purchaser_user_email, text, preferred_deadline, reward, tags)
+        if($_POST['tags'] || $_POST['tags'] == ''){
+            $query = $pdo->prepare('INSERT INTO task (text, purchaser_user_email, preferred_deadline, reward)
+ VALUES (:text, :email, :deadline, :reward)', [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query->execute(['text' => $_POST['text'], 'email' => $_SESSION['email'], 'deadline' => $_POST['deadline'], 'reward' => $_POST['reward']]);
+        }
+        else{
+            $query = $pdo->prepare('INSERT INTO task (text, purchaser_user_email, preferred_deadline, reward, tags)
  VALUES (:text, :email, :deadline, :reward, :tags)', [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-        $query->execute(['email' => $_GET['profile'], 'text' => $_POST['text'], 'deadline' => $_POST['deadline'], 'reward' => $_POST['reward'], 'tags' => $_POST['tags']]);
+            $query->execute(['text' => $_POST['text'], 'email' => $_SESSION['email'], 'deadline' => $_POST['deadline'], 'reward' => $_POST['reward'], 'tags' => $_POST['tags'] ? $_POST['tags'] : '']);
+        }
 
         header('Location: ../');
     }

@@ -15,7 +15,7 @@
         <label for="konf">текст текст текст текст текст</label>
     </div>
     <div class="form_bottom f1">
-        <a href="?page=auth">Авторизация</a>
+        <a href="auth">Авторизация</a>
         <a class="nextstep">Дальше</a>
     </div>
     <div class="form_fields f2">
