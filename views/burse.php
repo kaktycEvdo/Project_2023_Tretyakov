@@ -20,8 +20,9 @@
         const loading = document.getElementById('loading');
 
         for(i = 0; i < res.length; i++){
-            const task_container =document.createElement('div');
+            const task_container =document.createElement('a');
             task_container.className = 'task_container';
+            task_container.href = 'task?task_id=';
             const name_field = document.createElement('div');
             name_field.innerHTML = res[i]['surname'] + " " + res[i]['name'][0] + ". " + res[i]['patronymic'][0] + "." + (res[i]['verified'] ? '<i class="verified-user">+</i>' : '');
             const text_field = document.createElement('div');

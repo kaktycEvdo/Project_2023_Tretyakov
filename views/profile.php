@@ -4,6 +4,37 @@
     var fchars = 'Загрузка...';
     var pchars = 'Загрузка...';
 
+    function showFreelancer() {
+        const profile_about_field = document.querySelector('.profile_about > textarea');
+        const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
+        profile_about_field.innerHTML = fabout;
+        if(fchars){
+            let str = '';
+            fchars.split(', ').forEach(element => {
+                str+='<div class="char">'+element+'</div>'
+            });
+            chars_field.innerHTML = str;
+        }
+        else{
+            chars_field.innerHTML = "Нету";
+        }
+    }
+    function showPurchaser(){
+        const profile_about_field = document.querySelector('.profile_about > textarea');
+        const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
+        profile_about_field.innerHTML = pabout;
+        if(pchars){
+            let str = '';
+            pchars.split(', ').forEach(element => {
+                str+='<div class="char">'+element+'</div>'
+            });
+            chars_field.innerHTML = str;
+        }
+        else{
+            chars_field.innerHTML = "Нету";
+        }
+    }
+
     function updateContent(){
         const headerContainer = document.querySelector("header");
         const profile_about_field = document.querySelector('.profile_about > textarea');
@@ -68,42 +99,20 @@
         pabout = profile['purchaser_about'];
         fchars = profile['freelancer_chars'];
         pchars = profile['purchaser_chars'];
+        const loading = document.querySelector('#loading');
 
         let name_field = document.getElementById('name');
         name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + profile['patronymic'] + (profile['verified'] ? '<i class="verified-user">+</i>' : '');
-        
-        const profile_about_field = document.querySelector('.profile_about > textarea');
-        const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
-        const loading = document.querySelector('#loading');
 
         if(localStorage.role === 'isp'){
-            profile_about_field.innerHTML = fabout;
-            if(fchars){
-                let str = '';
-                fchars.split(', ').forEach(element => {
-                    str+='<div class="char">'+element+'</div>'
-                });
-                chars_field.innerHTML = str;
-            }
-            else{
-                chars_field.innerHTML = "Нету";
-            }
+            showFreelancer();
         }
         else{
-            profile_about_field.innerHTML = pabout;
-            if(pchars){
-                let str = '';
-                pchars.split(', ').forEach(element => {
-                    str+='<div class="char">'+element+'</div>'
-                });
-                chars_field.innerHTML = str;
-            }
-            else{
-                chars_field.innerHTML = "Нету";
-            }
+            showPurchaser();
         }
         loading.classList.add('hidden');
     })
+
 </script>
 <div class="loading" id="loading">Загрузка...</div>
 <div class="profile_container">
@@ -115,11 +124,13 @@
         <div class="profile_brief_buttons">
             <?php
                 if (isset($_GET['profile_id']) && $_GET['profile_id']){
-                    echo `<a href='chat?profile_id="`.$_GET['profile_id'].`">Написать</a>`;
+                    echo "<a href='chat?profile_id=".$_GET['profile_id']."'>Написать</a>";
+                    echo "<a onclick='showFreelancer();'>Исполнитель</a>
+                    <a onclick='showPurchaser();'>Заказчик</a>";
                 }
                 else{
-                    echo `<a onclick='localStorage.role = "isp"; updateContent();'>Исполнитель</a>
-                    <a onclick='localStorage.role = "zak"; updateContent();'>Заказчик</a>`;
+                    echo "<a onclick='localStorage.role = \"isp\"; updateContent();'>Исполнитель</a>
+                    <a onclick='localStorage.role = \"zak\"; updateContent();'>Заказчик</a>";
                 }
             ?>
             

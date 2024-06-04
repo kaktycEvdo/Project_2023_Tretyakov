@@ -187,6 +187,7 @@ main#content{
     display: flex;
     flex-direction: column;
     position: fixed;
+    z-index: 5;
 }
 .drop_menu_profile > div{
     display: flex;
@@ -516,14 +517,16 @@ a{
 
 .freelancers_container{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     width: 100%;
     gap: 15px;
     padding: 20px 20px 20px 10px;
 }
 .freelancers_container > a{
     min-height: 375px;
-    max-width: 296px;
+    max-width: 496px;
+    color: var(--text-color);
+    text-decoration: none;
 }
 .freelancer_container{
     margin-top: 10px;

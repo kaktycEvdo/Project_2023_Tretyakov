@@ -4,10 +4,10 @@ require_once 'connect_to_db.php';
 
 switch ($_GET['action']){
     case 'get': {
-        $query = $pdo->prepare("SELECT user.name, user.surname, user.patronymic, user.verified, text, reward, tags
+        $query = $pdo->prepare("SELECT user.name, user.surname, user.patronymic, user.verified, text, reward, tags, deadline
  FROM task, user WHERE purchaser_user_email = user.email and task_id = :id", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         // надо будет подумать подольше над get или post здесь
-        $query->execute(['login' => $_GET['task_id']]);
+        $query->execute(['id' => $_GET['task_id']]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($res){
