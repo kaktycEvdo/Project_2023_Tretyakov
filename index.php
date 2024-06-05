@@ -78,6 +78,14 @@
                 include_once __DIR__ . $viewDir . 'chat.php';
                 break;
 
+            case '/new_feedback':
+                include_once __DIR__ . $viewDir . 'new_feedback.php';
+                break;
+            
+            case '/feedback':
+                include_once __DIR__ . $viewDir . 'feedback.php';
+                break;
+
             default:
                 http_response_code(404);
                 include_once __DIR__ . $viewDir . '404.php';

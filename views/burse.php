@@ -22,9 +22,7 @@
         for(i = 0; i < res.length; i++){
             const task_container =document.createElement('a');
             task_container.className = 'task_container';
-            task_container.href = 'task?task_id=';
-            const name_field = document.createElement('div');
-            name_field.innerHTML = res[i]['surname'] + " " + res[i]['name'][0] + ". " + res[i]['patronymic'][0] + "." + (res[i]['verified'] ? '<i class="verified-user">+</i>' : '');
+            task_container.href = 'task?task_id='+res[i]['task_id'];
             const text_field = document.createElement('div');
             text_field.innerHTML = res[i]['text'];
             const tags_field = document.createElement('div');
@@ -32,7 +30,6 @@
             const reward_field = document.createElement('div');
             reward_field.innerHTML = res[i]['reward']+"руб.";
 
-            task_container.appendChild(name_field);
             task_container.appendChild(text_field);
             task_container.appendChild(tags_field);
             task_container.appendChild(reward_field);
