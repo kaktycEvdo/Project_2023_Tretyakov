@@ -86,11 +86,12 @@
     }
     fetch('php/process_user.php?action=get<?php echo @$_GET['profile_id'] ? '&login='.$_GET['profile_id'] : '' ?>').
     then(response => {
-        let profile = response.json();
         if(response.headers.get('content-type') !== 'application/json; charset=utf-8'){
             console.log('Error: not json returned')
+            window.location.replace("auth");
         }
-        
+
+        let profile = response.json();
         return profile;
     }, error => {
         console.log(error);

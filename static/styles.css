@@ -584,9 +584,7 @@ a{
 }
 
 .feedback_button{
-    position: absolute;
-    right: 250px;
-    bottom: 250px;
+    
 }
 
 @keyframes popup {

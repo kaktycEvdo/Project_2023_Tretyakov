@@ -1,5 +1,4 @@
 <?php
-
 putenv('DB_NAME=freelance');
 putenv('USER=root');
 putenv('PSWRD=');

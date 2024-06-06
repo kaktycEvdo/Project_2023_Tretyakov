@@ -32,9 +32,6 @@
     <header></header>
     <main id="content">
         <?php
-        @$profile = $_GET['profile']; // если не будет, то ладно, но если есть, то хоть файл заработает
-        @$error_code = $_GET['error_code']; // если не будет, то ладно, но если есть, то хоть файл заработает
-
         switch (explode('?', $request)[0]) {
             case '':
             case '/':

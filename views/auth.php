@@ -16,10 +16,6 @@
         xhr.open("POST", '../php/process_user.php?action=auth', true);
         xhr.onreadystatechange = () => {
             // Call a function when the state changes.
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                popup('success', 'Успешная авторизация');
-                setTimeout(() => {history.back();}, 1000);
-            }
             if (xhr.readyState === XMLHttpRequest.UNSENT){
                 popup('error', 'Ошибка авторизации');
             }
@@ -31,7 +27,7 @@
         };
 
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(data)
+        xhr.send(data);
     }
 
     const form = document.getElementsByTagName('form')[0];
