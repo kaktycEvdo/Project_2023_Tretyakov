@@ -10,11 +10,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class PersonalDataFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected static ?string $password;
     public function definition(): array
     {
         return [

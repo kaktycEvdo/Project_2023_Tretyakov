@@ -4,9 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Certificate>
- */
+
 class CertificateFactory extends Factory
 {
     /**
@@ -17,7 +15,8 @@ class CertificateFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'associated_company' => fake()->company(),
+            'about' => fake()->realText(700)
         ];
     }
 }

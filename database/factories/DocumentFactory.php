@@ -17,7 +17,8 @@ class DocumentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'text' => fake()->realText(2000),
+            'type' => fake()->word()
         ];
     }
 }

@@ -17,7 +17,8 @@ class PurchaserFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'about' => fake()->realText(2000),
+            'characteristics' => fake()->words(8, true)
         ];
     }
 }

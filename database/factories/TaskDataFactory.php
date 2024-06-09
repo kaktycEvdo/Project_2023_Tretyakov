@@ -17,8 +17,10 @@ class TaskDataFactory extends Factory
     public function definition(): array
     {
         return [
-            'reward' => fake()->integer(),
+            'reward' => fake()->randomNumber(6),
             'text' => fake()->realText(2000),
+            'payment_method' => fake()->numberBetween(0, 2),
+            'deadline' => fake()->dateTimeBetween('+3 days', '+4 weeks')
         ];
     }
 }

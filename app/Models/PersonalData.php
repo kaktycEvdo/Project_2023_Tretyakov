@@ -11,6 +11,7 @@ class PersonalData extends Model
     use HasFactory;
 
     protected $primaryKey = 'login';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'login',

@@ -25,4 +25,9 @@ class Freelancer extends Model
     {
         return $this->hasMany(Task::where('is_official', 1)->get());
     }
+
+    public function feedback(): HasMany
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }

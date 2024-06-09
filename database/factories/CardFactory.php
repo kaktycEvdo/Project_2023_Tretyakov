@@ -17,7 +17,9 @@ class CardFactory extends Factory
     public function definition(): array
     {
         return [
-            'number' => fake()->creditCardNumber('Mir'),
+            'number' => fake()->creditCardNumber('Visa'),
+            'expiry' => fake()->creditCardExpirationDateString(),
+            'sc' => fake()->randomNumber(3, true)
         ];
     }
 }

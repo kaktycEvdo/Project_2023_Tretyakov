@@ -9,18 +9,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
 {
-    use HasFactory;
-
+    protected $hidden = [
+        'is_official'
+    ];
+    
     protected function casts(): array
     {
         return [
             'is_official' => 'boolean',
         ];
     }
-
-    protected $casts = [
-        
-    ];
 
     protected $attributes = [
         'is_official' => 0,
