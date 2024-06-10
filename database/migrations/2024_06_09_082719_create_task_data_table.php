@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create("tasks", function (Blueprint $table) {
             $table->id();
             $table->boolean("is_official");
-            $table->foreignId("task_data")->constrained(table: 'task_data');
-            $table->foreignId('purchaser')->constrained(table: 'purchaser');
-            $table->foreignId('freelancer')->nullable()->constrained(table: 'freelancers');
+            $table->foreignId("task_data");
+            $table->foreignId('purchaser');
+            $table->foreignId('freelancer')->nullable();
             $table->timestamps();
         });
 
         Schema::create("feedbacks", function (Blueprint $table) {
             $table->id();
-            $table->foreignId("task_data")->constrained(table: 'task_data');
-            $table->foreignId('freelancer')->constrained(table: 'freelancers');
+            $table->foreignId("task_data");
+            $table->foreignId('freelancer');
             $table->timestamps();
         });
 

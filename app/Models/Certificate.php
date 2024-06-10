@@ -15,6 +15,11 @@ class Certificate extends Model
         'about'
     ];
 
+    protected $hidden = [
+        'user',
+        'verified'
+    ];
+
     protected function casts(): array
     {
         return [

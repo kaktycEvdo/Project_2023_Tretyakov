@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->longText('text');
             $table->string('type', 50);
-            $table->foreign('user')->references('email')->on('user')->constrained(table: 'users');
+            $table->string('user', 70);
+            $table->foreign('user')->references('email')->on('users')->constrained('users');
             $table->timestamps();
         });
 
@@ -24,7 +25,8 @@ return new class extends Migration
             $table->longText('about');
             $table->string('associated_company', 150);
             $table->boolean('verified')->default(false);
-            $table->foreign('user')->references('email')->on('user')->constrained(table: 'users');
+            $table->string('user', 70);
+            $table->foreign('user')->references('email')->on('users')->constrained('users');
             $table->timestamps();
         });
     }

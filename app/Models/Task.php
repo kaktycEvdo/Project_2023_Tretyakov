@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
 {
+    use HasFactory;
+    
     protected $hidden = [
         'is_official'
     ];

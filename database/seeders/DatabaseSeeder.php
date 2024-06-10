@@ -6,10 +6,8 @@ use App\Models\Card;
 use App\Models\Certificate;
 use App\Models\Document;
 use App\Models\Freelancer;
-use App\Models\Message;
 use App\Models\PersonalData;
 use App\Models\Purchaser;
-use App\Models\TaskData;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,14 +19,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        PersonalData::factory(10)->create();
-        User::factory(10)->create();
-        Purchaser::factory(10)->create();
-        Freelancer::factory(10)->create();
-        Card::factory(20)->create();
-        Document::factory(20)->create();
-        Certificate::factory(20)->create();
-        Message::factory(200)->create();
-        TaskData::factory(150)->create();
+        $items = 10;
+        PersonalData::factory($items)->create();
+        $keys = PersonalData::all('login')->modelKeys();
+        for ($i = 0; $i < sizeof($keys); $i++) {
+            if(!User::where('login', $keys[$i])->exists()) {
+                User::factory()->create(['login' => $keys[$i]]);
+                $key = User::where('login', $keys[$i])->first('email');
+                Purchaser::factory()->create(['email' => $key]);
+                Freelancer::factory()->create(['email' => $key]);
+                Card::factory()->count(3)->create(['user' => $key]);
+                Document::factory()->count(5)->create(['user' => $key]);
+                Certificate::factory()->count(5)->create(['user' => $key]);
+            }
+        }
     }
 }

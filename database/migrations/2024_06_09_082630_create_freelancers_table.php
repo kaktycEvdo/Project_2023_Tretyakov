@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->longText('about')->nullable();
             $table->string('characteristics', 300)->nullable();
-            $table->foreign('email')->references('users')->on('email')->constrained(table: 'users');
-            $table->foreignId('official_task')->nullable()->constrained(table: 'tasks');
-            $table->foreignId('feedback')->nullable()->constrained(table: 'feedbacks');
+            $table->string('email', 70);
+            $table->foreign('email')->references('email')->on('users')->constrained('users');
+            $table->foreignId('official_task')->nullable();
+            $table->foreignId('feedback')->nullable();
             $table->timestamps();
         });
 
@@ -25,17 +26,20 @@ return new class extends Migration
             $table->id();
             $table->longText('about')->nullable();
             $table->string('characteristics', 300)->nullable();
-            $table->foreign('email')->references('users')->on('email')->constrained(table: 'users');
-            $table->foreignId('task')->nullable()->constrained(table: 'tasks');
-            $table->foreignId('official_task')->nullable()->constrained(table: 'tasks');
+            $table->string('email', 70);
+            $table->foreign('email')->references('email')->on('users')->constrained('users');
+            $table->foreignId('task')->nullable();
+            $table->foreignId('official_task')->nullable();
             $table->timestamps();
         });
 
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->longText('text');
-            $table->foreign('author')->references('users')->on('email')->constrained(table: 'users');
-            $table->foreign('recepient')->references('users')->on('email')->constrained(table: 'users');
+            $table->string('author', 70);
+            $table->string('recepient', 70);
+            $table->foreign('author')->references('email')->on('users')->constrained('users');
+            $table->foreign('recepient')->references('email')->on('users')->constrained('users');
             $table->timestamps();
         });
     }

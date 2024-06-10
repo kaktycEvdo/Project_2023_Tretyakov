@@ -24,10 +24,10 @@ class UserFactory extends Factory
         return [
             'name' => fake()->firstName(),
             'surname' => fake()->lastName(),
-            'patronymic' => fake()->name(),
+            'patronymic' => fake()->firstName(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
-            'last_online' => today('ASIA'),
+            'last_online' => today(),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];

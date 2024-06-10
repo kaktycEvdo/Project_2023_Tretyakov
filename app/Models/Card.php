@@ -18,6 +18,10 @@ class Card extends Model
         'sc'
     ];
 
+    protected $hidden = [
+        'user'
+    ];
+
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
     }

@@ -16,6 +16,10 @@ class Document extends Model
         'type'
     ];
 
+    protected $hidden = [
+        'user'
+    ];
+
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
     }

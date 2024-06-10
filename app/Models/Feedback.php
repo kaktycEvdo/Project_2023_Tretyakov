@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Feedback extends Model
 {
+    use HasFactory;
+    
     public function task_data(): HasOne {
         return $this->hasOne(TaskData::class);
     }

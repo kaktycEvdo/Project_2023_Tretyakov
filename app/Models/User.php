@@ -25,22 +25,18 @@ class User extends Authenticatable
         'phone'
     ];
 
-    protected $hidden = [
-        'is_admin'
-    ];
 
     protected function casts(): array
     {
         return [
-            'is_admin' => 'boolean',
             'email_verified_at' => 'datetime',
             'last_online' => 'datetime',
         ];
     }
 
-    public function login(): HasOne
+    public function login(): BelongsTo
     {
-        return $this->hasOne(PersonalData::class);
+        return $this->BelongsTo(PersonalData::class, 'login');
     }
 
     public function card(): HasMany
@@ -48,17 +44,7 @@ class User extends Authenticatable
         return $this->hasMany(Card::class);
     }
 
-    public function freelancer(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function purchaser(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function Document(): HasMany
+    public function document(): HasMany
     {
         return $this->hasMany(Document::class);
     }
