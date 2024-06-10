@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Feedback extends Model
 {
     use HasFactory;
+
+    protected $hidden = [
+        'flagged'
+    ];
     
     public function task_data(): HasOne {
         return $this->hasOne(TaskData::class);

@@ -17,7 +17,8 @@ class Document extends Model
     ];
 
     protected $hidden = [
-        'user'
+        'user',
+        'flagged'
     ];
 
     public function user(): BelongsTo{

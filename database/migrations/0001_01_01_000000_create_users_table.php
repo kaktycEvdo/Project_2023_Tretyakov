@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('login', 70)->primary()->unique();
             $table->string('password', 70);
             $table->boolean('is_admin')->default(false);
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
         
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->string('login', 70)->unique();
             $table->string('phone', 17);
             $table->timestamp('last_online')->default(now());
+            $table->boolean('flagged')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->foreign('login')->references('login')->on('personal_data')->constrained('personal_data');
             $table->rememberToken();
@@ -40,6 +42,7 @@ return new class extends Migration
             $table->foreign('email')->references('email')->on('users');
             $table->string('token');
             $table->timestamp('created_at')->nullable();
+            $table->boolean('flagged')->default(false);
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -50,6 +53,7 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
+            $table->boolean('flagged')->default(false);
         });
 
         Schema::create('cards', function (Blueprint $table) {
@@ -58,6 +62,7 @@ return new class extends Migration
             $table->string('number', 16);
             $table->string('expiry', 5);
             $table->integer('sc');
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
     }

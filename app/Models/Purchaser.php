@@ -15,6 +15,10 @@ class Purchaser extends Model
         'about',
         'characteristics'
     ];
+    
+    protected $hidden = [
+        'flagged'
+    ];
 
     public function email(): HasOne
     {

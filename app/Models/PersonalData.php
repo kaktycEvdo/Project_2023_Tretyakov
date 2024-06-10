@@ -22,7 +22,8 @@ class PersonalData extends Model
     protected $hidden = [
         'password',
         'remember_token',
-        'is_admin'
+        'is_admin',
+        'flagged'
     ];
 
     protected function casts(): array

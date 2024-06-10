@@ -14,6 +14,10 @@ class Message extends Model
     protected $fillable = [
         'text'
     ];
+    
+    protected $hidden = [
+        'flagged'
+    ];
 
     public function author(): BelongsTo{
         return $this->belongsTo(User::class);

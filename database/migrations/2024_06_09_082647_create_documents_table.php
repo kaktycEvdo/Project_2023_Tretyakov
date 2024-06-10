@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type', 50);
             $table->string('user', 70);
             $table->foreign('user')->references('email')->on('users')->constrained('users');
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
 
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->boolean('verified')->default(false);
             $table->string('user', 70);
             $table->foreign('user')->references('email')->on('users')->constrained('users');
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
     }

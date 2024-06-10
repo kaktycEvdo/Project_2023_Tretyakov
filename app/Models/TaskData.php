@@ -18,7 +18,8 @@ class TaskData extends Model
     ];
 
     protected $hidden = [
-        'is_fulfilled'
+        'is_fulfilled',
+        'flagged'
     ];
 
     protected function casts(): array

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('email')->references('email')->on('users')->constrained('users');
             $table->foreignId('official_task')->nullable();
             $table->foreignId('feedback')->nullable();
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
 
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->foreign('email')->references('email')->on('users')->constrained('users');
             $table->foreignId('task')->nullable();
             $table->foreignId('official_task')->nullable();
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
 
@@ -40,6 +42,7 @@ return new class extends Migration
             $table->string('recepient', 70);
             $table->foreign('author')->references('email')->on('users')->constrained('users');
             $table->foreign('recepient')->references('email')->on('users')->constrained('users');
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
     }

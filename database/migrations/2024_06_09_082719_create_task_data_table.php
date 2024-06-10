@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId("task_data");
             $table->foreignId('purchaser');
             $table->foreignId('freelancer')->nullable();
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
 
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("task_data");
             $table->foreignId('freelancer');
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
 
@@ -33,6 +35,7 @@ return new class extends Migration
             $table->timestamp('deadline')->default(now());
             $table->smallInteger('payment_method')->default(0);
             $table->integer('reward');
+            $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
     }

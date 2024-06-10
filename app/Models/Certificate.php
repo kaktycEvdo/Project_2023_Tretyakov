@@ -17,7 +17,8 @@ class Certificate extends Model
 
     protected $hidden = [
         'user',
-        'verified'
+        'verified',
+        'flagged'
     ];
 
     protected function casts(): array

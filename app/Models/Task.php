@@ -12,7 +12,8 @@ class Task extends Model
     use HasFactory;
     
     protected $hidden = [
-        'is_official'
+        'is_official',
+        'flagged'
     ];
     
     protected function casts(): array

@@ -24,7 +24,10 @@ class User extends Authenticatable
         'email',
         'phone'
     ];
-
+    
+    protected $hidden = [
+        'flagged'
+    ];
 
     protected function casts(): array
     {
