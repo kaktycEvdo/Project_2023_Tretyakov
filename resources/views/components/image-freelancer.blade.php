@@ -1,0 +1,1 @@
+<img src={{ Vite::asset('resources/img/e93161a711d78c374f9a863188be1edc.jpg') }} />

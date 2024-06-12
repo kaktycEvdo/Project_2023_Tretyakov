@@ -8,12 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::dropIfExists('personal_data');
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
-        Schema::dropIfExists('cards');
-            
         Schema::create('personal_data', function (Blueprint $table) {
             $table->string('login', 70)->primary()->unique();
             $table->string('password', 70);
@@ -32,7 +26,7 @@ return new class extends Migration
             $table->timestamp('last_online')->default(now());
             $table->boolean('flagged')->default(false);
             $table->timestamp('email_verified_at')->nullable();
-            $table->foreign('login')->references('login')->on('personal_data')->constrained('personal_data');
+            $table->foreign('login')->references('login')->on('personal_data')->cascadeOnUpdate()->cascadeOnDelete()->constrained('personal_data');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -58,7 +52,7 @@ return new class extends Migration
 
         Schema::create('cards', function (Blueprint $table) {
             $table->string('user', 70);
-            $table->foreign('user')->references('email')->on('users')->constrained('users');
+            $table->foreign('user')->references('email')->on('users')->cascadeOnUpdate()->cascadeOnDelete()->constrained('users');
             $table->string('number', 16);
             $table->string('expiry', 5);
             $table->integer('sc');

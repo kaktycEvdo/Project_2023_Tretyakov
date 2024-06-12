@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->boolean("is_official");
             $table->foreignId("task_data");
-            $table->foreignId('purchaser');
-            $table->foreignId('freelancer')->nullable();
+            $table->foreignId('purchaser')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('freelancer')->cascadeOnUpdate()->nullable();
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
@@ -24,7 +24,7 @@ return new class extends Migration
         Schema::create("feedbacks", function (Blueprint $table) {
             $table->id();
             $table->foreignId("task_data");
-            $table->foreignId('freelancer');
+            $table->foreignId('freelancer')->cascadeOnUpdate()->cascadeOnDelete();
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });

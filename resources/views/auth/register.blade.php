@@ -1,52 +1,73 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <h2>Регистрация</h2>
+        <div class="form_fields">
+            <!-- Email -->
+            <div>
+                <x-input-label for="email" :value="__('Почта')" />
+                <x-text-input id="email" type="email" name="email" required autofocus />
+                <x-input-error :messages="$errors->get('email')" />
+            </div>
+
+            <!-- Login -->
+            <div>
+                <x-input-label for="login" :value="__('Логин')" />
+                <x-text-input id="login" type="text" name="login" required />
+                <x-input-error :messages="$errors->get('login')" />
+            </div>
+
+            <!-- Password -->
+            <div>
+                <x-input-label for="password" :value="__('Пароль')" />
+                <x-text-input id="password" type="password" name="password" required />
+                <x-input-error :messages="$errors->get('password')" />
+            </div>
+
+            <!-- Checks -->
+            <div class="flex flex-col">
+                <label for="confidentiality">
+                    <input id="confidentiality" type="checkbox" required>
+                    <span>Соглашаюсь с условиями конфиденциальности</span>
+                </label>
+                <label for="ofert">
+                    <input id="ofert" type="checkbox" required>
+                    <span>Соглашаюсь с публичной офертой</span>
+                </label>
+            </div>
         </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+        <div class="form_bottom">    
+            <label for="remember_me">
+                <input id="remember_me" type="checkbox" name="remember">
+                <span>Запомнить меня</span>
+            </label>
+            <a href="{{ route('login') }}">Авторизация</a>
+            <input type="submit" value="Отправить" class="hidden"/>
+            <button onclick="next()">Далее</button>
+            <button onclick="back()" class="hidden">Назад</button>
         </div>
     </form>
 </x-guest-layout>
+<script>
+    let hiddens = document.getElementsByClassName('hidden');
+    let others = document.querySelectorAll(':not(.hidden).form_fields, .form_bottom :not(.hidden)');
+
+    function next(){
+        hiddens.forEach(hidden => {
+            hidden.classList.remove('hidden');
+        });
+        others.forEach(other => {
+            other.classList.add('hidden');
+        });
+    }
+
+    function back(){
+        hiddens.forEach(hidden => {
+            hidden.classList.add('hidden');
+        });
+        others.forEach(other => {
+            other.classList.remove('hidden');
+        });
+    }
+</script>
