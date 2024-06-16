@@ -330,7 +330,10 @@ form:not(.no-form) > div{
     flex-direction: column;
     gap: 10px;
     justify-content: center;
-    width: 40%;
+    width: 80%;
+}
+form:not(.no-form) > div > div > label{
+    font-size: 0.8em;
 }
 form:not(.no-form) > div.form_fields input[type="text"], form:not(.no-form) > div input[type="password"], form:not(.no-form) > div input[type="email"], form:not(.no-form) > div.form_fields input[type="datetime-local"], form:not(.no-form) > div.form_fields textarea, form:not(.no-form) div.form_fields input[type="number"]{
     padding: 20px;
@@ -368,11 +371,10 @@ form:not(.no-form) > div.form_bottom a[href]{
 form:not(.no-form) > div.form_bottom{
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    font-size: 0.8em;
 }
 
-.hidden{
-    display: none;
-}
 #error{
     border: 3px solid red;
     color: red;

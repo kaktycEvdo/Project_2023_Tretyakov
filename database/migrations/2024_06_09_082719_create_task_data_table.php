@@ -16,7 +16,7 @@ return new class extends Migration
             $table->boolean("is_official");
             $table->foreignId("task_data");
             $table->foreignId('purchaser')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('freelancer')->cascadeOnUpdate()->nullable();
+            $table->foreignId('freelancer')->nullable();
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });

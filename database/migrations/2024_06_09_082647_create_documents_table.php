@@ -16,7 +16,7 @@ return new class extends Migration
             $table->longText('text');
             $table->string('type', 50);
             $table->string('user', 70);
-            $table->foreign('user')->references('email')->on('users')->cascadeOnUpdate()->cascadeOnDelete()->constrained('users');
+            $table->foreign('user')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('associated_company', 150);
             $table->boolean('verified')->default(false);
             $table->string('user', 70);
-            $table->foreign('user')->references('email')->on('users')->cascadeOnUpdate()->cascadeOnDelete()->constrained('users');
+            $table->foreign('user')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });

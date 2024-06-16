@@ -15,25 +15,25 @@ return new class extends Migration
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
-        
+
         Schema::create('users', function (Blueprint $table) {
             $table->string('email', 70)->primary()->unique();
             $table->string('name', 52);
             $table->string('surname', 52);
             $table->string('patronymic', 52);
-            $table->string('login', 70)->unique();
+            $table->string('login', 70);
             $table->string('phone', 17);
             $table->timestamp('last_online')->default(now());
             $table->boolean('flagged')->default(false);
             $table->timestamp('email_verified_at')->nullable();
-            $table->foreign('login')->references('login')->on('personal_data')->cascadeOnUpdate()->cascadeOnDelete()->constrained('personal_data');
+            $table->foreign('login')->references('login')->on('personal_data')->index()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });
         
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email', 70);
-            $table->foreign('email')->references('email')->on('users');
+            $table->foreign('email')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('token');
             $table->timestamp('created_at')->nullable();
             $table->boolean('flagged')->default(false);
@@ -42,7 +42,7 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('user_id', 70);
-            $table->foreign('user_id')->references('email')->on('users')->nullable()->index();
+            $table->foreign('user_id')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade')->nullable()->constrained();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -52,7 +52,7 @@ return new class extends Migration
 
         Schema::create('cards', function (Blueprint $table) {
             $table->string('user', 70);
-            $table->foreign('user')->references('email')->on('users')->cascadeOnUpdate()->cascadeOnDelete()->constrained('users');
+            $table->foreign('user')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('number', 16);
             $table->string('expiry', 5);
             $table->integer('sc');

@@ -1,0 +1,1 @@
+<img src={{ Vite::asset('resources/img/vopros.png') }} />

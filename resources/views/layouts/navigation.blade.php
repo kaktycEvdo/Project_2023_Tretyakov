@@ -15,7 +15,15 @@
         <x-dropdown align="top" width="48">
             <x-slot name="trigger">
                 <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 focus:outline-none transition ease-in-out duration-150">
-                    <div class="lk_logo">@include('components.image-freelancer')</div>
+                    <div class="lk_logo">
+                        @if (Auth::check() && @session('role') == 'isp')
+                        @include('components.image-freelancer')
+                        @elseif (Auth::check() && @session('role') == 'buy')
+                        @include('components.image-purchaser')
+                        @else
+                        @include('components.image-what')
+                        @endif
+                    </div>
 
                     <div class="ms-1">
                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -26,12 +34,9 @@
             </x-slot>
 
             <x-slot name="content">
+                @if (Auth::check())
                 <x-dropdown-link class="w-full inline-block" :href="route('profile.edit')">
                     {{ __('Профиль') }}
-                </x-dropdown-link>
-
-                <x-dropdown-link class="w-full inline-block" :href="route('profile.edit')">
-                    {{ __('Авторизация') }}
                 </x-dropdown-link>
                 
                 <form method="POST" class="no-form" action="{{ route('logout') }}">
@@ -43,6 +48,15 @@
                         {{ __('Выйти') }}
                     </x-dropdown-link>
                 </form>
+                @else
+                <x-dropdown-link class="w-full inline-block" :href="route('login')">
+                    {{ __('Авторизация') }}
+                </x-dropdown-link>
+
+                <x-dropdown-link class="w-full inline-block" :href="route('register')">
+                    {{ __('Регистрация') }}
+                </x-dropdown-link>
+                @endif
             </x-slot>
         </x-dropdown>
     </div>

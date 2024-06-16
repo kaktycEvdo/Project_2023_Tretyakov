@@ -1,10 +1,8 @@
-<x-guest-layout>
+<x-app-layout>
     <!-- Session Status -->
     <x-auth-session-status :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}">
-        @csrf
-
         <h2>Авторизация</h2>
         <div class="form_fields">
             <!-- Login -->
@@ -26,8 +24,7 @@
                 <input id="remember_me" type="checkbox" name="remember">
                 <span>Запомнить меня</span>
             </label>
-            <a href="{{ route('register') }}">Регистрация</a>
             <input type="submit" value="Отправить"/>
         </div>
     </form>
-</x-guest-layout>
+</x-app-layout>
