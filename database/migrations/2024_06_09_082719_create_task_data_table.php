@@ -11,30 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("tasks", function (Blueprint $table) {
-            $table->id();
-            $table->boolean("is_official");
-            $table->foreignId("task_data");
-            $table->foreignId('purchaser')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('freelancer')->nullable();
-            $table->boolean('flagged')->default(false);
-            $table->timestamps();
-        });
-
-        Schema::create("feedbacks", function (Blueprint $table) {
-            $table->id();
-            $table->foreignId("task_data");
-            $table->foreignId('freelancer')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->boolean('flagged')->default(false);
-            $table->timestamps();
-        });
-
         Schema::create('task_data', function (Blueprint $table) {
             $table->id();
             $table->longText('text');
             $table->timestamp('deadline')->default(now());
             $table->smallInteger('payment_method')->default(0);
             $table->integer('reward');
+            $table->boolean('flagged')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create("tasks", function (Blueprint $table) {
+            $table->id();
+            $table->boolean("is_official");
+            $table->foreignId("task_data")->constrained('task_data')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId("purchaser")->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId("freelancer")->nullable()->constrained()->onUpdate('set null')->onDelete('set null');
+            $table->boolean('flagged')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create("feedbacks", function (Blueprint $table) {
+            $table->id();
+            $table->foreignId("task_data")->constrained('task_data')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId("freelancer")->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });

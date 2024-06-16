@@ -16,9 +16,7 @@ return new class extends Migration
             $table->longText('about')->nullable();
             $table->string('characteristics', 300)->nullable();
             $table->string('email', 70);
-            $table->foreign('email')->references('email')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('official_task')->nullable();
-            $table->foreignId('feedback')->nullable();
+            $table->foreign('email')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });
@@ -29,8 +27,6 @@ return new class extends Migration
             $table->string('characteristics', 300)->nullable();
             $table->string('email', 70);
             $table->foreign('email')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('task')->nullable();
-            $table->foreignId('official_task')->nullable();
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });

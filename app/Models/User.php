@@ -14,41 +14,30 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $primaryKey = 'email';
+    protected $primaryKey = 'login';
     protected $keyType = 'string';
 
     protected $fillable = [
-        'name',
-        'surname',
-        'patronymic',
-        'email',
-        'phone'
+        'login',
+        'password'
     ];
-    
+
     protected $hidden = [
+        'password',
+        'remember_token',
+        'is_admin',
         'flagged'
     ];
 
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'last_online' => 'datetime',
+            'password' => 'hashed',
         ];
     }
 
-    public function login(): BelongsTo
-    {
-        return $this->BelongsTo(PersonalData::class, 'login');
-    }
-
-    public function card(): HasMany
-    {
-        return $this->hasMany(Card::class);
-    }
-
-    public function document(): HasMany
-    {
-        return $this->hasMany(Document::class);
-    }
+    protected $attributes = [
+        'is_admin' => 0
+    ];
+    
 }

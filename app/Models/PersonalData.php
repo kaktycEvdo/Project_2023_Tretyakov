@@ -5,35 +5,45 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PersonalData extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'login';
-    protected $keyType = 'string';
-
     protected $fillable = [
-        'login',
-        'password'
+        'name',
+        'surname',
+        'patronymic',
+        'email',
+        'phone'
     ];
-
+    
     protected $hidden = [
-        'password',
-        'remember_token',
-        'is_admin',
         'flagged'
     ];
 
     protected function casts(): array
     {
         return [
-            'password' => 'hashed',
+            'email_verified_at' => 'datetime',
+            'last_online' => 'datetime',
         ];
     }
 
-    protected $attributes = [
-        'is_admin' => 0
-    ];
+    public function login(): BelongsTo
+    {
+        return $this->BelongsTo(PersonalData::class, 'login');
+    }
+
+    public function card(): HasMany
+    {
+        return $this->hasMany(Card::class);
+    }
+
+    public function document(): HasMany
+    {
+        return $this->hasMany(Document::class);
+    }
 }
