@@ -11,17 +11,17 @@ use Illuminate\Support\Str;
  */
 class PersonalDataFactory extends Factory
 {
-    protected static ?string $password;
+    
     public function definition(): array
     {
         return [
+            'email' => fake()->email(),
             'name' => fake()->firstName(),
             'surname' => fake()->lastName(),
             'patronymic' => fake()->firstName(),
             'phone' => fake()->phoneNumber(),
             'last_online' => today(),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
+            'email_verified_at' => now()
         ];
     }
 }

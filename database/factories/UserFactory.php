@@ -14,6 +14,7 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
+    protected static ?string $password;
 
     /**
      * Define the model's default state.
@@ -25,6 +26,7 @@ class UserFactory extends Factory
         return [
             'login' => fake()->userName(),
             'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
         ];
     }
 

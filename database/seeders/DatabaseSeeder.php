@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $items = 10; // сколько дополнительно строк с персональной информацией будет создано
-        User::factory($items)->create();
-        $keys = User::all('email')->modelKeys(); // все логины
+        PersonalData::factory($items)->create();
+        $keys = PersonalData::all('email')->pluck('email'); // вся почта
         for ($i = 0; $i < sizeof($keys); $i++) {
-            // банально нельзя создавать пользователей с одинаковыми логинами, так что вот
-            if(!PersonalData::where('email', $keys[$i])->exists()) {
-                PersonalData::factory()->create(['email' => $keys[$i]]);
+            // банально нельзя создавать пользователей с одинаковой почтой, так что вот
+            if(!User::where('email', $keys[$i])->exists()) {
+                User::factory()->create(['email' => $keys[$i]]);
                 Purchaser::factory()->create(['email' => $keys[$i]]);
                 Freelancer::factory()->create(['email' => $keys[$i]]);
                 Card::factory()->count(3)->create(['user' => $keys[$i]]);

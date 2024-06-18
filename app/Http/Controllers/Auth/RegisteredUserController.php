@@ -30,23 +30,18 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        echo $request->login;
         $request->validate([
             'name' => ['required', 'string', 'max:51'],
-            'surname' => ['required'],
-            'patronymic' => ['required'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:70', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'surname' => ['required', 'string', 'max:51'],
+            'patronymic' => ['string', 'max:51'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:70', 'unique:'.PersonalData::class],
+            'password' => ['required', 'confirmed'],
+            //, Rules\Password::defaults()
             'phone' => ['required'],
-            'login'=> ['required', 'unique:'.PersonalData::class],
+            'login'=> ['required', 'unique:'.User::class],
         ]);
-
-        $user = PersonalData::create([
-            'login' => $request->login,
-            'password' => Hash::make($request->password),
-        ]);
-
-        User::create([
+        
+        PersonalData::create([
             'name' => $request->name,
             'surname' => $request->surname,
             'patronymic' => $request->patronymic,
@@ -55,10 +50,16 @@ class RegisteredUserController extends Controller
             'login' => $request->login,
         ]);
 
+        $user = User::create([
+            'email' => $request->email,
+            'login' => $request->login,
+            'password' => Hash::make($request->password),
+        ]);
+        
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::login($user, remember: $request->remember);
 
-        return redirect(route('/', absolute: true));
+        return redirect(route('index', absolute: true));
     }
 }

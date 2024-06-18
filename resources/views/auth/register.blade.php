@@ -163,7 +163,7 @@
     inputElement.addEventListener('keyup',formatToPhone);
 
     document.addEventListener("DOMContentLoaded", function () {
-        let passwordR = document.querySelector("#passwordR");
+        let passwordR = document.querySelector("#password_confirmation");
         if(passwordR){
             for (let ev of ['input', 'blur', 'focus']) {
                 passwordR.addEventListener(ev, (e) => {

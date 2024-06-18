@@ -9,6 +9,11 @@
         <a href="{{ route('burse') }}">
             Биржа
         </a>
+        @if (Auth::check())
+        <a href="{{ route('chat') }}">
+            Чат
+        </a>
+        @endif
     </nav>
     <!-- Settings Dropdown -->
     <div class="hidden sm:flex sm:items-center sm:ms-6">
