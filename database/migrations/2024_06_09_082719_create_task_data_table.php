@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreignId("purchaser")->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId("freelancer")->nullable()->constrained()->onUpdate('set null')->onDelete('set null');
             $table->boolean('flagged')->default(false);
+            $table->longText('tags')->nullable();
             $table->timestamps();
         });
 

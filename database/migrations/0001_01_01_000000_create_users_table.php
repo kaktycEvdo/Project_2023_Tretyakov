@@ -17,24 +17,23 @@ return new class extends Migration
             $table->timestamp('last_online')->default(now());
             $table->boolean('flagged')->default(false);
             $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
 
         Schema::create('users', function (Blueprint $table) {
-            $table->string('login', 70)->primary()->unique();
+            $table->id();
+            $table->string('login', 70)->unique();
             $table->string('password', 70);
-            $table->longText('remember_token')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->boolean('flagged')->default(false);
             $table->string('email', 70);
             $table->foreign('email')->references('email')->on('personal_data')->onUpdate('cascade')->onDelete('cascade');
+            $table->rememberToken();
             $table->timestamps();
         });
         
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email', 70);
-            $table->foreign('email')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
             $table->boolean('flagged')->default(false);
@@ -42,8 +41,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('user_id', 70)->nullable();
-            $table->foreign('user_id')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

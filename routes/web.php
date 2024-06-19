@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use App\Models\Freelancer;
 use App\Models\Message;
 use App\Models\Task;
@@ -15,46 +17,23 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/burse', function () {
-    return view('burse', ['tasks' => Task::all()]);
-})->name('burse');
+Route::group(['prefix'=> 'burse'], function () {
+    Route::get('', [TaskController::class, 'index'])->name('burse');
+    Route::get('/task/{id}', [TaskController::class, 'show'])->name('task.show');
+    Route::patch('/profile', [TaskController::class, 'update'])->name('task.update');
+    Route::delete('/profile', [TaskController::class, 'destroy'])->name('task.destroy');
+});
+
+Route::group(['prefix'=> 'chat'], function () {
+    Route::get('', [ChatController::class, 'index'])->name('chat');
+    Route::post('', [ChatController::class, 'store'])->name('chat.create');
+    Route::patch('', [ChatController::class, 'update'])->name('chat.update');
+    Route::delete('', [ChatController::class, 'destroy'])->name('chat.destroy');
+});
 
 Route::get('/freelancers', function () {
     return view('freelancers', ['freelancers' => Freelancer::all()]);
 })->name('freelancers');
-
-Route::get('/task/{id}', function ($request, $id) {
-    return view('task', ['task' => Task::where($id)]);
-})->name('task');
-
-Route::get('/chat', function ($request) {
-    return view('chat', ['messages' => Message::where('author', '=', Auth::user()->email),
-    'dialogues' => User::where('email', '=', Message::all('recipient')->where('author', '=', Auth::user()->email)),
-    'user' => Auth::user()->email]);
-})->name('chat');
-
-Route::post('/chat', function ($request) {
-    Message::create([
-        'text' => $request->text,
-        'author'=> Auth::user()->email,
-        'recipient' => $request->recipient,
-    ]);
-    return redirect('chat');
-})->name('chat.post');
-
-Route::patch('/chat', function ($request) {
-    Message::update([
-        'text' => $request->text,
-        'author'=> Auth::user()->email,
-        'recipient' => $request->recipient,
-    ]);
-    return redirect('chat');
-})->name('chat.update');
-
-Route::destroy('/chat', function ($request) {
-    Message::destroy($request->id);
-    return redirect('chat');
-})->name('chat.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
