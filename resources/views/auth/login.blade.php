@@ -3,20 +3,26 @@
     <x-auth-session-status :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}">
+        @csrf
         <h2>Авторизация</h2>
         <div class="form_fields">
             <!-- Login -->
             <div>
-                <x-input-label for="login" :value="__('Логин')" />
-                <x-text-input id="login" type="text" name="login" :value="old('login')" required autofocus autocomplete="username" />
-                <x-input-error :messages="$errors->get('login')" />
+                <x-input-label for="email" :value="__('Email')" />
+                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
             <!-- Password -->
             <div>
-                <x-input-label for="password" :value="__('Пароль')" />
-                <x-text-input id="password" type="password" name="password" required autocomplete="current-password" />
-                <x-input-error :messages="$errors->get('password')" />
+                <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
         </div>
         <div class="form_bottom">

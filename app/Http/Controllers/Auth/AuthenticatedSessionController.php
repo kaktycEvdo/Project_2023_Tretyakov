@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -28,10 +26,9 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        // v вероятно, проёб тут v
         $request->session()->regenerate();
 
-        return redirect()->intended(route('index', absolute: true));
+        return redirect()->intended(route('index', absolute: false));
     }
 
     /**
@@ -39,15 +36,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        if(Auth::guard('web')->user()){
-            Auth::guard('web')->logout();
+        Auth::guard('web')->logout();
 
-            $request->session()->invalidate();
+        $request->session()->invalidate();
 
-            $request->session()->regenerateToken();
+        $request->session()->regenerateToken();
 
-            return redirect('index');
-        }
-        return redirect('index');
+        return redirect('/');
     }
 }

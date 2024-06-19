@@ -1,4 +1,5 @@
 <header>
+    <x-auth-session-status :status="session('status')" />
     <a class="hlogo_container" href="{{ route('index') }}">
         КФ Крутой Фриланс
     </a>

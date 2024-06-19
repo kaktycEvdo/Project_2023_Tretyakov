@@ -19,13 +19,13 @@ class User extends Authenticatable
     protected $fillable = [
         'login',
         'password',
-        'remember_token',
         'email'
     ];
 
     protected $hidden = [
         'password',
         'is_admin',
+        'remember_token',
         'flagged'
     ];
 
