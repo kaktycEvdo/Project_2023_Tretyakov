@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->longText('about')->nullable();
             $table->string('characteristics', 300)->nullable();
-            $table->string('email', 70);
+            $table->string('email', 70)->unique();
             $table->foreign('email')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->id();
             $table->longText('about')->nullable();
             $table->string('characteristics', 300)->nullable();
-            $table->string('email', 70);
+            $table->string('email', 70)->unique();
             $table->foreign('email')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
@@ -34,10 +34,10 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->longText('text');
-            $table->string('author', 70);
-            $table->string('recepient', 70);
-            $table->foreign('author')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('recepient')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('author');
+            $table->unsignedBigInteger('recepient');
+            $table->foreign('author')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('recepient')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
         });

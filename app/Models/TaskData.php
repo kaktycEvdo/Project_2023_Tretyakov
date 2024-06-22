@@ -18,26 +18,14 @@ class TaskData extends Model
     ];
 
     protected $hidden = [
-        'is_fulfilled',
         'flagged'
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_fulfilled' => 'boolean',
-        ];
-    }
-
-    protected $attributes = [
-        'is_fulfilled' => 0
     ];
 
     public function task(): BelongsTo{
         return $this->belongsTo(Task::class);
     }
 
-    public function feedback(): BelongsTo{
+    public function feedbacks(): BelongsTo{
         return $this->belongsTo(Feedback::class);
     }
 }

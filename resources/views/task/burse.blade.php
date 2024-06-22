@@ -1,14 +1,18 @@
 <x-app-layout>
     <div class="tasks_container">
+        <div class='first_element'><a href={{ route('task.create') }}>Добавить свой заказ</a></div>
         @foreach ($tasks as $task)
-            <a class="task_container" {{ route('task', ['id' => $task->task_data]) }}>
-                <div>{{ Str::limit($task->task_data->text, 500, '...') }}</div>
+            <a class="task_container" href={{ route('task.show', ['id' => $task->id]) }}>
+                <div>{{ Str::limit(App\Models\TaskData::where('id', $task->task_data)->first()->text, 500, '...') }}</div>
                 <div>
-                    @foreach ($task->task_data->tags as $tag)
-                        <div>{{ $tag }}</div>
-                    @endforeach
+                    @php
+                        $tags = explode(', ', $task->tags);
+                        foreach ($tags as $tag) {
+                            echo '<div>'.$tag.'</div>';
+                        }
+                    @endphp
                 </div>
-                <div>{{ $task->task_data->reward }}</div>
+                <div>{{ App\Models\TaskData::where('id', $task->task_data)->first()->reward }}руб.</div>
             </a>    
         @endforeach
     </div>

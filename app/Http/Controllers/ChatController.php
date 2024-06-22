@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMessage;
 use App\Models\Message;
+use App\Models\PersonalData;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,9 +17,49 @@ class ChatController extends Controller
      */
     public function create(Request $request)
     {
-        return view('chat', ['messages' => Message::where('author', '=', Auth::user()->email),
-        'dialogues' => User::where('email', '=', Message::all('recipient')->where('author', '=', Auth::user()->email)),
-        'user' => Auth::user()->email]);
+        $messages = Message::all()->where('author', Auth::user()->id);
+        $messages2 = Message::all()->where('recepient', Auth::user()->id);
+        $dialogues = [];
+
+        foreach ($messages as $message) {
+            if (User::where('id', $message->recepient)){
+                $recepient = User::where('id', $message->recepient)->first('email')->email;
+                $pdata = PersonalData::where('email', $recepient)->first(['name', 'surname', 'patronymic']);
+                
+                $dialogues[$message->recepient] = [
+                    'id' => $message->recepient,
+                    'data' => $pdata
+                ];
+            }
+        }
+        foreach ($messages2 as $message) {
+            if (User::where('id', $message->author)){
+                $author = User::where('id', $message->author)->first('email')->email;
+                $pdata = PersonalData::where('email', $author)->first(['name', 'surname', 'patronymic']);
+                
+                $dialogues[$message->author] = [
+                    'id' => $message->author,
+                    'data' => $pdata
+                ];
+            }
+        }
+
+        $recepient = null;
+        if($request->id){
+            $recepient = ["id" => $request->id, "user" => PersonalData::where('email', User::where("id", $request->id)->first()->email)->first(['name', 'surname', 'patronymic'])];
+            $messages1 = Message::all()->where('author', $request->id);
+            $messages2 = Message::all()->where('recepient', $request->id);
+            $messagesFull = array_merge($messages1->all(), $messages2->all());
+            return view('chat', ['messages' => $messagesFull,
+            'dialogues' => $dialogues,
+            'user' => Auth::user()->id,
+            'recepient' => $recepient]);
+        }
+        
+        return view('chat', ['messages' => null,
+            'dialogues' => $dialogues,
+            'user' => Auth::user()->id,
+            'recepient' => null]);
     }
 
     /**
@@ -24,12 +67,24 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        Message::create([
+        $message = Message::create([
             'text' => $request->text,
-            'author'=> Auth::user()->email,
-            'recipient' => $request->recipient,
+            'author'=> $request->author,
+            'recepient' => $request->recepient,
         ]);
-        return 200;
+        SendMessage::dispatch($message);
+
+        return response()->json([
+            'success' => true,
+            'message' => "Message created and job dispatched.",
+        ]);
+    }
+
+    public function messages(): JsonResponse{
+        // возможно надо будет редачить это
+        $messages = Message::with('user')->get()->append('time');
+
+        return response()->json($messages);
     }
 
     /**

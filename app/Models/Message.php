@@ -12,7 +12,9 @@ class Message extends Model
     use HasFactory;
 
     protected $fillable = [
-        'text'
+        'text',
+        'author',
+        'recepient'
     ];
     
     protected $hidden = [
@@ -23,7 +25,11 @@ class Message extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function recipient(): HasOne{
+    public function recepient(): HasOne{
         return $this->HasOne(User::class);
+    }
+
+    public function getTimeAttribute(): string{
+        return date('d M Y, H:i:s', strtotime($this->created_at));
     }
 }

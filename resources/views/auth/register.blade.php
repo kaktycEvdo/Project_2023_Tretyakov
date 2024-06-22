@@ -151,7 +151,6 @@
         const middle = input.substring(1,4);
         const mlast = input.substring(4,7);
         const last = input.substring(7,11);
-        console.log(last);
 
         if(input.length > 7){event.target.value = `+7(${middle})${mlast}-${last}`;}
         else if(input.length > 4){event.target.value = `+7(${middle})${mlast}`;}
@@ -168,7 +167,6 @@
             for (let ev of ['input', 'blur', 'focus']) {
                 passwordR.addEventListener(ev, (e) => {
                     let el = e.target;
-                    console.log(el.value !== document.querySelector('#password').value);
                     if(el.value !== document.querySelector('#password').value) showError("Пароли не совпадают.");
                     else hideError();
                 });

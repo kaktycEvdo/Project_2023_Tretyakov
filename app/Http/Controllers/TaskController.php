@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
+use App\Models\PersonalData;
 use App\Models\Task;
+use App\Models\TaskData;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -28,16 +33,31 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        Task::create($request->all());
+        $td = TaskData::create([
+            'deadline'=> $request->deadline,
+            'payment_method'=> $request->payment_method,
+            'reward'=> $request->reward,
+            'text'=> $request->text,
+        ]);
+        Task::create(['task_data' => $td->id, 'purchaser' => Auth::user()->id]);
         return redirect('burse');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show(Request $request)
     {
-        return view('task.task', ['task' => $task]);
+        $task = Task::where('id', $request->id)->first();
+        $feedbacks = Feedback::where('task', $task->id)->get();
+        $id = $task->purchaser;
+        $email = User::where('id', $id)->first('email')->email;
+        $purchaser = PersonalData::where('email', $email)->first(['name', 'surname', 'patronymic']);
+        return view('task.task', ['tags' => explode(', ', $task->tags),
+        'task_data' => TaskData::where('id', $task->task_data)->first(),
+        'feedbacks' => $feedbacks,
+        'purchaser' => $purchaser,
+        'id' => $id]);
     }
 
     /**
@@ -45,7 +65,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('task.forms.task', ['task' => $task]);
+        return view('task.forms.task', ['task_data' => TaskData::find($task->id)]);
     }
 
     /**
@@ -53,7 +73,13 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $task->update($request->all());
+        TaskData::where($task->task_data)->update([
+            'deadline'=> $request->deadline,
+            'payment_method'=> $request->payment_method,
+            'reward'=> $request->reward,
+            'text'=> $request->text,
+        ]);
+        $task->update(['tags' => $request->tags]);
         return redirect('profile.edit');
     }
 
@@ -62,7 +88,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $task->delete();
+        TaskData::where($task->task_data)->delete();
         return redirect('profile.edit');
     }
 }

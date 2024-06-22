@@ -10,9 +10,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Task extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'task_data',
+        'purchaser'
+    ];
     
     protected $hidden = [
         'is_official',
+        'is_fulfilled',
         'flagged'
     ];
     
@@ -20,11 +26,13 @@ class Task extends Model
     {
         return [
             'is_official' => 'boolean',
+            'is_fulfilled' => 'boolean',
         ];
     }
 
     protected $attributes = [
         'is_official' => 0,
+        'is_fulfilled' => 0,
     ];
 
     public function task_data(): HasOne {

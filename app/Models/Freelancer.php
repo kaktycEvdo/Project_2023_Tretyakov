@@ -12,6 +12,7 @@ class Freelancer extends Model
     use HasFactory;
 
     protected $fillable = [
+        'email',
         'about',
         'characteristics'
     ];

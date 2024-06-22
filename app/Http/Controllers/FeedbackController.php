@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Models\TaskData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
@@ -20,7 +22,13 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        Feedback::create($request->all());
+        $td = TaskData::create([
+            'deadline'=> $request->deadline,
+            'payment_method'=> $request->payment_method,
+            'reward'=> $request->reward,
+            'text'=> $request->text,
+        ]);
+        Feedback::create(['task_data' => $td->id, 'freelancer' => Auth::user()->id]);
         return redirect('burse');
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Feedback extends Model
 {
-    use HasFactory;
+    protected $table = 'feedbacks';
 
     protected $hidden = [
         'flagged'
@@ -21,5 +21,9 @@ class Feedback extends Model
 
     public function freelancer(): BelongsTo{
         return $this->belongsTo(Freelancer::class);
+    }
+
+    public function task(): BelongsTo {
+        return $this->belongsTo(Task::class);
     }
 }

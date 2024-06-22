@@ -21,6 +21,9 @@
         --selected-color: #2B2B2B;
         --text-color: #FFFFFF;
     }
+    .inputs svg path{
+        filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(133deg) brightness(106%) contrast(101%);
+    }
 }
 
 :root{
@@ -383,9 +386,23 @@ form:not(.no-form) > div.form_bottom{
 #error:empty{
     display: none;
 }
-
 a{
     cursor: pointer;
+}
+.name_container{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--sub-background-color);
+    padding: 10px 20px;
+    align-items: center;
+    gap: 20px;
+}
+.name_container img{
+    width: 100px;
+    height: 100px;
+    border-radius: 90px;
+    object-fit: cover;
 }
 
 .task_container{
@@ -561,7 +578,6 @@ a{
     background-color: var(--sub-background-color);
 }
 .freelancer_container > div:first-child{
-    width: 80vw;
     display: flex;
     justify-content: space-between;
 }
@@ -581,6 +597,89 @@ a{
 
 .feedback_button{
     
+}
+select{
+    color: black;
+}
+
+.some-dropdown{
+    background-color: var(--sub-background-color);
+    width: fit-content;
+    transform: translateX(20px);
+}
+.some-dropdown > *{
+    padding: 5px;
+}
+
+#chat_container{
+    background-color: var(--sub-background-color);
+    width: 80vw;
+    height: 80vh;
+    padding-top: 50px;
+    display: grid;
+    grid-template-columns: 30% auto;
+}
+#history{
+    margin: 20px 0 20px 20px;
+    background-color: var(--background-color);
+    border: 1px solid black;
+}
+#dialogue{
+    margin: 20px;
+    background-color: var(--background-color);
+    border: 1px solid black;
+}
+#history .selected{
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background-color: var(--selected-color);
+}
+.inputs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    border-top: 1px solid black;
+}
+.inputs input{
+    width: 100%;
+    margin: 20px 5px 20px 20px;
+    background-color: var(--background-color);
+    border: 5px solid white;
+    border-radius: 90px;
+    padding-left: 20px;
+}
+.inputs input:focus{
+    background-color: var(--background-color);
+    border: 5px solid white;
+}
+.inputs svg{
+    width: 50px;
+    padding: 5px;
+    height: 50px;
+    margin: 20px;
+    border: 5px solid white;
+    border-radius: 90px;
+    cursor: pointer;
+}
+.messages{
+    height: 85%;
+    max-height: 85%;
+    display: flex;
+    flex-direction: column;
+}
+.messages div{
+    margin: 20px 20px 20px 50px;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 15px 15px 15px 0;
+    background-color: var(--sub-background-color);
+}
+.messages div.yours{
+    align-self: end;
+    border-radius: 15px 15px 0 15px;
+    background-color: var(--accent-color);
 }
 
 @keyframes popup {

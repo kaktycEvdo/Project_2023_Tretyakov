@@ -23,8 +23,9 @@ return new class extends Migration
 
         Schema::create("tasks", function (Blueprint $table) {
             $table->id();
-            $table->boolean("is_official");
-            $table->foreignId("task_data")->constrained('task_data')->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean("is_official")->default(false);
+            $table->boolean("is_fulfilled")->default(false);
+            $table->foreignId("task_data")->unique()->constrained('task_data')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId("purchaser")->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId("freelancer")->nullable()->constrained()->onUpdate('set null')->onDelete('set null');
             $table->boolean('flagged')->default(false);
@@ -35,6 +36,7 @@ return new class extends Migration
         Schema::create("feedbacks", function (Blueprint $table) {
             $table->id();
             $table->foreignId("task_data")->constrained('task_data')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId("task")->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId("freelancer")->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('flagged')->default(false);
             $table->timestamps();
