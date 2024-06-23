@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Models\Freelancer;
@@ -12,14 +13,19 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+Route::group(['prefix'=> 'dashboard'], function () {
+    Route::get('', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+    Route::post('', [DashboardController::class, 'store'])->middleware('auth')->name('dashboard.create');
+    Route::patch('', [DashboardController::class, 'update'])->middleware('auth')->name('dashboard.update');
+    Route::delete('', [DashboardController::class, 'destroy'])->middleware('auth')->name('dashboard.delete');
+});
+
 
 Route::group(['prefix'=> 'burse'], function () {
     Route::get('', [TaskController::class, 'index'])->name('burse');
     Route::get('/task', [TaskController::class, 'show'])->name('task.show');
     Route::get('/task/{id}', [TaskController::class, 'edit'])->name('task.edit');
+    Route::patch('/feedback/{id}', [TaskController::class, 'accept'])->name('feedback.accept')->middleware('auth');
     Route::get('/new_task', [TaskController::class, 'create'])->name('task.create')->middleware('auth');
     Route::post('/new_task', [TaskController::class, 'store'])->name('task.store')->middleware('auth');
     Route::patch('/task/{id}', [TaskController::class, 'update'])->name('task.update')->middleware('auth');
@@ -34,8 +40,8 @@ Route::group(['prefix'=> 'chat'], function () {
 });
 
 Route::get('new_feedback', function () {
-    return view('task.forms.feedback')->middleware('auth');
-})->name('new_feedback');
+    return view('task.forms.feedback');
+})->middleware('auth')->name('new_feedback');
 
 Route::get('/freelancers', function () {
     $freelancers = array();

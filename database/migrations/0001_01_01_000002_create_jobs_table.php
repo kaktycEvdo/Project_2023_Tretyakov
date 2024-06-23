@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedInteger('reserved_at')->nullable();
             $table->unsignedInteger('available_at');
             $table->unsignedInteger('created_at');
-            $table->boolean('flagged')->default(false);
         });
 
         Schema::create('job_batches', function (Blueprint $table) {
@@ -33,7 +32,6 @@ return new class extends Migration
             $table->integer('cancelled_at')->nullable();
             $table->integer('created_at');
             $table->integer('finished_at')->nullable();
-            $table->boolean('flagged')->default(false);
         });
 
         Schema::create('failed_jobs', function (Blueprint $table) {
@@ -44,7 +42,6 @@ return new class extends Migration
             $table->longText('payload');
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
-            $table->boolean('flagged')->default(false);
         });
     }
 

@@ -35,7 +35,7 @@
             </div>
             @if ($recepient)
             <form method="POST" class="no-form inputs">
-                <input name="text" id="text" type="text" maxlength="2000" />
+                <input name="text" id="text" type="text" value="" maxlength="2000" />
                 <label for="submit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></label>
                 <input type="submit" id="submit" value="" hidden>
                 <input type="hidden" value={{ $recepient['id'] }} />
@@ -51,6 +51,14 @@
                     }
                     button.addEventListener('click', (e) => {
                         e.preventDefault();
+
+                        let data = {
+                            "text" : input.value,
+                            "recepient" : '{{ $recepient["id"] }}',
+                            'author': '{{ Auth::user()->id }}'
+                        };
+                        data = 'text='+input.value+'&recepient={{ $recepient["id"] }}&author={{ Auth::user()->id }}';
+
                         let href = '{{route('chat.create', ['recepient' => $recepient['id']])}}'
                         const xhr = new XMLHttpRequest();
                         xhr.open("POST", href, true);
@@ -59,22 +67,14 @@
                             if (xhr.readyState === XMLHttpRequest.UNSENT){
                                 console.log('что');
                             }
+                            else if (xhr.readyState === 4){
+                                window.location.reload();
+                            }
                         };
 
-                        let data = {
-                            "text" : input.value,
-                            "recepient" : '{{ $recepient["id"] }}',
-                            'author': '{{ Auth::user()->id }}'
-                        };
-
-                        xhr.setRequestHeader("Content-Type", "multipart/form-data");
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                         xhr.send(data);
-
-                const form = document.getElementsByTagName('form')[0];
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    sendPost();
-                });
+                        
                     });
                 </script>
             </form>

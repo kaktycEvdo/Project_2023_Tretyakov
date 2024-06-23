@@ -49,7 +49,11 @@ class TaskController extends Controller
     public function show(Request $request)
     {
         $task = Task::where('id', $request->id)->first();
-        $feedbacks = Feedback::where('task', $task->id)->get();
+        $feedbacks = [];
+        foreach(Feedback::all()->where('task', $request->id) as $feedback) {
+            $freelancer = $feedback->freelancer;
+            if($task->purchaser != $feedback->freelancer) array_push($feedbacks, ['fd' => TaskData::where('id', $feedback->task_data)->first(), 'user' => PersonalData::where('email', User::where('id', $freelancer)->first()->email)->first()]);
+        }
         $id = $task->purchaser;
         $email = User::where('id', $id)->first('email')->email;
         $purchaser = PersonalData::where('email', $email)->first(['name', 'surname', 'patronymic']);
@@ -81,6 +85,15 @@ class TaskController extends Controller
         ]);
         $task->update(['tags' => $request->tags]);
         return redirect('profile.edit');
+    }
+
+    public function accept(Request $request){
+        $task = Task::where('id', $request->id)->first();
+        $task->update(['freelancer' => $request->freelancer, 'is_official' => 1]);
+        $feedbacks = Feedback::all()->where('task', $task->id);
+        foreach ($feedbacks as $feedback) {
+            TaskData::where('id', $feedback->task_data)->delete();
+        }
     }
 
     /**

@@ -41,12 +41,12 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
-        $td_keys = TaskData::all('id')->pluck('id');
         $fr_keys = Freelancer::all('id')->pluck('id');
         $ts_keys = Purchaser::all('id')->pluck('id');
         for ($i = 0; $i < sizeof($fr_keys); $i++){
             for ($j = 0; $j < sizeof($ts_keys); $j++){
-                Feedback::create(['task_data' => $td_keys[$j], 'freelancer' => $fr_keys[$i], 'task' => $ts_keys[$j]]);
+                $td = TaskData::factory()->create();
+                Feedback::create(['task_data' => $td->id, 'freelancer' => $fr_keys[$i], 'task' => $ts_keys[$j]]);
             }
         }
     }

@@ -21,7 +21,10 @@
         --selected-color: #2B2B2B;
         --text-color: #FFFFFF;
     }
-    .inputs svg path{
+    #dialogue .inputs svg path{
+        filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(133deg) brightness(106%) contrast(101%);
+    }
+    #tables > a svg{
         filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(133deg) brightness(106%) contrast(101%);
     }
 }
@@ -413,7 +416,7 @@ a{
     justify-content: space-around;
     align-items: center;
     background-color: var(--sub-background-color);
-    margin-top: 5px;
+    margin: 5px 0;
     border-top: var(--accent-color) 5px solid;
 }
 .task_container > div{
@@ -424,6 +427,31 @@ a{
     justify-content: center;
 }
 .task_container > div:first-child{
+    max-width: 90%;
+    overflow: hidden;
+    line-break: anywhere;
+    line-clamp: 8;
+}
+
+.feedback_container{
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    min-height: 60vh;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--sub-background-color);
+    margin: 5px 0;
+    border-top: var(--accent-color) 5px solid;
+}
+.feedback_container > div{
+    color: var(--text-color);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.feedback_container > div:first-child{
     max-width: 90%;
     overflow: hidden;
     line-break: anywhere;
@@ -611,7 +639,7 @@ select{
     padding: 5px;
 }
 
-#chat_container{
+#chat_container, #dashboard{
     background-color: var(--sub-background-color);
     width: 80vw;
     height: 80vh;
@@ -619,12 +647,48 @@ select{
     display: grid;
     grid-template-columns: 30% auto;
 }
-#history{
+#history, #tables{
     margin: 20px 0 20px 20px;
     background-color: var(--background-color);
     border: 1px solid black;
+    max-height: 1057px;
+    overflow: scroll;
 }
-#dialogue{
+#history .recepient, #tables > a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 127px;
+    gap: 10px;
+    background-color: var(--sub-background-color);
+    border-bottom: 1px solid black;
+}
+#history .selected_recepient, #tables > a.selected{
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background-color: var(--selected-color);
+}
+#contents .selected > div{
+    background-color: var(--selected-color);
+}
+#contents .flagged > div{
+    border-color: red;
+    background-color: rgb(104, 0, 0);
+    color: red;
+}
+#history .recepient img{
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border-radius: 90px;
+    object-fit: cover;
+}
+#tables > a svg{
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+}
+#dialogue, #contents{
     margin: 20px;
     background-color: var(--background-color);
     border: 1px solid black;
@@ -634,7 +698,7 @@ select{
     border-color: var(--accent-color);
     background-color: var(--selected-color);
 }
-.inputs{
+#dialogue .inputs{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -642,7 +706,7 @@ select{
     width: 100%;
     border-top: 1px solid black;
 }
-.inputs input{
+#dialogue .inputs input{
     width: 100%;
     margin: 20px 5px 20px 20px;
     background-color: var(--background-color);
@@ -650,11 +714,11 @@ select{
     border-radius: 90px;
     padding-left: 20px;
 }
-.inputs input:focus{
+#dialogue .inputs input:focus{
     background-color: var(--background-color);
     border: 5px solid white;
 }
-.inputs svg{
+#dialogue .inputs svg{
     width: 50px;
     padding: 5px;
     height: 50px;
@@ -680,6 +744,120 @@ select{
     align-self: end;
     border-radius: 15px 15px 0 15px;
     background-color: var(--accent-color);
+}
+#contents{
+    max-height: 1057px;
+    overflow: scroll;
+}
+#contents > div > div > div{
+    border: 1px solid black;
+}
+#contents > div{
+    width: 100%;
+}
+#contents .inputs{
+    display: flex;
+    width: 100%;
+    height: 10%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    background-color: var(--sub-background-color);
+    border-bottom: 1px solid black;
+}
+#contents .inputs div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+#contents .inputs #search{
+    height: 50%;
+    margin: 15px;
+    padding-left: 15px;
+    color: black;
+    border-radius: 90px;
+    border: 5px solid black;
+}
+#contents .inputs #search_by{
+    margin: 15px;
+    color: black;
+    text-align: center;
+    border: 5px solid black;
+}
+#contents .inputs a svg{
+    width: 40px;
+    padding: 2px;
+    height: 40px;
+    border: 5px solid black;
+    background-color: white;
+    cursor: pointer;
+}
+.content_table{
+    display: grid;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: start;
+    
+}
+.row div{
+    padding: 2px;
+    background-color: var(--sub-background-color);
+    width: 200px;
+    max-width: 200px;
+    overflow: hidden;
+}
+
+#modal-create, #modal-update{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 81vh;
+    position: fixed;
+    left: 0;
+    top: 172px;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 200;
+}
+.close{
+    align-self: flex-start;
+    justify-self: flex-start;
+}
+#modal-create > div, #modal-update > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 80%;
+    background-color: var(--background-color);
+}
+#modal-create form, #modal-update form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: fixed;
+    gap: 10px;
+    max-height: 60%;
+    overflow: scroll;
+}
+#modal-create form input, #modal-update form input{
+    color: black;
+}
+#modal-create form input[type=submit], #modal-update form input[type=submit]{
+    color: var(--text-color);
+    padding: 10px;
+    background-color: var(--sub-background-color);
+    border-top: 5px solid var(--accent-color);
+}
+
+#modal-create.disabled, #modal-update.disabled{
+    display: none;
 }
 
 @keyframes popup {
