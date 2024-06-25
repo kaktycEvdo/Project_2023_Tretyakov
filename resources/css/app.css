@@ -111,6 +111,7 @@ i.reward_text{
 
 main#content{
     min-height: 668px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -469,6 +470,7 @@ a{
     width: 100%;
     gap: 15px;
     padding: 20px 20px 20px 10px;
+    justify-content: center;
 }
 .tasks_container > .task_container{
     min-height: 375px;
@@ -631,12 +633,17 @@ select{
 }
 
 .some-dropdown{
+    display: flex;
     background-color: var(--sub-background-color);
     width: fit-content;
     transform: translateX(20px);
 }
 .some-dropdown > *{
     padding: 5px;
+}
+.some-dropdown > div{
+    display: flex;
+    flex-flow: column nowrap;
 }
 
 #chat_container, #dashboard{
@@ -858,6 +865,49 @@ select{
 
 #modal-create.disabled, #modal-update.disabled{
     display: none;
+}
+
+.small-header{
+    display: none;
+}
+.iblock-button{
+    display: none;
+    position: absolute;
+}
+.prev-button{
+    transform: translateX(15px);
+}
+.next-button{
+    transform: translateX(310px);
+}
+
+@media screen and (max-width: 1105px)  {
+    .iblock2{
+        grid-template-columns: 1fr;
+    }
+    .small-header{
+        display: flex;
+    }
+    .big-header{
+        display: none;
+    }
+    .tasks_container{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 640px) {
+    .sm\:flex {
+        display: flex;
+    }
+    .tasks_container{
+        grid-template-columns: 1fr;
+    }
+    .iblock-button{
+        display: block;
+    }
+    .iblock2 > .hide{
+        display: none;
+    }
 }
 
 @keyframes popup {

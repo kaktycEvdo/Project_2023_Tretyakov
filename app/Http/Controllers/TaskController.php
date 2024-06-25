@@ -12,25 +12,17 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('task.burse', ['tasks' => Task::all()]);
+        $tasks = Task::all()->where('is_official', 0);
+        return view('task.burse', ['tasks' => $tasks]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('task.forms.task');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $td = TaskData::create([
@@ -43,9 +35,6 @@ class TaskController extends Controller
         return redirect('burse');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Request $request)
     {
         $task = Task::where('id', $request->id)->first();
@@ -64,17 +53,11 @@ class TaskController extends Controller
         'id' => $id]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Task $task)
     {
         return view('task.forms.task', ['task_data' => TaskData::find($task->id)]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Task $task)
     {
         TaskData::where($task->task_data)->update([
@@ -96,9 +79,6 @@ class TaskController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Task $task)
     {
         TaskData::where($task->task_data)->delete();
