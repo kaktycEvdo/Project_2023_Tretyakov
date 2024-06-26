@@ -1,3 +1,9 @@
 /.vscode
 .env
 .htaccess
+node_modules
+database
+storage
+public
+bootstrap
+vendor
