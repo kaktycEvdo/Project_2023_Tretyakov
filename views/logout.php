@@ -1,3 +1,4 @@
+<?php if(!isset($_SESSION['user'])) header('Location: auth'); ?>
 <div class="loading" id="loading">Загрузка...</div>
 <div id="logout_page">
     <div class="profile_container profile_card">
@@ -121,6 +122,6 @@
     })
     const logout_button = document.querySelector('#logout_page .sure div > :nth-child(2)');
     logout_button.addEventListener('click', () => {
-
+        window.location = 'php/process_user.php?action=logout';
     })
 </script>

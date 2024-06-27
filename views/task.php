@@ -1,9 +1,9 @@
 <script>    
-    fetch('php/process_tasks.php?action=get&id=<?php echo $_GET['task_id'] ?>').
+    fetch('../php/process_tasks.php?action=get&id=<?php echo $_GET['task_id'] ?>').
     then(response => {
         let res = response.json();
         if(response.headers.get('content-type') !== 'application/json; charset=utf-8'){
-            console.log('Error: not json returned');
+            popup('error', 'Error: not json returned');
         }
         
         return res;
@@ -14,13 +14,13 @@
 
         const task_container = document.getElementsByClassName('task_container')[0];
         const name_field = document.getElementsByClassName('name_container')[0];
-        name_field.innerHTML = '<img>' + res['surname'] + " " + res['name'][0] + ". " + res['patronymic'][0] + "." + (res['verified'] ? '<i class="verified-user">+</i>' : '');
+        name_field.innerHTML = '<img src="/static/images.jpg">' + res['surname'] + " " + res['name'][0] + ". " + res['patronymic'][0] + "." + (res['verified'] ? '<i class="verified-user">+</i>' : '');
         const text_field = document.createElement('div');
         text_field.innerHTML = res['text'];
         const deadline_field = document.createElement('div');
         deadline_field.innerHTML = 'Сделать до: '+res['deadline'];
         const reward_field = document.createElement('div');
-        reward_field.innerHTML = ''+res['reward']+"руб.";
+        reward_field.innerHTML = 'Цена вопроса: '+res['reward']+"руб.";
 
         const tags_field = document.createElement('div');
         let tags = res['tags'].split(', ');
@@ -51,13 +51,15 @@
 
             document.body.appendChild(feedback_button);
         }
+
+        document.getElementsByClassName('name_container')[0].href = 'profile?profile_id=' + res['login'];
         
         loading.classList.add('hidden');
     })
 </script>
 <div class="loading" id="loading">Загрузка...</div>
-<div class="name_container">
-</div>
+<a class="name_container">
+</a>
 <div class="task_container">
     
 </div>

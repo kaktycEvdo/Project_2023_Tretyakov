@@ -1,3 +1,4 @@
+<?php if(!isset($_SESSION['user'])) header('Location: auth'); ?>
 <div class="loading" id="loading">Загрузка...</div>
 <div id="chat_container">
     <div id="history"></div>
@@ -13,7 +14,12 @@
             <div class="others">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat labore, commodi sit, suscipit quod quam unde, animi porro nesciunt adipisci rerum. Molestias voluptate ullam enim, officia eaque totam aperiam porro.</div>
             <div class="others">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi hic soluta, autem cupiditate maiores esse?</div>
         </div>
-        <div class="inputs"></div>
+        <div class="inputs">
+        <input name="text" id="text" type="text" value="" maxlength="2000" />
+        <label for="submit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></label>
+        <input type="submit" id="submit" value="" hidden>
+        <input type="hidden" value={{ $recepient['id'] }} />
+        </div>
     </div>
 </div>
 <script>
@@ -22,7 +28,7 @@
     // отправляет сообщение
     function sendMessage(){
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", '../php/process_user.php?action=auth', true);
+        xhr.open("POST", '../php/process_messages.php?action=add', true);
         xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                 // создать сообщение когда отправилось
@@ -50,11 +56,17 @@
         chosenUser = id;
     }
     // показывает список диалогов
-    function displayList(){
+    function displayList(hide = false){
+        if(hide){
 
+        }
+        else{
+
+        }
     }
-    setInterval(() => {
-        fetch('php/process_messages.php?action=getAll').
+    // обновляет диалог
+    function updateMessages(){
+        fetch('../php/process_messages.php?action=getAll').
         then(response => {
             let data = response.json();
             if(response.headers.get('content-type') !== 'application/json; charset=utf-8'){
@@ -68,41 +80,17 @@
             const dialogues = document.getElementById('history');
             for(let i = 0; i < data.length; i++){
                 let dialogue = document.createElement('a');
-                dialogue.innerHTML = data['surname'] + " " + data['name'][0] + ". " + data['patronymic'][0] + ". " + (data['verified'] ? '<i class="verified-user">+</i>' : '');
+                dialogue.innerHTML = res[i]['surname'] + " " + res[i]['name'][0] + ". " + (res[i]['patronymic'] ? (res[i]['patronymic'][0] + ".") : '') + (data['verified'] ? '<i class="verified-user">+</i>' : '');
 
                 dialogues.appendChild(dialogue);
             }
 
             const loading = document.querySelector('#loading');
 
-            if(localStorage.role === 'isp'){
-                profile_about_field.innerHTML = fabout;
-                if(fchars){
-                    let str = '';
-                    fchars.split(', ').forEach(element => {
-                        str+='<div class="char">'+element+'</div>'
-                    });
-                    chars_field.innerHTML = str;
-                }
-                else{
-                    chars_field.innerHTML = "Нету";
-                }
-            }
-            else{
-                profile_about_field.innerHTML = pabout;
-                if(pchars){
-                    let str = '';
-                    pchars.split(', ').forEach(element => {
-                        str+='<div class="char">'+element+'</div>'
-                    });
-                    chars_field.innerHTML = str;
-                }
-                else{
-                    chars_field.innerHTML = "Нету";
-                }
-            }
             loading.classList.add('hidden');
         })
-    }, 5000);
+    }
+    updateMessages();
+    setInterval(updateMessages, 5000);
     
 </script>

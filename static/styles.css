@@ -17,6 +17,12 @@
         --selected-color: #2B2B2B;
         --text-color: #FFFFFF;
     }
+    #dialogue .inputs svg path{
+        filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(133deg) brightness(106%) contrast(101%);
+    }
+    footer a svg{
+        filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(133deg) brightness(106%) contrast(101%);
+    }
 }
 
 :root{
@@ -24,15 +30,15 @@
 }
 
 body{
-    margin-top: 172px;
     min-height: calc(99vh - 172px);
     font-family: 'Open Sans', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     padding: 0 7vw;
     font-size: 1.2em;
+    margin-top: 172px;
 }
-input{
+input, textarea{
     font-family: 'Open Sans', sans-serif;
     color: var(--text-color);
     background-color: var(--background-color);
@@ -66,13 +72,11 @@ header{
 .hmenu > a{
     color: var(--text-color);
     text-decoration: none;
-    font-weight: 900;
     font-size: larger;
 }
 .lk_logo{
     width: 150px;
     height: 150px;
-    
 }
 .lk_logo > img{
     width: 100%;
@@ -103,10 +107,23 @@ i.reward_text{
 
 main#content{
     min-height: 668px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+}
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    animation: appear-loading 0.1s normal ease-in;
+    width: 100vw;
+    height: calc(100vh - 172px);
+    background-color: rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px);
 }
 
 .iblock1{
@@ -147,18 +164,7 @@ main#content{
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.loading{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    animation: appear-loading 0.1s normal ease-in;
-    width: 100vw;
-    height: calc(100vh - 172px);
-    background-color: rgba(0,0,0,0.2);
-    backdrop-filter: blur(5px);
+    text-align: center;
 }
 
 .tasklist{
@@ -204,6 +210,40 @@ main#content{
     text-decoration: none;
 }
 
+.task_details{
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--sub-background-color);
+    text-decoration: none;
+    padding: 0 0 5% 0;
+    color: black;
+}
+.task_details > div{
+    width: 100%;
+    text-align: center;
+}
+.task_buyer_details{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 30px;
+    height: 200px;
+    background-color: #FFFFFF;
+    padding: 20px;
+}
+.task_buyer_details div{
+    font-size: xx-large;
+}
+.task_buyer_details img{
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 90px;
+}
 .task_details{
     min-height: 600px;
     display: flex;
@@ -310,7 +350,7 @@ main#content{
     padding: 10px;
     background-color: var(--background-color);
 }
-form{
+form:not(.no-form){
     border-top: var(--accent-color) 5px solid;
     margin-top: 10px;
     display: flex;
@@ -323,20 +363,22 @@ form{
     min-width: 500px;
     min-height: 700px;
 }
-form > div{
+form:not(.no-form) > div{
     display: flex;
     flex-direction: column;
     gap: 10px;
     justify-content: center;
-    align-items: center;
-    width: 70%;
+    width: 80%;
 }
-form > div.form_fields > input[type="text"], form > div > input[type="password"], form > div > input[type="email"], form > div.form_fields > input[type="datetime-local"], form > div.form_fields > textarea, form > div.form_fields > input[type="number"]{
+form:not(.no-form) > div > div > label{
+    font-size: 0.8em;
+}
+form:not(.no-form) > div.form_fields input[type="text"], form:not(.no-form) > div input[type="password"], form:not(.no-form) > div input[type="email"], form:not(.no-form) > div.form_fields input[type="datetime-local"], form:not(.no-form) > div.form_fields textarea, form:not(.no-form) div.form_fields input[type="number"]{
     padding: 20px;
     border: 0;
     width: 100%;
 }
-input[type=number] {
+input[type="number"] {
     -moz-appearance: textfield;
 }
 input::-webkit-outer-spin-button,
@@ -344,15 +386,14 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-form > div.form_bottom input[type="submit"]{
-    color: var(--text-color);
+form:not(.no-form) > div.form_bottom input[type="submit"]{
     padding: 10px 20px;
     background-color: var(--background-color);
     border: 0;
     border-top: var(--accent-color) 3px solid;
     cursor: pointer;
 }
-form .nextstep{
+form:not(.no-form) .nextstep{
     color: var(--text-color);
     display: block;
     padding: 10px 20px;
@@ -360,25 +401,17 @@ form .nextstep{
     background-color: var(--background-color);
     cursor: pointer;
 }
-form > div.form_bottom a[href]{
+form:not(.no-form) > div.form_bottom a[href]{
     color: var(--text-color);
     text-decoration: none;
 }
-form > div.form_fields:nth-child(3){
-    display: grid;
-    grid-template-columns: 10% 90%;
-}
-form > div.form_fields.hidden:nth-child(3){
-    display: none;
-}
-form > div.form_bottom{
+form:not(.no-form) > div.form_bottom{
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    font-size: 0.8em;
 }
 
-.hidden{
-    display: none;
-}
 #error{
     border: 3px solid red;
     color: red;
@@ -422,18 +455,35 @@ a{
     flex-direction: column;
 }
 
+.name_container{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--sub-background-color);
+    padding: 10px 20px;
+    align-items: center;
+    gap: 20px;
+}
+.name_container img{
+    width: 100px;
+    height: 100px;
+    border-radius: 90px;
+    object-fit: cover;
+}
+
 .tasks_container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     width: 100%;
     gap: 15px;
     padding: 20px 20px 20px 10px;
+    justify-content: center;
 }
 .tasks_container > .task_container{
     min-height: 375px;
     max-width: 296px;
 }
-.tasks_container > .first_element{
+.tasks_container > .add_task{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -441,8 +491,9 @@ a{
     border: rgba(0,0,0,0.2) 5px solid;
     border-radius: 20px;
     max-width: 296px;
+    min-height: 60px;
 }
-.tasks_container > .first_element a{
+.tasks_container > .add_task a{
     color: var(--text-color);
     text-decoration: none;
     width: 100%;
@@ -545,6 +596,33 @@ a{
     background-color: var(--selected-color);
 }
 
+
+
+.feedback_container{
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    min-height: 60vh;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--sub-background-color);
+    margin: 5px 0;
+    border-top: var(--accent-color) 5px solid;
+}
+.feedback_container > div{
+    color: var(--text-color);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.feedback_container > div:first-child{
+    max-width: 90%;
+    overflow: hidden;
+    line-break: anywhere;
+    line-clamp: 8;
+}
+
 .freelancers_container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -565,9 +643,9 @@ a{
     background-color: var(--sub-background-color);
 }
 .freelancer_container > div:first-child{
-    width: 80vw;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 .freelancer_container > div:nth-child(2) textarea{
     min-width: 100%;
@@ -587,6 +665,218 @@ a{
     
 }
 
+#chat_container{
+    background-color: var(--sub-background-color);
+    width: 80vw;
+    height: 80vh;
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: 30% auto;
+}
+#history{
+    margin: 20px 0 20px 20px;
+    background-color: var(--background-color);
+    border: 1px solid black;
+    max-height: 1057px;
+    overflow: scroll;
+}
+#history .recepient{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 127px;
+    gap: 10px;
+    background-color: var(--sub-background-color);
+    border-bottom: 1px solid black;
+}
+#history .selected_recepient{
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background-color: var(--selected-color);
+}
+#history .recepient img{
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border-radius: 90px;
+    object-fit: cover;
+}
+#dialogue{
+    margin: 20px;
+    background-color: var(--background-color);
+    border: 1px solid black;
+}
+#history .selected{
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background-color: var(--selected-color);
+}
+#dialogue .inputs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    border-top: 1px solid black;
+}
+#dialogue .inputs input{
+    width: 100%;
+    margin: 20px 5px 20px 20px;
+    background-color: var(--background-color);
+    border: 5px solid white;
+    border-radius: 90px;
+    padding-left: 20px;
+}
+#dialogue .inputs input:focus{
+    background-color: var(--background-color);
+    border: 5px solid white;
+}
+#dialogue .inputs svg{
+    width: 50px;
+    padding: 5px;
+    height: 50px;
+    margin: 20px;
+    border: 5px solid white;
+    border-radius: 90px;
+    cursor: pointer;
+}
+.messages{
+    height: 85%;
+    max-height: 85%;
+    display: flex;
+    flex-direction: column;
+    max-height: 632px;
+    overflow: scroll;
+}
+.messages div{
+    margin: 20px 20px 20px 50px;
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 15px 15px 15px 0;
+    background-color: var(--sub-background-color);
+}
+.messages div.yours{
+    align-self: end;
+    border-radius: 15px 15px 0 15px;
+    background-color: var(--accent-color);
+}
+
+select{
+    color: var(--text-color);
+    background-color: var(--background-color);
+    border: 0;
+    padding: 20px;
+    width: 100%;
+}
+
+.radios{
+    display: flex;
+    flex-direction: column;
+}
+
+.radios .container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 40px;
+    height: 35px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.radios .container input {
+    position: absolute;
+    cursor: pointer;
+}
+
+/* Create a custom radio button */
+.radios .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: var(--sub-background-color);
+    border: 7px solid var(--background-color);
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radios .container:hover input ~ .checkmark {
+    background-color: var(--selected-color);
+}
+
+/* When the radio button is checked, add a blue background */
+.radios .container input:checked ~ .checkmark {
+    background-color: var(--accent-color);
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radios .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radios .container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radios .container .checkmark:after {
+    border-radius: 50%;
+    background-color: var(--background-color);
+}
+
+.small-header{
+    display: none;
+}
+.iblock-button{
+    display: none;
+    position: absolute;
+}
+.prev-button{
+    transform: translateX(15px);
+}
+.next-button{
+    transform: translateX(310px);
+}
+
+.hidden{
+    display: none;
+}
+:not(.no-form) > .hidden{
+    display: none;
+}
+.small_header{
+    display: none;
+}
+
+footer{
+    display: none;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    width: 100vw;
+    height: 5vh;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    background-color: var(--sub-background-color);
+    border-top: 2px solid black;
+}
+footer a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+footer a svg{
+    height: 40px;
+    width: 40px;
+}
+
 @keyframes popup {
     0%{
         top: 0;
@@ -601,5 +891,145 @@ a{
     }
     100%{
         backdrop-filter: blur(5px);
+    }
+}
+
+@media screen and (max-width: 1105px)  {
+    .iblock2{
+        grid-template-columns: 1fr;
+    }
+    .small_header{
+        display: flex;
+    }
+    .big_header{
+        display: none;
+    }
+    .tasks_container{
+        grid-template-columns: 1fr 1fr;
+    }
+    .iblock2 > .ch{
+        display: none;
+    }
+    .ch.chosen{
+        display: flex;
+    }
+}
+@media (max-width: 640px) {    
+    form:not(.no-form){
+        min-width: 200px;
+    }
+    body{
+        margin-bottom: 5vh;
+    }
+    footer{
+        display: grid;
+    }
+    .tasks_container{
+        grid-template-columns: 1fr;
+    }
+    .iblock-button{
+        display: block;
+    }
+    .iblock2 > .hide{
+        display: none;
+    }
+    #chat_container{
+        background-color: var(--sub-background-color);
+        width: 100vw;
+        max-height: 100vh;
+        overflow: hidden;
+        padding: 0;
+        display: flex;
+    }
+    #history{
+        display: none;
+        margin: 20px 0 20px 20px;
+        background-color: var(--background-color);
+        border: 1px solid black;
+        max-height: 1057px;
+        overflow: scroll;
+    }
+    #history.shown{
+        display: flex;
+    }
+    #history .recepient{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 127px;
+        gap: 10px;
+        background-color: var(--sub-background-color);
+        border-bottom: 1px solid black;
+    }
+    #history .selected_recepient{
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        background-color: var(--selected-color);
+    }
+    #history .recepient img{
+        width: 100px;
+        height: 100px;
+        padding: 10px;
+        border-radius: 90px;
+        object-fit: cover;
+    }
+    #dialogue{
+        margin: 20px;
+        background-color: var(--background-color);
+        border: 1px solid black;
+    }
+    #history .selected{
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+        background-color: var(--selected-color);
+    }
+    #dialogue .inputs{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+        border-top: 1px solid black;
+    }
+    #dialogue .inputs input{
+        width: 100%;
+        margin: 20px 5px 20px 20px;
+        background-color: var(--background-color);
+        border: 5px solid white;
+        border-radius: 90px;
+        padding-left: 20px;
+        height: 70px;
+    }
+    #dialogue .inputs input:focus{
+        background-color: var(--background-color);
+        border: 5px solid white;
+    }
+    #dialogue .inputs svg{
+        width: 50px;
+        padding: 5px;
+        height: 50px;
+        margin: 20px;
+        border: 5px solid white;
+        border-radius: 90px;
+        cursor: pointer;
+    }
+    .messages{
+        height: 85%;
+        max-height: 85%;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+    }
+    .messages div{
+        margin: 20px 20px 20px 50px;
+        width: fit-content;
+        padding: 10px 20px;
+        border-radius: 15px 15px 15px 0;
+        background-color: var(--sub-background-color);
+    }
+    .messages div.yours{
+        align-self: end;
+        border-radius: 15px 15px 0 15px;
+        background-color: var(--accent-color);
     }
 }

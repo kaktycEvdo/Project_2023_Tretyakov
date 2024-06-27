@@ -1,3 +1,4 @@
+<?php if(!isset($_SESSION['user'])) header('Location: auth'); ?>
 <script>
     var fabout = 'Загрузка...';
     var pabout = 'Загрузка...';
@@ -103,7 +104,7 @@
         const loading = document.querySelector('#loading');
 
         let name_field = document.getElementById('name');
-        name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + profile['patronymic'] + (profile['verified'] ? '<i class="verified-user">+</i>' : '');
+        name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + (profile['patronymic'] ? profile['patronymic'] : '') + (profile['verified'] ? '<i class="verified-user">+</i>' : '');
 
         if(localStorage.role === 'isp'){
             showFreelancer();
@@ -134,7 +135,6 @@
                     <a onclick='localStorage.role = \"zak\"; updateContent();'>Заказчик</a>";
                 }
             ?>
-            
         </div>
     </div>
     <div>

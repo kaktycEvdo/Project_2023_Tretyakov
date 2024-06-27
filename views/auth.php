@@ -19,6 +19,10 @@
             if (xhr.readyState === XMLHttpRequest.UNSENT){
                 popup('error', 'Ошибка авторизации');
             }
+            if (xhr.readyState === XMLHttpRequest.DONE){
+                popup('success', 'Авторизация');
+                window.location = 'profile';
+            }
         };
 
         let data = {
@@ -26,11 +30,13 @@
             "password" : document.getElementsByName('password')[0].value
         };
 
-        xhr.setRequestHeader("Content-Type", "application/json");
+        data = 'loginoremail='+document.getElementsByName('loginoremail')[0].value+'&password='+document.getElementsByName('password')[0].value;
+
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send(data);
     }
 
-    const form = document.getElementsByTagName('form')[0];
+    const form = document.querySelector('form');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         sendPost();

@@ -9,10 +9,8 @@
         <input required id="passwordR" name="passwordR" type="password" placeholder="Повтор пароля" maxlength="40" />
     </div>
     <div class="form_fields f1">
-        <input required type="checkbox" name="oferta" id="oferta" />
-        <label for="oferta">текст текст текст текст текст</label>
-        <input required type="checkbox" name="konf" id="konf" />
-        <label for="konf">текст текст текст текст текст</label>
+        <label for="oferta"><input required type="checkbox" name="oferta" id="oferta" /> текст текст текст текст текст</label>
+        <label for="konf"><input required type="checkbox" name="konf" id="konf" /> текст текст текст текст текст</label>
     </div>
     <div class="form_bottom f1">
         <a href="auth">Авторизация</a>

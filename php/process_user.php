@@ -45,7 +45,7 @@ switch ($_GET['action']){
     }
 
     case 'getByRole': {
-        if($_GET['role'] != 'purchaser' || $_GET['role'] != 'freelancer'){
+        if(!isset($_GET['role'])){
             echo "error";
             $pdo = null;
             break;
@@ -97,7 +97,10 @@ switch ($_GET['action']){
     }
 
     case "update": {
+        if(isset($_SESSION["user"])){
+            $query = $pdo->prepare("SELECT login, email FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
 
+        }
     }
 
     case 'auth': {
@@ -139,27 +142,28 @@ switch ($_GET['action']){
             }
 
             $query = $pdo->prepare("INSERT INTO freelancer (user_email, characteristics, about)
-            VALUES (:email, '', '')", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            VALUES (:email, '', 'Я только что создал аккаунт!')", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
             $query->execute(['email' => $_POST['email']]);
 
             $query = $pdo->prepare("INSERT INTO purchaser (user_email, characteristics, about)
-            VALUES (:email, '', '')", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            VALUES (:email, '', 'Я только что создал аккаунт!')", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
             $query->execute(['email' => $_POST['email']]);
         
             $_SESSION['user'] = $_POST['login'];
             $_SESSION['email'] = $_POST['email'];
             $pdo = null;
+            header('Location: ../profile');
             break;
         }
 
         $pdo = null;
+        header('Location: ../reg');
         break;
     }
     
     case 'logout':{
-        $query = $pdo->prepare("UPDATE last_login = NOW() IN user WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-        $query->execute(['login' => $_SESSION['user']]);
-        $res = $query->fetch(PDO::FETCH_ASSOC);
+        $query = $pdo->prepare("UPDATE user SET last_online = CURRENT_TIME WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $res = $query->execute(['login' => $_SESSION['user']]);
 
         if ($res){
             $_SESSION['user'] = null;

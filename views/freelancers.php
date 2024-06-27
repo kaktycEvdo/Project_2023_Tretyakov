@@ -1,10 +1,7 @@
 <script>
     let task_texts = '';
     let task_owners = '';
-    function searchContent(){
-        
-    }
-    fetch('php/process_user.php?action=getAllByRole&role=freelancer').
+    fetch('../php/process_user.php?action=getAllByRole&role=freelancer').
     then(response => {
         let res = response.json();
         if(response.headers.get('content-type') !== 'application/json; charset=utf-8'){
@@ -23,7 +20,7 @@
             freelancer_container.className = 'freelancer_container';
             freelancer_container.href = 'profile?profile_id='+res[i]['login'];
             const name_field = document.createElement('div');
-            name_field.innerHTML = "<div class='profile_name_img'><img src='static/e93161a711d78c374f9a863188be1edc.jpg'>"+res[i]['surname'] + " " + res[i]['name'][0] + ". " + res[i]['patronymic'][0] + "." + (res[i]['verified'] ? '<i class="verified-user">+</i>' : '')+"</div>";
+            name_field.innerHTML = "<div class='profile_name_img'><img src='static/e93161a711d78c374f9a863188be1edc.jpg'>"+res[i]['surname'] + " " + res[i]['name'][0] + ". " + (res[i]['patronymic'] ? (res[i]['patronymic'][0] + ".") : '') + (res[i]['verified'] ? '<i class="verified-user">+</i>' : '')+"</div>";
             const details_field =document.createElement('div');
             const about_field = document.createElement('div');
             about_field.innerHTML = "<div>О себе:</div><textarea disabled>"+(res[i]['freelancer_about'] ? res[i]['freelancer_about'] : 'Нету')+"</textarea>";
@@ -43,8 +40,6 @@
                 chars_field.innerHTML = "Нету</div>"
             }
             
-            
-
             details_field.appendChild(about_field);
             details_field.appendChild(chars_field);
             freelancer_container.appendChild(name_field);

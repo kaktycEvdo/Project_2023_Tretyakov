@@ -4,11 +4,11 @@
     function searchContent(){
         
     }
-    fetch('php/process_tasks.php?action=getAll').
+    fetch('../php/process_tasks.php?action=getAll').
     then(response => {
         let res = response.json();
         if(response.headers.get('content-type') !== 'application/json; charset=utf-8'){
-            console.log('Error: not json returned');
+            popup('error', 'Error: not json returned');
         }
         
         return res;
@@ -16,7 +16,7 @@
         console.log(error);
     }).then(res => {
         const tasks_container = document.getElementsByClassName('tasks_container')[0];
-        tasks_container.innerHTML = "<div class='first_element'><a href='new_task'>Добавить свой заказ</a></div>";
+        tasks_container.innerHTML = "<div class='add_task'><a href='new_task'>Добавить свой заказ</a></div>";
         const loading = document.getElementById('loading');
 
         for(i = 0; i < res.length; i++){
@@ -36,7 +36,7 @@
             tasks_container.appendChild(task_container);
         }
         if(res.length === 0){
-            tasks_container.innerHTML = "<div class='first_element'><a href='new_task'>Добавить свой заказ</a></div><div class='first_element'>Не было добавлено ни одного заказа(</div>";
+            tasks_container.innerHTML = "<div class='add_task'><a href='new_task'>Добавить свой заказ</a></div><div class='no_tasks'>Не было добавлено ни одного заказа(</div>";
         }
         loading.classList.add('hidden');
     })

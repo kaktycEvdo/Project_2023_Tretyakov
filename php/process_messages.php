@@ -5,12 +5,11 @@ require_once 'connect_to_db.php';
 switch ($_GET['action']){
     case 'getAll': {
         $query = $pdo->prepare("SELECT name, surname, patronymic, verified
- FROM user, message WHERE message.user_author = :user and user.personal_data_login = message.user_author", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+ FROM user, message WHERE message.user_author = :user and personal_data_login = message.user_author", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         $query->execute(['user' => $_SESSION['user']]);
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($res){
-            $query = $pdo->prepare('', [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        if ($res || sizeof($res) == 0){
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($res);
             $pdo = null;
