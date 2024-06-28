@@ -4,8 +4,13 @@
     var pabout = 'Загрузка...';
     var fchars = 'Загрузка...';
     var pchars = 'Загрузка...';
+    var feedbacks = [];
+    var tasks = [];
+    var official_tasks = [];
 
     function showFreelancer() {
+        const specific_items = document.querySelector('.specific_items');
+        const of_tasks = document.querySelector('.official_tasks');
         const profile_about_field = document.querySelector('.profile_about > textarea');
         const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
         profile_about_field.innerHTML = fabout;
@@ -19,8 +24,37 @@
         else{
             chars_field.innerHTML = "Нету";
         }
+
+        if(specific_items.innerHTML) specific_items.innerHTML = '';
+        feedbacks.forEach(feedback => {
+            let fd_about = feedback['text'];
+            let fd_reward = feedback['reward'];
+
+            let container = document.createElement('a');
+            container.href = 'task?task_id='+feedback['task_task_id'];
+            container.innerHTML = '<div>'+fd_about+'</div><div>'+fd_reward+'руб.</div>'
+            specific_items.appendChild(container);
+        });
+        if(of_tasks.innerHTML) of_tasks.innerHTML = '';
+        if(official_tasks.length > 0){
+            official_tasks.forEach(task => {
+                let ts_about = task['text'];
+                let ts_reward = task['reward'];
+
+                let container = document.createElement('a');
+                container.href = 'official_tasks?task_id='+task['task_id'];
+                container.className = 'task_container';
+                container.innerHTML = '<div>'+ts_about+'</div><div>'+ts_reward+'руб.</div>'
+                of_tasks.appendChild(container);
+            });
+        }
+        else{
+            of_tasks.innerHTML = 'Нету(';
+        }
     }
     function showPurchaser(){
+        const specific_items = document.querySelector('.specific_items');
+        const of_tasks = document.querySelector('.official_tasks');
         const profile_about_field = document.querySelector('.profile_about > textarea');
         const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');
         profile_about_field.innerHTML = pabout;
@@ -33,6 +67,34 @@
         }
         else{
             chars_field.innerHTML = "Нету";
+        }
+
+        if(specific_items.innerHTML) specific_items.innerHTML = '';
+        tasks.forEach(task => {
+            let ts_about = task['text'];
+            let ts_reward = task['reward'];
+
+            let container = document.createElement('a');
+            container.href = 'task?task_id='+task['task_id'];
+            container.className = 'task_container';
+            container.innerHTML = '<div>'+ts_about+'</div><div>'+ts_reward+'руб.</div>'
+            specific_items.appendChild(container);
+        });
+        if(of_tasks.innerHTML) of_tasks.innerHTML = '';
+        if(official_tasks.length > 0){
+            official_tasks.forEach(task => {
+                let ts_about = task['text'];
+                let ts_reward = task['reward'];
+
+                let container = document.createElement('a');
+                container.href = 'official_tasks?task_id='+task['task_id'];
+                container.className = 'task_container';
+                container.innerHTML = '<div>'+ts_about+'</div><div>'+ts_reward+'руб.</div>'
+                of_tasks.appendChild(container);
+            });
+        }
+        else{
+            of_tasks.innerHTML = 'Нету(';
         }
     }
 
@@ -51,18 +113,7 @@
                 <a href='freelancers'>Исполнители</a>
             </div>`
             headerContainer.appendChild(pic);
-            // about + chars update
-            profile_about_field.innerHTML = pabout;
-            if(pchars){
-                let str = '';
-                pchars.split(', ').forEach(element => {
-                    str+='<div class="char">'+element+'</div>'
-                });
-                chars_field.innerHTML = str;
-            }
-            else{
-                chars_field.innerHTML = "Нету";
-            }
+            showPurchaser();
         }
         else if(localStorage.getItem("role") === "isp"){
             // header update
@@ -72,20 +123,10 @@
                 <a href='burse'>Биржа</a>
             </div>`
             headerContainer.appendChild(pic);
-            profile_about_field.innerHTML = fabout;
-            if(fchars){
-                let str = '';
-                fchars.split(', ').forEach(element => {
-                    str+='<div class="char">'+element+'</div>'
-                });
-                chars_field.innerHTML = str;
-            }
-            else{
-                chars_field.innerHTML = "Нету";
-            }
+            showFreelancer();
         }
     }
-    fetch('php/process_user.php?action=get<?php echo @$_GET['profile_id'] ? '&login='.$_GET['profile_id'] : '' ?>').
+    fetch('php/process_user.php?action=get<?php echo isset($_GET['profile_id']) ? '&login='.$_GET['profile_id'] : '' ?>').
     then(response => {
         if(response.headers.get('content-type') !== 'application/json; charset=utf-8'){
             console.log('Error: not json returned')
@@ -106,15 +147,19 @@
         let name_field = document.getElementById('name');
         name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + (profile['patronymic'] ? profile['patronymic'] : '') + (profile['verified'] ? '<i class="verified-user">+</i>' : '');
 
+        feedbacks = profile['feedbacks'];
+        tasks = profile['tasks'];
+        official_tasks = profile['official_tasks'];
+
         if(localStorage.role === 'isp'){
             showFreelancer();
         }
-        else{
+        else if(localStorage.role === 'zak'){
             showPurchaser();
         }
-        loading.classList.add('hidden');
-    })
 
+        loading.classList.add('hidden');
+    });
 </script>
 <div class="loading" id="loading">Загрузка...</div>
 <div class="profile_container">
@@ -131,6 +176,7 @@
                     <a onclick='showPurchaser();'>Заказчик</a>";
                 }
                 else{
+                    echo "<a href='settings?profile_id=".$_SESSION['user']."'>Настройки</a>";
                     echo "<a onclick='localStorage.role = \"isp\"; updateContent();'>Исполнитель</a>
                     <a onclick='localStorage.role = \"zak\"; updateContent();'>Заказчик</a>";
                 }
@@ -148,5 +194,17 @@
                 <div>Загрузка...</div>
             </div>
         </div>
+    </div>
+</div>
+<h4>Заказы/отклики:</h4>
+<div class="specific_items tasklist">
+    <div>
+        Загрузка...
+    </div>
+</div>
+<h4>Ассоциируемые с пользователем официальные заказы:</h4>
+<div class="official_tasks tasklist">
+    <div>
+        Загрузка...
     </div>
 </div>

@@ -21,16 +21,11 @@
             }
             if (xhr.readyState === XMLHttpRequest.DONE){
                 popup('success', 'Авторизация');
-                window.location = 'profile';
+                // window.location = 'profile';
             }
         };
 
-        let data = {
-            "loginoremail" : document.getElementsByName('loginoremail')[0].value,
-            "password" : document.getElementsByName('password')[0].value
-        };
-
-        data = 'loginoremail='+document.getElementsByName('loginoremail')[0].value+'&password='+document.getElementsByName('password')[0].value;
+        let data = 'loginoremail='+document.getElementsByName('loginoremail')[0].value+'&password='+document.getElementsByName('password')[0].value;
 
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send(data);

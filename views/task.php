@@ -14,7 +14,7 @@
 
         const task_container = document.getElementsByClassName('task_container')[0];
         const name_field = document.getElementsByClassName('name_container')[0];
-        name_field.innerHTML = '<img src="/static/images.jpg">' + res['surname'] + " " + res['name'][0] + ". " + res['patronymic'][0] + "." + (res['verified'] ? '<i class="verified-user">+</i>' : '');
+        name_field.innerHTML = '<img src="/static/images.jpg">' + res['surname'] + " " + res['name'][0] + ". " + (res['patronymic'] ? res['patronymic'][0]+'. ' : '') + (res['verified'] ? '<i class="verified-user">+</i>' : '');
         const text_field = document.createElement('div');
         text_field.innerHTML = res['text'];
         const deadline_field = document.createElement('div');
@@ -38,7 +38,7 @@
         if(localStorage.getItem('role') === 'isp' && res['login'] !== '<?php echo $_SESSION['user']; ?>'){
             const feedback_button = document.createElement('a');
             feedback_button.innerHTML = "Откликнуться";
-            feedback_button.href = "new_feedback.php?task_id="+'<?php echo $_GET['task_id'] ?>';
+            feedback_button.href = "new_feedback?task_id="+'<?php echo $_GET['task_id'] ?>';
             feedback_button.className = 'feedback_button';
 
             document.body.appendChild(feedback_button);
@@ -46,7 +46,7 @@
         else if (res['login'] === '<?php echo $_SESSION['user']; ?>'){
             const feedback_button = document.createElement('a');
             feedback_button.innerHTML = "Отредактировать";
-            feedback_button.href = "new_task.php?action=edit&task_id="+'<?php echo $_GET['task_id'] ?>';
+            feedback_button.href = "new_task?action=edit&task_id="+'<?php echo $_GET['task_id'] ?>';
             feedback_button.className = 'feedback_button';
 
             document.body.appendChild(feedback_button);

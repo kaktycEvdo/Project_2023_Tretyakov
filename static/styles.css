@@ -422,7 +422,13 @@ form:not(.no-form) > div.form_bottom{
 }
 
 a{
+    color: var(--text-color);
+    text-decoration: none;
     cursor: pointer;
+}
+
+.tasklist > .task_container{
+    min-height: 20vh;
 }
 
 .task_container{
@@ -662,7 +668,12 @@ a{
 }
 
 .feedback_button{
-    
+    position: absolute;
+    padding: 10px 20px;
+    background-color: var(--sub-background-color);
+    border: 0;
+    border-top: var(--accent-color) 3px solid;
+    cursor: pointer;
 }
 
 #chat_container{
@@ -679,6 +690,7 @@ a{
     border: 1px solid black;
     max-height: 1057px;
     overflow: scroll;
+    overflow-x: hidden;
 }
 #history .recepient{
     display: flex;
@@ -747,6 +759,7 @@ a{
     flex-direction: column;
     max-height: 632px;
     overflow: scroll;
+    overflow-x: hidden;
 }
 .messages div{
     margin: 20px 20px 20px 50px;
@@ -785,6 +798,7 @@ select{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    font-size: 0.7em;
 }
 
 .radios .container input {
@@ -877,6 +891,22 @@ footer a svg{
     width: 40px;
 }
 
+*::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+    background-color: var(--accent-color);
+}
+*::-webkit-scrollbar-corner{
+    width: 5px;
+    height: 5px;
+    background-color: var(--text-color);
+}
+*::-webkit-scrollbar-thumb{
+    width: 5px;
+    height: 5px;
+    background-color: var(--sub-background-color);
+}
+
 @keyframes popup {
     0%{
         top: 0;
@@ -937,6 +967,7 @@ footer a svg{
         background-color: var(--sub-background-color);
         width: 100vw;
         max-height: 100vh;
+        height: 75vh;
         overflow: hidden;
         padding: 0;
         display: flex;
@@ -948,88 +979,24 @@ footer a svg{
         border: 1px solid black;
         max-height: 1057px;
         overflow: scroll;
+        overflow-x: hidden;
     }
     #history.shown{
         display: flex;
-    }
-    #history .recepient{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 127px;
-        gap: 10px;
-        background-color: var(--sub-background-color);
-        border-bottom: 1px solid black;
-    }
-    #history .selected_recepient{
-        border-color: var(--accent-color);
-        color: var(--accent-color);
-        background-color: var(--selected-color);
-    }
-    #history .recepient img{
-        width: 100px;
-        height: 100px;
-        padding: 10px;
-        border-radius: 90px;
-        object-fit: cover;
     }
     #dialogue{
         margin: 20px;
         background-color: var(--background-color);
         border: 1px solid black;
+        padding-bottom: 20px;
     }
-    #history .selected{
-        color: var(--accent-color);
-        border-color: var(--accent-color);
-        background-color: var(--selected-color);
+    .profile_brief{
+        display: grid;
+        grid-template-columns: 1fr;
     }
-    #dialogue .inputs{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        width: 100%;
-        border-top: 1px solid black;
-    }
-    #dialogue .inputs input{
-        width: 100%;
-        margin: 20px 5px 20px 20px;
-        background-color: var(--background-color);
-        border: 5px solid white;
-        border-radius: 90px;
-        padding-left: 20px;
-        height: 70px;
-    }
-    #dialogue .inputs input:focus{
-        background-color: var(--background-color);
-        border: 5px solid white;
-    }
-    #dialogue .inputs svg{
-        width: 50px;
-        padding: 5px;
-        height: 50px;
-        margin: 20px;
-        border: 5px solid white;
-        border-radius: 90px;
-        cursor: pointer;
-    }
-    .messages{
-        height: 85%;
-        max-height: 85%;
-        overflow: scroll;
-        display: flex;
-        flex-direction: column;
-    }
-    .messages div{
-        margin: 20px 20px 20px 50px;
-        width: fit-content;
-        padding: 10px 20px;
-        border-radius: 15px 15px 15px 0;
-        background-color: var(--sub-background-color);
-    }
-    .messages div.yours{
-        align-self: end;
-        border-radius: 15px 15px 0 15px;
-        background-color: var(--accent-color);
+    .profile_brief > .profile_brief_buttons{
+        display: grid;
+        grid-template-columns: auto;
+
     }
 }

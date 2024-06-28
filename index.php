@@ -84,6 +84,10 @@
                 include_once __DIR__ . $viewDir . 'feedback.php';
                 break;
 
+            case '/settings':
+                include_once __DIR__ . $viewDir . 'settings.php';
+                break;
+
             default:
                 http_response_code(404);
                 include_once __DIR__ . $viewDir . '404.php';

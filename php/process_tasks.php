@@ -9,6 +9,11 @@ switch ($_GET['action']){
         $query->execute(['id' => $_GET['id']]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
 
+        $query = $pdo->prepare("SELECT user.name, user.surname, user.patronymic, user.verified, task_data.text, task_data.reward, task_data.deadline, user.personal_data_login as login
+ FROM feedback, task_data, user WHERE freelancer_user_email = user.email and task_task_id = :id and feedback.task_data_id = task_data.idtask_data");
+        $query->execute(['id' => $_GET['id']]);
+        $res['feedbacks'] = $query->fetchAll(PDO::FETCH_ASSOC);
+
         if ($res){
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($res);

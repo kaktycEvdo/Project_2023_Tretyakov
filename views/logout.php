@@ -86,7 +86,7 @@
         pchars = profile['purchaser_chars'];
 
         let name_field = document.getElementById('name');
-        name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + profile['patronymic'] + (profile['verified'] ? '<i class="verified-user">+</i>' : '');
+        name_field.innerHTML = profile['surname'] + " " + profile['name'] + " " + (profile['patronymic'] ? profile['patronymic'] : '') + (profile['verified'] ? '<i class="verified-user">+</i>' : '');
         
         const profile_about_field = document.querySelector('.profile_about > textarea');
         const chars_field = document.querySelector('.profile_charas > div:nth-child(2)');

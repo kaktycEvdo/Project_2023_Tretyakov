@@ -4,13 +4,47 @@ require_once 'connect_to_db.php';
 
 switch ($_GET['action']){
     case 'get': {
-        $query = $pdo->prepare("SELECT name, surname, patronymic, verified,
+        $query = $pdo->prepare("SELECT name, surname, patronymic, verified, email,
  freelancer.about as freelancer_about, purchaser.about as purchaser_about, freelancer.characteristics as freelancer_chars, purchaser.characteristics as purchaser_chars
  FROM user, freelancer, purchaser WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-        // надо будет подумать подольше над get или post здесь
-        @$_GET['login']
+        
+        isset($_GET['login'])
         ? $query->execute(['login' => $_GET['login']])
         : $query->execute(['login' => $_SESSION['user']]);
+        $res = $query->fetch(PDO::FETCH_ASSOC);
+
+        $query = $pdo->prepare("SELECT task_data.text, task_data.deadline, task_data.reward, task_task_id
+ FROM feedback, task_data WHERE feedback.task_data_id = task_data.idtask_data and feedback.freelancer_user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query->execute(["email" => $res['email']]);
+        $res['feedbacks'] = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $query = $pdo->prepare("SELECT task_data.text, task_data.deadline, task_data.reward, task_id
+ FROM task, task_data WHERE task.task_data_id = task_data.idtask_data and task.purchaser_user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query->execute(["email" => $res['email']]);
+        $res['tasks'] = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $query = $pdo->prepare("SELECT task_data.text, task_data.deadline, task_data.reward, official_task_id
+ FROM official_task, task, task_data WHERE official_task.task_task_id = task.task_id and (official_task.chosen_freelancer = :fr or official_task.task_purchaser_user_email = :pr)", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query->execute(["fr" => $res['email'], "pr" => $res['email']]);
+        $res['official_tasks'] = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($res){
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode($res);
+            $pdo = null;
+            break;
+        }
+
+        echo "error";
+        $pdo = null;
+        break;
+    }
+
+    case 'getPersonal': {
+        $query = $pdo->prepare("SELECT name, surname, patronymic, email,
+ freelancer.about as freelancer_about, purchaser.about as purchaser_about, freelancer.characteristics as freelancer_chars, purchaser.characteristics as purchaser_chars
+ FROM user, freelancer, purchaser WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query->execute(['login' => $_SESSION['user']]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($res){
@@ -98,18 +132,24 @@ switch ($_GET['action']){
 
     case "update": {
         if(isset($_SESSION["user"])){
-            $query = $pdo->prepare("SELECT login, email FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query = $pdo->prepare("UPDATE purchaser SET about = :about, characteristics = :chars WHERE purchaser_user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query->execute(["about"=> $_POST["pr-about"], "chars"=> $_POST["pr-chars"], 'email' => $_SESSION['email']]);
 
+            $query = $pdo->prepare("UPDATE freelancer SET about = :about, characteristics = :chars WHERE purchaser_user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query->execute(["about"=> $_POST["fr-about"], "chars"=> $_POST["fr-chars"], 'email' => $_SESSION['email']]);
+        }
+        else{
+            header('Location: /');
         }
     }
 
     case 'auth': {
-        $query = $pdo->prepare("SELECT login, email FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $query = $pdo->prepare("SELECT personal_data_login, email FROM user, personal_data WHERE (personal_data_login=:login or email=:login) and personal_data.password=:password", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         $query->execute(['login' => $_POST['loginoremail'], 'password' => $_POST['password']]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($res){
-            $_SESSION['user'] = $res['login'];
+            $_SESSION['user'] = $res['personal_data_login'];
             $_SESSION['email'] = $res['email'];
             $pdo = null;
             break;
@@ -169,10 +209,12 @@ switch ($_GET['action']){
             $_SESSION['user'] = null;
             $_SESSION['email'] = null;
             $pdo = null;
+            header('Location: ../');
             break;
         }
 
         $pdo = null;
+        header('Location: ../auth');
         break;
     }
 }
