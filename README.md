@@ -1,0 +1,1 @@
+[<picture><img alt="Изображение схемы БД." src="https://github.com/kaktycEvdo/Project_2023_Tretyakov/assets/44808471/7299119f-7c18-469c-8aac-288411af8581"></picture>](https://github.com/user-attachments/files/16043523/freelance.pdf)
