@@ -1,5 +1,5 @@
 <?php if(!isset($_SESSION['user'])) header('Location: ../'); ?>
-<form method="POST" action="../php/process_tasks.php?action=<?php echo isset($_GET['action']) && $_GET['action'] == 'edit' ? 'edit' : 'add' ?>">
+<form method="POST" action="../php/process_tasks.php?task_id=<?php echo @$_GET['task_id'] ?>&action=<?php echo isset($_GET['action']) && $_GET['action'] == 'edit' ? 'edit' : 'add' ?>">
     <div><h3>Заказ оформляет: <?php echo $_SESSION['user'] ?></h3></div>
     <div class="form_fields">
         <label>Текст заказа (200-2000 символов):</label>

@@ -1,5 +1,5 @@
 <?php if(!isset($_SESSION['user'])) header('Location: ../'); ?>
-<form method="POST" action="../php/process_tasks.php?action=<?php echo isset($_GET['action']) && $_GET['action'] == 'edit' ? 'edit' : 'add' ?>">
+<form method="POST" action="../php/process_feedbacks.php?action=<?php echo isset($_GET['action']) && $_GET['action'] == 'edit' ? 'edit' : 'add' ?>">
     <div><h3>Отклик оформляет: <?php echo $_SESSION['user'] ?></h3></div>
     <div class="form_fields">
         <label>Текст отклика (200-2000 символов):</label>
@@ -23,6 +23,7 @@
         </div>
         <label>Желаемый дедлайн:</label>
         <input id="deadline" name="deadline" type="datetime-local" required />
+        <input type="hidden" name="task_id" value="<?php echo isset($_GET['task_id']) ? $_GET['task_id'] : null ?>">
     </div>
         <div class="form_bottom">
             <i></i>

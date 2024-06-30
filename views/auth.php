@@ -21,7 +21,7 @@
             }
             if (xhr.readyState === XMLHttpRequest.DONE){
                 popup('success', 'Авторизация');
-                // window.location = 'profile';
+                window.location = 'profile';
             }
         };
 

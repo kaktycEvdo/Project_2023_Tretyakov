@@ -1,3 +1,4 @@
+<?php isset($_SESSION['user']) ? null : header('Location: /') ?>
 <script>
     fetch('php/process_user.php?action=getPersonal').
     then(response => {
@@ -25,7 +26,7 @@
     });
 </script>
 <div id="loading">Загрузка...</div>
-<form class="profile_settings">
+<form method="POST" action="../php/process_user.php?action=update" class="profile_settings">
     <h2>Профиль фрилансера</h2>
     <div class="form_fields">
         <textarea name="fr-about" id="fr-about" style="resize: vertical; min-height: 20vh; max-height: 70vh;"></textarea>
@@ -38,5 +39,20 @@
     </div>
     <div class="form_bottom">
         <input type="submit" name="submit" id="submit" value="Обновить" style="">
+    </div>
+</form>
+<form method="POST" action="../php/process_user.php?action=delete" class="profile_settings" style="min-height: 200px">
+    <h2>Карты</h2>
+    <div class="form_bottom">
+        <a href="cards" style="padding: 10px 20px; background-color: var(--background-color); border-top: var(--accent-color) 3px solid; cursor: pointer">Карты</a>
+    </div>
+    <h2>Документы и сертификаты</h2>
+    <div class="form_bottom">
+        <a href="documents" style="padding: 10px 20px; background-color: var(--background-color); border-top: var(--accent-color) 3px solid; cursor: pointer">Документы</a>
+        <a href="certificates" style="padding: 10px 20px; background-color: var(--background-color); border-top: var(--accent-color) 3px solid; cursor: pointer">Сертификаты</a>
+    </div>
+    <h2>Удаление профиля</h2>
+    <div class="form_bottom">
+        <input type="submit" name="submit" id="submit" value="Удалить" style="border-top: 3px solid red">
     </div>
 </form>

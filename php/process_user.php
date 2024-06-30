@@ -6,7 +6,7 @@ switch ($_GET['action']){
     case 'get': {
         $query = $pdo->prepare("SELECT name, surname, patronymic, verified, email,
  freelancer.about as freelancer_about, purchaser.about as purchaser_about, freelancer.characteristics as freelancer_chars, purchaser.characteristics as purchaser_chars
- FROM user, freelancer, purchaser WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+ FROM user, freelancer, purchaser WHERE personal_data_login=:login and user.email = freelancer.user_email and user.email = purchaser.user_email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         
         isset($_GET['login'])
         ? $query->execute(['login' => $_GET['login']])
@@ -43,7 +43,7 @@ switch ($_GET['action']){
     case 'getPersonal': {
         $query = $pdo->prepare("SELECT name, surname, patronymic, email,
  freelancer.about as freelancer_about, purchaser.about as purchaser_about, freelancer.characteristics as freelancer_chars, purchaser.characteristics as purchaser_chars
- FROM user, freelancer, purchaser WHERE personal_data_login=:login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+ FROM user, freelancer, purchaser WHERE personal_data_login=:login and user.email = freelancer.user_email and user.email = purchaser.user_email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         $query->execute(['login' => $_SESSION['user']]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -132,15 +132,32 @@ switch ($_GET['action']){
 
     case "update": {
         if(isset($_SESSION["user"])){
-            $query = $pdo->prepare("UPDATE purchaser SET about = :about, characteristics = :chars WHERE purchaser_user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query = $pdo->prepare("UPDATE purchaser SET about = :about, characteristics = :chars WHERE user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
             $query->execute(["about"=> $_POST["pr-about"], "chars"=> $_POST["pr-chars"], 'email' => $_SESSION['email']]);
 
-            $query = $pdo->prepare("UPDATE freelancer SET about = :about, characteristics = :chars WHERE purchaser_user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query = $pdo->prepare("UPDATE freelancer SET about = :about, characteristics = :chars WHERE user_email = :email", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
             $query->execute(["about"=> $_POST["fr-about"], "chars"=> $_POST["fr-chars"], 'email' => $_SESSION['email']]);
+            header('Location: ../profile');
         }
         else{
             header('Location: /');
         }
+        $pdo = null;
+        break;
+    }
+
+    case "delete": {
+        if(isset($_SESSION["user"])){
+            $query = $pdo->prepare("DELETE FROM personal_data WHERE login = :login", [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+            $query->execute(["about"=> $_SESSION["user"]]);
+            $_SESSION['user'] = null;
+            $_SESSION['email'] = null;
+        }
+        else{
+            header('Location: /');
+        }
+        $pdo = null;
+        break;
     }
 
     case 'auth': {

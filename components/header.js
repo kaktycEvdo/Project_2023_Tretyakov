@@ -47,7 +47,7 @@ const splink3 = document.createElement("a");
 const splink4 = document.createElement("a");
 splink1.href = 'auth';
 splink2.href = 'profile';
-splink3.href = 'logout';
+splink3.href = 'php/process_user.php?action=logout';
 splink4.href = 'chat';
 splink1.innerHTML = "Авторизация";
 splink2.innerHTML = "ЛК";

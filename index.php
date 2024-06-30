@@ -72,6 +72,10 @@
                 include_once __DIR__ . $viewDir . 'new_task.php';
                 break;
 
+            case '/official_tasks':
+                include_once __DIR__ . $viewDir . 'official_tasks.php';
+                break;
+
             case '/chat':
                 include_once __DIR__ . $viewDir . 'chat.php';
                 break;
@@ -86,6 +90,18 @@
 
             case '/settings':
                 include_once __DIR__ . $viewDir . 'settings.php';
+                break;
+
+            case '/cards':
+                include_once __DIR__ . $viewDir . 'cards.php';
+                break;
+
+            case '/certificates':
+                include_once __DIR__ . $viewDir . 'certificates.php';
+                break;
+
+            case '/documents':
+                include_once __DIR__ . $viewDir . 'documents.php';
                 break;
 
             default:

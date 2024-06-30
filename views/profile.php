@@ -26,15 +26,21 @@
         }
 
         if(specific_items.innerHTML) specific_items.innerHTML = '';
-        feedbacks.forEach(feedback => {
-            let fd_about = feedback['text'];
-            let fd_reward = feedback['reward'];
+        if(feedbacks.length > 0){
+            feedbacks.forEach(feedback => {
+                let fd_about = feedback['text'];
+                let fd_reward = feedback['reward'];
 
-            let container = document.createElement('a');
-            container.href = 'task?task_id='+feedback['task_task_id'];
-            container.innerHTML = '<div>'+fd_about+'</div><div>'+fd_reward+'руб.</div>'
-            specific_items.appendChild(container);
-        });
+                let container = document.createElement('a');
+                container.href = 'task?task_id='+feedback['task_task_id'];
+                container.className = 'task_container';
+                container.innerHTML = '<div>'+fd_about+'</div><div>'+fd_reward+'руб.</div>'
+                specific_items.appendChild(container);
+            });
+        }
+        else{
+            specific_items.innerHTML = 'Нету(';
+        }
         if(of_tasks.innerHTML) of_tasks.innerHTML = '';
         if(official_tasks.length > 0){
             official_tasks.forEach(task => {
@@ -70,16 +76,21 @@
         }
 
         if(specific_items.innerHTML) specific_items.innerHTML = '';
-        tasks.forEach(task => {
-            let ts_about = task['text'];
-            let ts_reward = task['reward'];
+        if(tasks.length > 0){
+            tasks.forEach(task => {
+                let ts_about = task['text'];
+                let ts_reward = task['reward'];
 
-            let container = document.createElement('a');
-            container.href = 'task?task_id='+task['task_id'];
-            container.className = 'task_container';
-            container.innerHTML = '<div>'+ts_about+'</div><div>'+ts_reward+'руб.</div>'
-            specific_items.appendChild(container);
-        });
+                let container = document.createElement('a');
+                container.href = 'task?task_id='+task['task_id'];
+                container.className = 'task_container';
+                container.innerHTML = '<div>'+ts_about+'</div><div>'+ts_reward+'руб.</div>'
+                specific_items.appendChild(container);
+            });
+        }
+        else{
+            specific_items.innerHTML = 'Нету(';
+        }
         if(of_tasks.innerHTML) of_tasks.innerHTML = '';
         if(official_tasks.length > 0){
             official_tasks.forEach(task => {
@@ -197,13 +208,13 @@
     </div>
 </div>
 <h4>Заказы/отклики:</h4>
-<div class="specific_items tasklist">
+<div class="tasks_container specific_items">
     <div>
         Загрузка...
     </div>
 </div>
 <h4>Ассоциируемые с пользователем официальные заказы:</h4>
-<div class="official_tasks tasklist">
+<div class="tasks_container official_tasks">
     <div>
         Загрузка...
     </div>
